@@ -14,7 +14,7 @@
 
 
 # Import relevant packages and modules
-from util import *
+from .util import *
 import random
 import tensorflow as tf
 import tf_slim as slim
