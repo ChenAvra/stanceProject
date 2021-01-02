@@ -1,0 +1,552 @@
+<WelcomeWindow>:
+
+    RelativeLayout:
+        cols: 1
+
+        # Label:
+        # Label:
+        # Label:
+
+        RelativeLayout:
+            Label:
+                text: "Welcome To Stance Detection Project"
+                bold: True
+                size_hint: .20, .10
+                pos_hint: {'top': 1.0, 'right': .6}
+                font_size: '50sp'
+                color: 1, .8, .4, .85
+
+
+        GridLayout:
+            cols: 1
+            # row_force_default: True
+            # row_default_height: 50
+
+            GridLayout:
+                cols: 2
+                row_force_default: True
+                row_default_height: 200
+
+                Label:
+                Label:
+                Image:
+                    source: 'photo1.png'
+                Image:
+                    source: 'photo2.png'
+
+            GridLayout:
+                cols: 5
+                row_force_default: True
+                row_default_height: 50
+                Label:
+                Label:
+                Label:
+                Label:
+                Label:
+                Label:
+                Label:
+                Label:
+                Label:
+                Label:
+                Label:
+                Label:
+                Label:
+                Label:
+                Label:
+                Label:
+                Label:
+                Label:
+                Label:
+                Label:
+
+                Label:
+                Button:
+                    text: "Run Models"
+                    size_hint: .20, .1
+                    pos_hint: {'top': .15, 'right': .8}
+                    font_size: '20sp'
+                    background_normal: 'normal.png'
+                    background_color: 1, .8, .4, .85
+                    markup: True
+                    bold: True
+                    on_press: root.manager.current = 'select_window'
+
+                Label:
+                Button:
+                    text: "Try It Yourself!"
+                    size_hint: .20, .1
+                    pos_hint: {'top': .15, 'right': .8}
+                    font_size: '20sp'
+                    background_normal: 'normal.png'
+                    background_color: 1, .8, .4, .85
+                    markup: True
+                    bold: True
+                    on_press: root.manager.current = 'user_stance'
+                Label:
+
+
+
+<UserStanceWindow>:
+    topic: topic
+    sentence: sentence
+
+    RelativeLayout:
+        cols: 1
+
+        RelativeLayout:
+            Label:
+                text: "Let's Reveal Your Stance!"
+                bold: True
+                size_hint: .20, .10
+                pos_hint: {'top': 1.0, 'right': .6}
+                font_size: '50sp'
+                color: 1, .8, .4, .85
+
+        GridLayout:
+            cols: 1
+            # row_force_default: True
+            row_default_height: 50
+
+            GridLayout:
+                cols: 2
+                row_force_default: True
+                row_default_height: 100
+
+                GridLayout:
+                    cols: 3
+                    row_force_default: True
+                    row_default_height: 75
+
+                    Label:
+                    Label:
+                    Label:
+                    Label:
+                    Label:
+                    Label:
+                    Label:
+                    Label:
+                        text: "Select Topic"
+                        bold: True
+                        font_size: '20sp'
+                    Label:
+                    Label:
+                    Label:
+                    Label:
+                    Label:
+                    Label:
+                        text: "Enter A Sentence"
+                        bold: True
+                        font_size: '20sp'
+                    Label:
+                GridLayout:
+                    cols: 2
+                    row_force_default: True
+                    row_default_height: 75
+
+                    Label:
+                    Label:
+                    Label:
+                    Label:
+                    Button:
+                        id: topic
+                        text: 'Topic'
+                        size_hint_y: None
+                        height: '48dp'
+                        on_release: root.test()
+
+                    # TextInput:
+                    #     id: topic
+                    #     multilines: False
+                    Label:
+                    Label:
+                    Label:
+                    TextInput:
+                        id: sentence
+                        multilines: False
+                    Label:
+
+
+            GridLayout:
+                cols: 3
+                row_force_default: True
+                row_default_height: 50
+
+                Label:
+                Label:
+                Label:
+                Label:
+                Label:
+                Label:
+                Label:
+                Label:
+                Label:
+                Label:
+
+                Button:
+                    text: "Apply"
+                    size_hint: .20, .10
+                    pos_hint: {'top': .15, 'right': .4}
+                    font_size: '20sp'
+                    background_normal: 'normal.png'
+                    background_color: 1, .8, .4, .85
+                    on_press: root.apply_btn()
+
+
+                Label:
+                Label:
+                Label:
+                Label:
+                Label:
+                Button:
+                    text: "Back To The Main Window"
+                    size_hint: .20, .10
+                    pos_hint: {'top': .15, 'right': .4}
+                    font_size: '20sp'
+                    background_normal: 'normal.png'
+                    background_color: 1, .8, .4, .85
+                    on_press:
+                        topic.text="Topic"
+                        sentence.text=""
+                        root.manager.current = 'welcome'
+
+<SelectWindow>:
+    RelativeLayout:
+        cols: 1
+
+        RelativeLayout:
+            Label:
+                text: "Let's Train A Model"
+                bold: True
+                size_hint: .20, .10
+                pos_hint: {'top': 1.0, 'right': .6}
+                font_size: '50sp'
+                color: 1, .8, .4, .85
+
+        GridLayout:
+            cols: 1
+            # row_force_default: True
+            # row_default_height: 50
+
+            GridLayout:
+                cols: 7
+                # row_force_default: True
+                # row_default_height: 20
+                Label:
+                Label:
+                Label:
+                Label:
+                Label:
+                Label:
+                Label:
+                Label:
+                Label:
+                Label:
+                    text: "Select Algorithms"
+                    bold: True
+                    font_size: '20sp'
+                Label:
+                Label:
+                    text: "Select DataSet"
+                    bold: True
+                    font_size: '20sp'
+                Label:
+                Label:
+                Label:
+                Label:
+                GridLayout:
+                    cols: 2
+                    row_force_default: True
+                    row_default_height: 50
+
+                    # Label:
+                    Label:
+                        text: "method 1"
+                    CheckBox:
+                        id: method_1
+                    # Label:
+                    # Label:
+                    Label:
+                        text: "method 2"
+                    CheckBox:
+                        id: method_2
+                    # Label:
+                    # Label:
+                    Label:
+                        text: "method 3"
+                    CheckBox:
+                        id: method_3
+
+                    # Label:
+
+                Label:
+                GridLayout:
+                    cols: 2
+                    row_force_default: True
+                    row_default_height: 50
+
+                    # Label:
+                    Label:
+                        text: "DatsSet 1"
+                    CheckBox:
+                        id: set_1
+                        on_press:
+                            set_2.active = False
+                            set_3.active = False
+                            set_4.active = False
+                    # Label:
+                    # Label:
+                    Label:
+                        text: "DatsSet 2"
+                    CheckBox:
+                        id: set_2
+                        on_press:
+                            set_1.active = False
+                            set_3.active = False
+                            set_4.active = False
+                    # Label:
+                    # Label:
+                    Label:
+                        text: "DatsSet 3"
+                    CheckBox:
+                        id: set_3
+                        on_press:
+                            set_1.active = False
+                            set_2.active = False
+                            set_4.active = False
+                    # Label:
+                    # Label:
+                    Label:
+                        text: "DatsSet 4"
+                    CheckBox:
+                        id: set_4
+                        on_press:
+                            set_1.active = False
+                            set_2.active = False
+                            set_3.active = False
+                    # Label:
+
+            GridLayout:
+                cols: 3
+                row_force_default: True
+                row_default_height: 50
+
+                Label:
+                Label:
+                Label:
+                Label:
+                Label:
+                Label:
+                Label:
+                Label:
+                Label:
+                Label:
+
+                Button:
+                    text: "Run"
+                    size_hint: .20, .10
+                    pos_hint: {'top': .15, 'right': .4}
+                    font_size: '20sp'
+                    background_normal: 'normal.png'
+                    background_color: 1, .8, .4, .85
+                    on_press: root.run_btn(method_1,method_2,method_3,set_1,set_2,set_3,set_4)
+
+
+                Label:
+                Label:
+                Label:
+                Label:
+                Label:
+                Button:
+                    text: "Back To The Main Window"
+                    size_hint: .20, .10
+                    pos_hint: {'top': .15, 'right': .4}
+                    font_size: '20sp'
+                    background_normal: 'normal.png'
+                    background_color: 1, .8, .4, .85
+                    on_press: root.manager.current = 'welcome'
+
+<StatWindow>:
+    RelativeLayout:
+        cols: 1
+
+        RelativeLayout:
+            Label:
+                text: "Result"
+                bold: True
+                size_hint: .20, .10
+                pos_hint: {'top': 1.0, 'right': .6}
+                font_size: '50sp'
+                color: 1, .8, .4, .85
+
+        GridLayout:
+            cols: 3
+            row_force_default: True
+            row_default_height: 50
+            Label:
+            Label:
+            Label:
+            Label:
+            Label:
+            Label:
+            Label:
+            Label:
+            Label:
+            Label:
+            Button:
+                id: button1
+                text: "Method 1 Result"
+                # size_hint: .20, .10
+                # pos_hint: {'top': .15, 'right': .4}
+                font_size: '20sp'
+                background_normal: 'normal.png'
+                background_color: 1, .8, .4, .85
+                on_press: root.select_model(1)
+            Label:
+            Label:
+            Label:
+            Label:
+            Label:
+            Button:
+                id: button2
+                text: "Method 2 Result"
+                size_hint: .20, .10
+                pos_hint: {'top': .15, 'right': .4}
+                font_size: '20sp'
+                background_normal: 'normal.png'
+                background_color: 1, .8, .4, .85
+                on_press: root.select_model(2)
+            Label:
+            Label:
+            Label:
+            Label:
+            Label:
+            Button:
+                id: button3
+                text: "Method 3 Result"
+                size_hint: .20, .10
+                pos_hint: {'top': .15, 'right': .4}
+                font_size: '20sp'
+                background_normal: 'normal.png'
+                background_color: 1, .8, .4, .85
+                on_press: root.select_model(3)
+            Label:
+            Label:
+            Label:
+            Label:
+            Label:
+            Button:
+                text: "Dataset Stat"
+                size_hint: .20, .10
+                pos_hint: {'top': .15, 'right': .4}
+                font_size: '20sp'
+                background_normal: 'normal.png'
+                background_color: 1, .8, .4, .85
+                on_press: root.select_dataset()
+            Label:
+            Label:
+            Label:
+            Label:
+            Label:
+            Button:
+                text: "Back To Models Window"
+                size_hint: .20, .10
+                pos_hint: {'top': .15, 'right': .4}
+                font_size: '20sp'
+                background_normal: 'normal.png'
+                background_color: 1, .8, .4, .85
+                on_press: root.manager.current = 'select_window'
+
+<ModelStatWindow>:
+    RelativeLayout:
+        cols: 1
+
+        RelativeLayout:
+            Label:
+                id: title
+                text: "Model Stat"
+                bold: True
+                size_hint: .20, .10
+                pos_hint: {'top': 1.0, 'right': .6}
+                font_size: '50sp'
+                color: 1, .8, .4, .85
+
+        GridLayout:
+            cols: 3
+            row_force_default: True
+            row_default_height: 50
+
+            Label:
+            Label:
+            Label:
+            Label:
+            Label:
+            Label:
+            Label:
+            Label:
+                id: accuracy
+            Label:
+
+        GridLayout:
+            cols: 2
+            row_force_default: True
+            row_default_height: 150
+
+            Label:
+            Label:
+            Image:
+                source: 'WhatsApp Image 2021-01-02 at 19.12.21.jpeg'
+                allow_stretch: True
+                keep_ratio: True
+
+
+
+
+
+
+            # GridLayout:
+            #     cols: 3
+            #     row_force_default: True
+            #     row_default_height: 50
+            #
+            #     Button:
+            #         text: "Beck To Stat Window"
+            #         # size_hint: .20, .10
+            #         # pos_hint: {'top': .15, 'right': .4}
+            #         font_size: '20sp'
+            #         background_normal: 'normal.png'
+            #         background_color: 1, .8, .4, .85
+            #         on_press: root.manager.current = 'stat_window'
+
+<DataSetStatWindow>:
+    RelativeLayout:
+        cols: 1
+        RelativeLayout:
+            Label:
+                text: "DataSet Stat"
+                bold: True
+                size_hint: .20, .10
+                pos_hint: {'top': 1.0, 'right': .6}
+                font_size: '50sp'
+                color: 1, .8, .4, .85
+
+        GridLayout:
+            cols: 3
+            row_force_default: True
+            row_default_height: 50
+
+
+
+
+            Label:
+            Label:
+            Label:
+            Label:
+
+            Button:
+                text: "Beck To Stat Window"
+                # size_hint: .20, .10
+                # pos_hint: {'top': .15, 'right': .4}
+                font_size: '20sp'
+                background_normal: 'normal.png'
+                background_color: 1, .8, .4, .85
+                on_press: root.manager.current = 'stat_window'
