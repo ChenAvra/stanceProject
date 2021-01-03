@@ -135,6 +135,51 @@ class FNCData:
                 rows.append(line)
 
         return rows
+
+
+    def dfInstance(self, df):
+        # df = pd.read_csv(filename)
+
+        sentence_dict = {}
+        SentenceID = list()
+        counter = 1
+        for index, row in df.iterrows():
+            if row['Sentence'] not in sentence_dict:
+                sentence_dict[row['Sentence']] = counter
+                SentenceID.append(counter)
+                counter += 1
+            else:
+                value = sentence_dict[row['Sentence']]
+                SentenceID.append(value)
+
+        df.loc[:,'SentenceID'] = SentenceID
+        df.drop(articleBody, axis=1)
+        df = df.to_dict('records')
+
+        return df
+
+    def dfBodies(self, df):
+        # df = pd.read_csv(filename)
+
+        sentence_dict = {}
+        SentenceID = list()
+        counter = 1
+        for index, row in df.iterrows():
+            if row['Sentence'] not in sentence_dict:
+                sentence_dict[row['Sentence']] = counter
+                SentenceID.append(counter)
+                counter += 1
+            else:
+                value = sentence_dict[row['Sentence']]
+                SentenceID.append(value)
+
+        df.loc[:,'SentenceID'] = SentenceID
+        df.drop(headline, axis=1)
+        df.drop(Stance, axis=1)
+        df = df.to_dict('records')
+
+        return df
+
     def readInstance(self, filename):
         rows = []
         with open(filename, "r", encoding='utf-8-sig') as table:
@@ -144,49 +189,6 @@ class FNCData:
                 rows.append(line)
 
         return rows
-
-    def dfInstance(self, filename):
-        df = pd.read_csv(filename)
-
-        sentence_dict = {}
-        SentenceID = list()
-        counter = 1
-        for index, row in df.iterrows():
-            if row['Sentence'] not in sentence_dict:
-                sentence_dict[row['Sentence']] = counter
-                SentenceID.append(counter)
-                counter += 1
-            else:
-                value = sentence_dict[row['Sentence']]
-                SentenceID.append(value)
-
-        df['SentenceID'] = SentenceID
-        df.drop(articleBody, axis=1)
-        df = df.to_dict('records')
-
-        return df
-
-    def dfBodies(self, filename):
-        df = pd.read_csv(filename)
-
-        sentence_dict = {}
-        SentenceID = list()
-        counter = 1
-        for index, row in df.iterrows():
-            if row['Sentence'] not in sentence_dict:
-                sentence_dict[row['Sentence']] = counter
-                SentenceID.append(counter)
-                counter += 1
-            else:
-                value = sentence_dict[row['Sentence']]
-                SentenceID.append(value)
-
-        df['SentenceID'] = SentenceID
-        df.drop(headline, axis=1)
-        df.drop(Stance, axis=1)
-        df = df.to_dict('records')
-
-        return df
 
     def readBodies(self, filename):
         rows = []
@@ -394,9 +396,9 @@ def load_model(sess):
 #         for instance in pred:
 #             writer.writerow({Stance: label_ref_rev[instance]})
 
-def test_stance(file):
-    data = pd.read_csv(file)
-    test_stances = data[Stance]
+def test_stance(df):
+    # data = pd.read_csv(file)
+    test_stances = df[Stance]
     test_stances_array = test_stances.to_numpy()
 
     # try:
