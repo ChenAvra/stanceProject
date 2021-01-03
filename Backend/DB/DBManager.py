@@ -1,3 +1,4 @@
+import os
 import sqlite3
 from os.path import exists
 import pandas as pd
@@ -6,13 +7,16 @@ import csv
 class DataBase:
 
     def __init__(self):
-        if not exists('Stance_Detection.db'):
-            self.conn = sqlite3.connect('Stance_Detection.db')
+        PROJECT_ROOT = os.path.abspath(__file__)
+        BASE_DIR = os.path.dirname(PROJECT_ROOT)
+        db_path = BASE_DIR + '\\Stance_Detection.db'
+        if not exists(db_path):
+            self.conn = sqlite3.connect(db_path)
             self.cursor = self.conn.cursor()
             self.create_claimTable()
             # self.fill_claim_table()
         else:
-            self.conn = sqlite3.connect('Stance_Detection.db')
+            self.conn = sqlite3.connect(db_path)
             self.cursor = self.conn.cursor()
 
 
@@ -32,16 +36,21 @@ class DataBase:
         self.conn.commit()
 
 
-
     def get_dataset(self, dataset_number):
         query = "SELECT Claim,Sentence,Stance FROM Claims WHERE Dataset_Number=" + str(dataset_number)
         df = pd.read_sql_query(query, self.conn)
         return df
 
-db = DataBase()
+
+    def delete_dataset(self, dataset_number):
+        self.conn = sqlite3.connect('Stance_Detection.db')
+        self.cursor = self.conn.cursor()
+        self.cursor.execute("DELETE FROM Claims WHERE Dataset_Number=?", (dataset_number,))
+        self.conn.commit()
+
+# db = DataBase()
 # db.fill_claim_table("semEval2016.csv",1)
-db.fill_claim_table("MLP dataset.csv",3)
+# db.fill_claim_table("FNC.csv",3)
 # db.fill_claim_table("MPCHI.csv",4)
 # db.fill_claim_table("EmergentLite.csv",5)
-print(db.get_dataset(3))
-
+# print(db.get_dataset(4))
