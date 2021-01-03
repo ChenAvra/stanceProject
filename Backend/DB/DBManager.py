@@ -3,6 +3,8 @@ import sqlite3
 from os.path import exists
 import pandas as pd
 import csv
+import matplotlib.pyplot as plt
+from pandas import DataFrame
 
 class DataBase:
 
@@ -54,3 +56,16 @@ class DataBase:
 # db.fill_claim_table("MPCHI.csv",4)
 # db.fill_claim_table("EmergentLite.csv",5)
 # print(db.get_dataset(4))
+
+# db = DataBase()
+# df = db.get_dataset(4)
+# print(df.groupby(['Stance']).count())
+# labels = 'Against: 540', 'Favor: 421', 'None: 572'
+# sizes = [540, 421, 572]
+# fig1, ax1 = plt.subplots()
+# ax1.pie(sizes, labels=labels, autopct='%1.1f%%', startangle=90)
+# ax1.axis('equal')  # Equal aspect ratio ensures that pie is drawn as a circle.
+# plt.show()
+
+
+

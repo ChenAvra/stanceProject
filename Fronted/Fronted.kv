@@ -252,7 +252,7 @@
                         Label:
                         Label:
                         Label:
-                            text: "method 1"
+                            text: "SVM (need to change)"
                         Button:
                             text: "!"
                             size: 25, 40
@@ -264,7 +264,7 @@
                         # Label:
                         Label:
                         Label:
-                            text: "method 2"
+                            text: "UCLMR"
                         Button:
                             text: "!"
                             size: 25, 40
@@ -276,7 +276,7 @@
                         # Label:
                         Label:
                         Label:
-                            text: "method 3"
+                            text: "TAN"
                         Button:
                             text: "!"
                             size: 25, 40
@@ -317,7 +317,7 @@
                         row_default_height: 50
 
                         Label:
-                            text: "DatsSet 1"
+                            text: "semEval2016"
                         Button:
                             text: "!"
                             size: 25, 40
@@ -330,7 +330,27 @@
                                 set_3.active = False
                                 set_4.active = False
                         Label:
-                            text: "DatsSet 2"
+                            text: "MPCHI"
+                        Button:
+                            text: "!"
+                            size: 25, 40
+                            size_hint: None, None
+                            on_press: root.info_btn("dataset3")
+                        CheckBox:
+                            id: set_3
+                            on_press:
+                                set_1.active = False
+                                set_2.active = False
+                                set_4.active = False
+
+
+                    GridLayout:
+                        cols: 3
+                        row_force_default: True
+                        row_default_height: 50
+
+                        Label:
+                            text: "FNC-1"
                         Button:
                             text: "!"
                             size: 25, 40
@@ -343,30 +363,10 @@
                                 set_3.active = False
                                 set_4.active = False
 
-
-                    GridLayout:
-                        cols: 3
-                        row_force_default: True
-                        row_default_height: 50
-
-
-                        Label:
-                            text: "DatsSet 3"
-                        Button:
-                            text: "!"
-                            size: 25, 40
-                            size_hint: None, None
-                            on_press: root.info_btn("dataset3")
-                        CheckBox:
-                            id: set_3
-                            on_press:
-                                set_1.active = False
-                                set_2.active = False
-                                set_4.active = False
                     # Label:
 
                         Label:
-                            text: "DatsSet 4"
+                            text: "EmergentLite"
                         Button:
                             text: "!"
                             size: 25, 40
@@ -463,7 +463,7 @@
             Label:
             Label:
             Label:
-                text: "Method 1"
+                text: "SVM (need to change)"
             Label:
                 id: method_1_accuracy
             Button:
@@ -480,7 +480,7 @@
             Label:
             Label:
             Label:
-                text: "Method 2"
+                text: "UCLMR"
             Label:
                 id: method_2_accuracy
             Button:
@@ -498,7 +498,7 @@
             Label:
             Label:
             Label:
-                text: "Method 3"
+                text: "TAN"
             Label:
                 id: method_3_accuracy
                 # text: "45% Accuracy"
