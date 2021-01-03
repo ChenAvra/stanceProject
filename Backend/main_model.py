@@ -6,7 +6,7 @@ from sklearn.metrics import confusion_matrix, accuracy_score
 import numpy as np
 
 from Backend.DB.DBManager import *
-from Backend.MLP.runMLP import *
+from Backend.UCLMR.runUCLMR import *
 from Backend.SVM.runSVM import *
 from Backend.TAN.runTAN import *
 
@@ -116,9 +116,9 @@ def start_Specific_Model(models, dataset_name, train_percent):
         df_train, df_test = model_selection.train_test_split(df, train_size=train_percent, random_state=42)
 
     models_names_dict = {
-        "SVM": ".SVM.runMLP.py",
-        "MLP": ".MLP.runMLP.py",
-        "TAN": ".TAN.runMLP.py",
+        "SVM": ".SVM.runUCLMR.py",
+        "UCLMR": ".UCLMR.runUCLMR.py",
+        "TAN": ".TAN.runUCLMR.py",
     }
 
     results = {}
@@ -128,9 +128,9 @@ def start_Specific_Model(models, dataset_name, train_percent):
         if m_name == "SVM":
             svm = SVM()
             y_test, y_pred = svm.run_SVM(df_train, df_test, labels, num_of_labels)
-        elif m_name == "MLP":
-            mlp = MLP()
-            y_test, y_pred = mlp.run_MLP(df_train, df_test, labels, num_of_labels)
+        elif m_name == "UCLMR":
+            uclmr = UCLMR()
+            y_test, y_pred = uclmr.run_UCLMR(df_train, df_test, labels, num_of_labels)
         elif m_name == "TAN":
             tan = TAN()
             y_test, y_pred = tan.run_TAN(df_train, df_test, labels, num_of_labels)
@@ -157,5 +157,5 @@ def start_Specific_Model(models, dataset_name, train_percent):
 
 
 models = list()
-models.append("MLP")
+models.append("UCLMR")
 start_Specific_Model(models, "FNC", 66)
