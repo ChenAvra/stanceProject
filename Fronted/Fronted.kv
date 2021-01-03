@@ -3,10 +3,6 @@
     RelativeLayout:
         cols: 1
 
-        # Label:
-        # Label:
-        # Label:
-
         RelativeLayout:
             Label:
                 text: "Welcome To Stance Detection Project"
@@ -224,107 +220,179 @@
 
         GridLayout:
             cols: 1
-            # row_force_default: True
-            # row_default_height: 50
+            pos_hint: {'top': .8}
+            row_force_default: True
+            row_default_height: 50
 
             GridLayout:
-                cols: 7
-                # row_force_default: True
-                # row_default_height: 20
-                Label:
-                Label:
-                Label:
-                Label:
-                Label:
-                Label:
-                Label:
-                Label:
-                Label:
-                Label:
-                    text: "Select Algorithms"
-                    bold: True
-                    font_size: '20sp'
-                Label:
-                Label:
-                    text: "Select DataSet"
-                    bold: True
-                    font_size: '20sp'
-                Label:
-                Label:
-                Label:
-                Label:
+                cols: 2
+                row_force_default: True
+                row_default_height: 50
+
                 GridLayout:
                     cols: 2
                     row_force_default: True
                     row_default_height: 50
 
-                    # Label:
                     Label:
-                        text: "method 1"
-                    CheckBox:
-                        id: method_1
-                    # Label:
-                    # Label:
                     Label:
-                        text: "method 2"
-                    CheckBox:
-                        id: method_2
-                    # Label:
-                    # Label:
+                        text: "Select Algorithms"
+                        bold: True
+                        font_size: '20sp'
                     Label:
-                        text: "method 3"
-                    CheckBox:
-                        id: method_3
 
-                    # Label:
+                    GridLayout:
+                        cols: 4
+                        row_force_default: True
+                        row_default_height: 50
 
-                Label:
+                        Label:
+                        Label:
+                        Label:
+                        Label:
+                        Label:
+                        Label:
+                            text: "method 1"
+                        Button:
+                            text: "!"
+                            size: 25, 40
+                            size_hint: None, None
+                            on_press: root.info_btn("method1")
+                        CheckBox:
+                            id: method_1
+                        # Label:
+                        # Label:
+                        Label:
+                        Label:
+                            text: "method 2"
+                        Button:
+                            text: "!"
+                            size: 25, 40
+                            size_hint: None, None
+                            on_press: root.info_btn("method2")
+                        CheckBox:
+                            id: method_2
+                        # Label:
+                        # Label:
+                        Label:
+                        Label:
+                            text: "method 3"
+                        Button:
+                            text: "!"
+                            size: 25, 40
+                            size_hint: None, None
+                            on_press: root.info_btn("method3")
+                        CheckBox:
+                            id: method_3
+
                 GridLayout:
-                    cols: 2
+                    cols: 5
+                    Label:
+
+                    Label:
+                        text: "Select DataSet"
+                        bold: True
+                        font_size: '20sp'
+                    Label:
+                    Label:
+                    Label:
+                Label:
+
+                GridLayout:
+                    cols: 3
                     row_force_default: True
                     row_default_height: 50
 
-                    # Label:
                     Label:
-                        text: "DatsSet 1"
-                    CheckBox:
-                        id: set_1
-                        on_press:
-                            set_2.active = False
-                            set_3.active = False
-                            set_4.active = False
-                    # Label:
-                    # Label:
+                        text: "Twitter Datasets"
+                        bold: True
                     Label:
-                        text: "DatsSet 2"
-                    CheckBox:
-                        id: set_2
-                        on_press:
-                            set_1.active = False
-                            set_3.active = False
-                            set_4.active = False
-                    # Label:
-                    # Label:
+                        text: "Article Datasets"
+                        bold: True
                     Label:
-                        text: "DatsSet 3"
-                    CheckBox:
-                        id: set_3
-                        on_press:
-                            set_1.active = False
-                            set_2.active = False
-                            set_4.active = False
-                    # Label:
-                    # Label:
-                    Label:
-                        text: "DatsSet 4"
-                    CheckBox:
-                        id: set_4
-                        on_press:
-                            set_1.active = False
-                            set_2.active = False
-                            set_3.active = False
+
+                    GridLayout:
+                        cols: 3
+                        row_force_default: True
+                        row_default_height: 50
+
+                        Label:
+                            text: "DatsSet 1"
+                        Button:
+                            text: "!"
+                            size: 25, 40
+                            size_hint: None, None
+                            on_press: root.info_btn("dataset1")
+                        CheckBox:
+                            id: set_1
+                            on_press:
+                                set_2.active = False
+                                set_3.active = False
+                                set_4.active = False
+                        Label:
+                            text: "DatsSet 2"
+                        Button:
+                            text: "!"
+                            size: 25, 40
+                            size_hint: None, None
+                            on_press: root.info_btn("dataset2")
+                        CheckBox:
+                            id: set_2
+                            on_press:
+                                set_1.active = False
+                                set_3.active = False
+                                set_4.active = False
+
+
+                    GridLayout:
+                        cols: 3
+                        row_force_default: True
+                        row_default_height: 50
+
+
+                        Label:
+                            text: "DatsSet 3"
+                        Button:
+                            text: "!"
+                            size: 25, 40
+                            size_hint: None, None
+                            on_press: root.info_btn("dataset3")
+                        CheckBox:
+                            id: set_3
+                            on_press:
+                                set_1.active = False
+                                set_2.active = False
+                                set_4.active = False
                     # Label:
 
+                        Label:
+                            text: "DatsSet 4"
+                        Button:
+                            text: "!"
+                            size: 25, 40
+                            size_hint: None, None
+                            on_press:root.info_btn("dataset4")
+                        CheckBox:
+                            id: set_4
+                            on_press:
+                                set_1.active = False
+                                set_2.active = False
+                                set_3.active = False
+                    Label:
+                    Label:
+                    Label:
+                    Label:
+                    Label:
+                    Label:
+                    Label:
+                    Label:
+                        text: "Train Percent: "
+                    TextInput:
+                        id: percent
+                        text: "75"
+                        size: 50, 50
+                        size_hint: None, None
+                    Label:
             GridLayout:
                 cols: 3
                 row_force_default: True
@@ -340,15 +408,24 @@
                 Label:
                 Label:
                 Label:
+                Label:
+                Label:
+                Label:
+                Label:
+                Label:
+                Label:
+                Label:
+                Label:
+                Label:
 
                 Button:
                     text: "Run"
                     size_hint: .20, .10
-                    pos_hint: {'top': .15, 'right': .4}
+                    pos_hint: {'top': .3}
                     font_size: '20sp'
                     background_normal: 'normal.png'
                     background_color: 1, .8, .4, .85
-                    on_press: root.run_btn(method_1,method_2,method_3,set_1,set_2,set_3,set_4)
+                    on_press: root.run_btn(method_1,method_2,method_3,set_1,set_2,set_3,set_4,percent)
 
 
                 Label:
@@ -359,7 +436,7 @@
                 Button:
                     text: "Back To The Main Window"
                     size_hint: .20, .10
-                    pos_hint: {'top': .15, 'right': .4}
+                    pos_hint: {'top': .3}
                     font_size: '20sp'
                     background_normal: 'normal.png'
                     background_color: 1, .8, .4, .85
@@ -379,25 +456,22 @@
                 color: 1, .8, .4, .85
 
         GridLayout:
-            cols: 3
+            cols: 7
             row_force_default: True
-            row_default_height: 50
+            row_default_height: 75
+            pos_hint: {'top': .75}
             Label:
             Label:
             Label:
+                text: "Method 1"
             Label:
-            Label:
-            Label:
-            Label:
-            Label:
-            Label:
-            Label:
+                id: method_1_accuracy
             Button:
                 id: button1
-                text: "Method 1 Result"
-                # size_hint: .20, .10
-                # pos_hint: {'top': .15, 'right': .4}
-                font_size: '20sp'
+                text: "Show Statistics"
+                size: 150, 50
+                size_hint: None, None
+                # font_size: '20sp'
                 background_normal: 'normal.png'
                 background_color: 1, .8, .4, .85
                 on_press: root.select_model(1)
@@ -406,12 +480,16 @@
             Label:
             Label:
             Label:
+                text: "Method 2"
+            Label:
+                id: method_2_accuracy
             Button:
                 id: button2
-                text: "Method 2 Result"
-                size_hint: .20, .10
-                pos_hint: {'top': .15, 'right': .4}
-                font_size: '20sp'
+                text: "Show Statistics"
+                size: 150, 50
+                size_hint: None, None
+                # pos_hint: {'top': .15, 'right': .4}
+                # font_size: '20sp'
                 background_normal: 'normal.png'
                 background_color: 1, .8, .4, .85
                 on_press: root.select_model(2)
@@ -420,12 +498,17 @@
             Label:
             Label:
             Label:
+                text: "Method 3"
+            Label:
+                id: method_3_accuracy
+                # text: "45% Accuracy"
             Button:
                 id: button3
-                text: "Method 3 Result"
-                size_hint: .20, .10
-                pos_hint: {'top': .15, 'right': .4}
-                font_size: '20sp'
+                text: "Show Statistics"
+                size: 150, 50
+                size_hint: None, None
+                # pos_hint: {'top': .15, 'right': .4}
+                # font_size: '20sp'
                 background_normal: 'normal.png'
                 background_color: 1, .8, .4, .85
                 on_press: root.select_model(3)
@@ -434,27 +517,37 @@
             Label:
             Label:
             Label:
+            Label:
             Button:
-                text: "Dataset Stat"
-                size_hint: .20, .10
-                pos_hint: {'top': .15, 'right': .4}
-                font_size: '20sp'
+                id: dataset_button
+                size: 150, 50
+                size_hint: None, None
+                # pos_hint: {'top': .15, 'right': .4}
+                # font_size: '20sp'
                 background_normal: 'normal.png'
                 background_color: 1, .8, .4, .85
                 on_press: root.select_dataset()
-            Label:
-            Label:
-            Label:
-            Label:
+
+        GridLayout:
+            cols: 3
+            row_force_default: True
+            row_default_height: 50
+            pos_hint: {'top': .15}
+
             Label:
             Button:
-                text: "Back To Models Window"
-                size_hint: .20, .10
-                pos_hint: {'top': .15, 'right': .4}
+                text: "Beck To The Models Window"
+                # size_hint: .20, .10
+                # pos_hint: {'top': .15, 'right': .4}
                 font_size: '20sp'
                 background_normal: 'normal.png'
                 background_color: 1, .8, .4, .85
-                on_press: root.manager.current = 'select_window'
+                on_press:
+                    method_1_accuracy.text = ""
+                    method_2_accuracy.text = ""
+                    method_3_accuracy.text = ""
+                    root.manager.current = 'select_window'
+            Label:
 
 <ModelStatWindow>:
     RelativeLayout:
@@ -471,77 +564,114 @@
                 color: 1, .8, .4, .85
 
         GridLayout:
-            cols: 3
-            row_force_default: True
-            row_default_height: 50
-
-            Label:
-            Label:
-            Label:
-            Label:
-            Label:
-            Label:
-            Label:
-            Label:
-                id: accuracy
-            Label:
-
-        GridLayout:
             cols: 2
             row_force_default: True
-            row_default_height: 150
-
-            Label:
-            Label:
-            Image:
-                source: 'WhatsApp Image 2021-01-02 at 19.12.21.jpeg'
-                allow_stretch: True
-                keep_ratio: True
+            row_default_height: 50
+            pos_hint: {'top': .80}
 
 
 
+        # Image:
+        #     source: 'WhatsApp Image 2021-01-02 at 19.12.21.jpeg'
+        #     allow_stretch: True
+        #     keep_ratio: True
+        #     height: 55
+
+
+            GridLayout:
+                cols: 1
+                row_force_default: True
+                row_default_height: 350
+
+                Image:
+                    id: matrix
+                    # source: 'WhatsApp Image 2021-01-02 at 19.12.21.jpeg'
+
+            GridLayout:
+                cols: 1
+                row_force_default: True
+                row_default_height: 30
+
+                Label:
+                    id: accuracy
+                    font_size: '20sp'
+                    bold: True
+                Label:
+
+                GridLayout:
+                    cols: 5
+                    row_force_default: True
+                    row_default_height: 50
+
+                    Label:
+                    Label:
+                        text: "Precision"
+                        bold: True
+                    Label:
+                        text: "Recall"
+                        bold: True
+                    Label:
+                        text: "F-Score"
+                        bold: True
+                    Label:
+                        text: "Quantity"
+                        bold: True
+                    Label:
+                        text: "Against"
+                        bold: True
+                    Label:
+                        id: ap
+                    Label:
+                        id: ar
+                    Label:
+                        id: af
+                    Label:
+                        id: aq
+                    Label:
+                        text: "Favor"
+                        bold: True
+                    Label:
+                        id: fp
+                    Label:
+                        id: fr
+                    Label:
+                        id: ff
+                    Label:
+                        id: fq
+                    Label:
+                        text: "None"
+                        bold: True
+                    Label:
+                        id: np
+                    Label:
+                        id: nr
+                    Label:
+                        id: nf
+                    Label:
+                        id: nq
+                    Label:
+                        text: "Total"
+                        bold: True
+                    Label:
+                        id: tp
+                    Label:
+                        id: tr
+                    Label:
+                        id: tf
+                    Label:
+                        id: tq
 
 
 
-            # GridLayout:
-            #     cols: 3
-            #     row_force_default: True
-            #     row_default_height: 50
-            #
-            #     Button:
-            #         text: "Beck To Stat Window"
-            #         # size_hint: .20, .10
-            #         # pos_hint: {'top': .15, 'right': .4}
-            #         font_size: '20sp'
-            #         background_normal: 'normal.png'
-            #         background_color: 1, .8, .4, .85
-            #         on_press: root.manager.current = 'stat_window'
 
-<DataSetStatWindow>:
-    RelativeLayout:
-        cols: 1
-        RelativeLayout:
-            Label:
-                text: "DataSet Stat"
-                bold: True
-                size_hint: .20, .10
-                pos_hint: {'top': 1.0, 'right': .6}
-                font_size: '50sp'
-                color: 1, .8, .4, .85
 
         GridLayout:
             cols: 3
             row_force_default: True
             row_default_height: 50
-
-
-
+            pos_hint: {'top': .15}
 
             Label:
-            Label:
-            Label:
-            Label:
-
             Button:
                 text: "Beck To Stat Window"
                 # size_hint: .20, .10
@@ -550,3 +680,67 @@
                 background_normal: 'normal.png'
                 background_color: 1, .8, .4, .85
                 on_press: root.manager.current = 'stat_window'
+            Label:
+
+
+
+
+<DataSetStatWindow>:
+    RelativeLayout:
+        cols: 1
+        RelativeLayout:
+            Label:
+                id: title
+                # text: "DataSet Stat"
+                bold: True
+                size_hint: .20, .10
+                pos_hint: {'top': 1.0, 'right': .6}
+                font_size: '50sp'
+                color: 1, .8, .4, .85
+
+            Label:
+                id: info
+                size_hint: .20, .10
+                pos_hint: {'top': .8, 'right': .6}
+
+        GridLayout:
+            cols: 1
+            row_force_default: True
+            row_default_height: 300
+            pos_hint: {'top': .65}
+
+            Image:
+                id: dataset_photo
+
+
+
+
+        GridLayout:
+            cols: 5
+            row_force_default: True
+            row_default_height: 50
+            pos_hint: {'top': .15}
+            Label:
+
+            Button:
+                id: back_stat
+                text: "Beck To Stat Window"
+                # size_hint: .20, .10
+                # pos_hint: {'top': .15, 'right': .4}
+                font_size: '20sp'
+                background_normal: 'normal.png'
+                background_color: 1, .8, .4, .85
+                on_press: root.manager.current = 'stat_window'
+
+            Label:
+            Button:
+                id: back_select
+                text: "Beck To Model Window"
+                # size_hint: .20, .10
+                # pos_hint: {'top': .15, 'right': .4}
+                font_size: '20sp'
+                background_normal: 'normal.png'
+                background_color: 1, .8, .4, .85
+                on_press: root.manager.current = 'select_window'
+
+            Label:
