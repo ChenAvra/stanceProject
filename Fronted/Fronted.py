@@ -246,11 +246,11 @@ class ModelStatWindow(Screen,GridLayout):
         percent = int(self.manager.get_screen("select_window").ids.percent.text)
         db = DBManager.DataBase()
         path = db.get_record_from_result(modle,dataset,percent)['Cm_path'][0]
-        close_button = Button(text="close", size_hint=(None, None), size=(475, 50))
+        close_button = Button(text="close", size_hint=(None, None), size=(625, 50))
         layout = GridLayout(cols=1)
         layout.add_widget(Image(source= path))
         layout.add_widget(close_button)
-        popup = Popup(title='Confusion Matrix', content=layout, size_hint=(None, None), size=(500, 500))
+        popup = Popup(title='Confusion Matrix', content=layout, size_hint=(None, None), size=(650, 650))
         popup.open()
         close_button.bind(on_press=popup.dismiss)
 
@@ -269,12 +269,12 @@ class ModelStatWindow(Screen,GridLayout):
         db = DBManager.DataBase()
         path = db.get_record_from_result(modle,dataset,percent)['roc_path'][0]
         accuracy = db.get_record_from_result(modle,dataset,percent)['roc_acc'][0]
-        close_button = Button(text="close", size_hint=(None, None), size=(640, 50))
+        close_button = Button(text="close", size_hint=(None, None), size=(875, 50))
         layout = GridLayout(cols=1)
         # layout.add_widget(Label(text = "Accuracy: {}".format(accuracy)))
         layout.add_widget(Image(source= path))
         layout.add_widget(close_button)
-        popup = Popup(title='ROC Graph', content=layout, size_hint=(None, None), size=(670, 500))
+        popup = Popup(title='ROC Graph', content=layout, size_hint=(None, None), size=(900, 650))
         popup.open()
         close_button.bind(on_press=popup.dismiss)
 
