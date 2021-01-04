@@ -167,9 +167,11 @@ def start_Specific_Model(models, dataset_name, train_percent):
 
     if dataset_name == "FNC":
         df_train, df_test = model_selection.train_test_split(df, train_size=train_percent, shuffle=False)
-    else:
+    elif dataset_name == "semEval2016" or dataset_name == "MPCHI":
         # df_train, df_test = model_selection.train_test_split(df, train_size=train_percent, random_state=42)
-        df_train, df_test = split_data_topic_based(df,train_percent)
+        df_train, df_test = split_data_topic_based(df, train_percent)
+    else:
+        df_train, df_test = model_selection.train_test_split(df, train_size=train_percent, random_state=42)
 
     models_names_dict = {
         "SVM": ".SVM.runUCLMR.py",
