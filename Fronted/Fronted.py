@@ -223,7 +223,7 @@ class ModelStatWindow(Screen,GridLayout):
 
         self.ids.title.text = model + " Statistics"
         self.ids.accuracy.text = "Accuracy : " + str(accuracy)
-        self.ids.roc_accuracy.text = "ROC Accuracy : " + str(roc_acc)
+        self.ids.roc_accuracy.text = "ROC AUC Score : " + str(roc_acc)
         # self.ids.matrix.on_press = self.show_matrix(matrix_path)
         self.ids.t1.text = str(arr[4])
         self.ids.t2.text = str(arr[9])
