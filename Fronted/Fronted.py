@@ -114,8 +114,15 @@ class SelectWindow(Screen,GridLayout):
                     model = result[model_name]
                     accuracy = model['accuracy']
                     class_report= model['class_report']
+
+                    class_report = class_report.replace('\n', '')
+                    arr = class_report.split(" ")
+                    arr = list(filter(lambda x: len(x) > 0, arr))
+                    class_report = ' '.join([str(elem) for elem in arr])
                     photo_path = model['cm_path']
-                    db.insert_records_to_result(model_name,dataSet,int(percent.text),accuracy,class_report,photo_path)
+                    roc_acc = model['roc_acc']
+                    roc_path = model['roc_path']
+                    db.insert_records_to_result(model_name,dataSet,int(percent.text),accuracy,class_report,photo_path,roc_acc,roc_path)
 
             self.manager.get_screen("stat_window").entry(models_name_copy, dataSet, datasetNumber,int(percent.text))
             self.manager.current = 'stat_window'
@@ -178,13 +185,10 @@ class ModelStatWindow(Screen,GridLayout):
         df = db.get_record_from_result(model,dataSet,percent)
 
         accuracy = df['Accuracy'][0]
-        matrix_path = df['Cm_path'][0]
-        class_report = str(df['Class_report'][0])
-        print(class_report)
-        class_report=class_report.replace('\n','')
+        class_report = df['Class_report'][0]
         arr = class_report.split(" ")
-        arr = list(filter(lambda x: len(x)>0,arr))
-        print(arr)
+
+        roc_acc = df['roc_acc'][0]
 
 
         against_precision = arr[5]
@@ -204,9 +208,13 @@ class ModelStatWindow(Screen,GridLayout):
         wavg_f = arr[31]
         wavg_support = arr[32]
 
+
+
+
         self.ids.title.text = model + " Statistics"
         self.ids.accuracy.text = "Accuracy : " + str(accuracy)
-        self.ids.matrix.source = matrix_path
+        self.ids.roc_accuracy.text = "ROC Accuracy : " + str(roc_acc)
+        # self.ids.matrix.on_press = self.show_matrix(matrix_path)
         self.ids.ap.text = str(against_precision)
         self.ids.ar.text = str(against_recall)
         self.ids.af.text = str(against_f)
@@ -224,9 +232,51 @@ class ModelStatWindow(Screen,GridLayout):
         self.ids.tf.text = str(wavg_f)
         self.ids.tq.text = str(wavg_support)
 
+    def show_matrix(self):
+        dataset = ""
+        if self.manager.get_screen("select_window").ids.set_1.active:
+            dataset = "semEval2016"
+        elif self.manager.get_screen("select_window").ids.set_2.active:
+            dataset = "FNC"
+        elif self.manager.get_screen("select_window").ids.set_3.active:
+            dataset = "MPCHI"
+        elif self.manager.get_screen("select_window").ids.set_3.active:
+            dataset = "EmergentLite"
+        modle = self.ids.title.text.split(" ")[0]
+        percent = int(self.manager.get_screen("select_window").ids.percent.text)
+        db = DBManager.DataBase()
+        path = db.get_record_from_result(modle,dataset,percent)['Cm_path'][0]
+        close_button = Button(text="close", size_hint=(None, None), size=(475, 50))
+        layout = GridLayout(cols=1)
+        layout.add_widget(Image(source= path))
+        layout.add_widget(close_button)
+        popup = Popup(title='Confusion Matrix', content=layout, size_hint=(None, None), size=(500, 500))
+        popup.open()
+        close_button.bind(on_press=popup.dismiss)
 
-
-
+    def show_ROC(self):
+        dataset = ""
+        if self.manager.get_screen("select_window").ids.set_1.active:
+            dataset = "semEval2016"
+        elif self.manager.get_screen("select_window").ids.set_2.active:
+            dataset = "FNC"
+        elif self.manager.get_screen("select_window").ids.set_3.active:
+            dataset = "MPCHI"
+        elif self.manager.get_screen("select_window").ids.set_3.active:
+            dataset = "EmergentLite"
+        modle = self.ids.title.text.split(" ")[0]
+        percent = int(self.manager.get_screen("select_window").ids.percent.text)
+        db = DBManager.DataBase()
+        path = db.get_record_from_result(modle,dataset,percent)['roc_path'][0]
+        accuracy = db.get_record_from_result(modle,dataset,percent)['roc_acc'][0]
+        close_button = Button(text="close", size_hint=(None, None), size=(640, 50))
+        layout = GridLayout(cols=1)
+        # layout.add_widget(Label(text = "Accuracy: {}".format(accuracy)))
+        layout.add_widget(Image(source= path))
+        layout.add_widget(close_button)
+        popup = Popup(title='ROC Graph', content=layout, size_hint=(None, None), size=(670, 500))
+        popup.open()
+        close_button.bind(on_press=popup.dismiss)
 
 class DataSetStatWindow(Screen,GridLayout):
     def entry(self, dataset, info_button=False):
