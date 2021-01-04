@@ -24,12 +24,12 @@ class DataBase:
 
 
     def create_result_table(self):
-        self.cursor.execute("CREATE TABLE IF NOT EXISTS Result(Model TEXT NOT NULL, Dataset TEXT NOT NULL, Train_percent INTEGER NOT NULL, Accuracy INTEGER NOT NULL, Class_report TEXT NOT NULL, Cm_path TEXT NOT NULL)")
+        self.cursor.execute("CREATE TABLE IF NOT EXISTS Result(Model TEXT NOT NULL, Dataset TEXT NOT NULL, Train_percent INTEGER NOT NULL, Accuracy INTEGER NOT NULL, Class_report TEXT NOT NULL, Cm_path TEXT NOT NULL, roc_acc INTEGER NOT NULL, roc_path TEXT NOT NULL)")
         self.conn.commit()
 
-    def insert_records_to_result(self, model, dataset,train_percent, accuracy, class_report, cm_path):
-        query = 'INSERT INTO Result VALUES(?,?,?,?,?,?);'
-        self.cursor.execute(query,(model,dataset,train_percent,accuracy,class_report,cm_path))
+    def insert_records_to_result(self, model, dataset,train_percent, accuracy, class_report, cm_path, roc_acc, roc_path):
+        query = 'INSERT INTO Result VALUES(?,?,?,?,?,?,?,?);'
+        self.cursor.execute(query,(model,dataset,train_percent,accuracy,class_report,cm_path,roc_acc,roc_path))
         self.conn.commit()
 
     def get_record_from_result(self, model, dataset,train_percent ):

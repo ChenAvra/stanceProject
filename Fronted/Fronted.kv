@@ -564,10 +564,10 @@
                 color: 1, .8, .4, .85
 
         GridLayout:
-            cols: 2
+            cols: 3
             row_force_default: True
             row_default_height: 50
-            pos_hint: {'top': .80}
+            pos_hint: {'top': .85}
 
 
 
@@ -579,13 +579,44 @@
 
 
             GridLayout:
-                cols: 1
+                cols: 3
                 row_force_default: True
-                row_default_height: 350
+                row_default_height: 50
 
-                Image:
+                Label:
+                Label:
+                Label:
+                Label:
+                Label:
+                Label:
+                Label:
+                Button:
                     id: matrix
-                    # source: 'WhatsApp Image 2021-01-02 at 19.12.21.jpeg'
+                    text: "Show Confusion Matrix"
+                    font_size: '13sp'
+                    bold: True
+                    background_normal: 'normal.png'
+                    background_color: 1, .8, .4, .85
+                    on_press: root.show_matrix()
+                Label:
+                Label:
+                Label:
+                Label:
+                Label:
+                Button:
+                    id: ROC
+                    text: "Show ROC Graph"
+                    font_size: '13sp'
+                    bold: True
+                    background_normal: 'normal.png'
+                    background_color: 1, .8, .4, .85
+                    on_press: root.show_ROC()
+                # Image:
+                #     id: matrix
+                #     row_force_default: True
+                #     row_default_height: 350
+
+            # Label:
 
             GridLayout:
                 cols: 1
@@ -597,7 +628,12 @@
                     font_size: '20sp'
                     bold: True
                 Label:
+                Label:
+                    id: roc_accuracy
+                    font_size: '20sp'
+                    bold: True
 
+                Label:
                 GridLayout:
                     cols: 5
                     row_force_default: True
@@ -614,7 +650,7 @@
                         text: "F-Score"
                         bold: True
                     Label:
-                        text: "Quantity"
+                        text: "Support"
                         bold: True
                     Label:
                         text: "Against"
@@ -661,6 +697,7 @@
                     Label:
                         id: tq
 
+            Label:
 
 
 
