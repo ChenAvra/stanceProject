@@ -203,11 +203,21 @@ class ModelStatWindow(Screen,GridLayout):
         none_recall = arr[16]
         none_f = arr[17]
         none_support = arr[18]
-        wavg_precision = arr[29]
-        wavg_recall = arr[30]
-        wavg_f = arr[31]
-        wavg_support = arr[32]
-
+        if dataSet == "FNC":
+            self.ids.t4.text = str(arr[19])
+            self.ids.t4p.text = str(arr[20])
+            self.ids.t4r.text = str(arr[21])
+            self.ids.t4f.text = str(arr[22])
+            self.ids.t4q.text = str(arr[23])
+            wavg_precision = arr[34]
+            wavg_recall = arr[35]
+            wavg_f = arr[36]
+            wavg_support = arr[37]
+        else:
+            wavg_precision = arr[29]
+            wavg_recall = arr[30]
+            wavg_f = arr[31]
+            wavg_support = arr[32]
 
 
 
@@ -215,6 +225,9 @@ class ModelStatWindow(Screen,GridLayout):
         self.ids.accuracy.text = "Accuracy : " + str(accuracy)
         self.ids.roc_accuracy.text = "ROC Accuracy : " + str(roc_acc)
         # self.ids.matrix.on_press = self.show_matrix(matrix_path)
+        self.ids.t1.text = str(arr[4])
+        self.ids.t2.text = str(arr[9])
+        self.ids.t3.text = str(arr[14])
         self.ids.ap.text = str(against_precision)
         self.ids.ar.text = str(against_recall)
         self.ids.af.text = str(against_f)
