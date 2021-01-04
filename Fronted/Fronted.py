@@ -179,7 +179,7 @@ class ModelStatWindow(Screen,GridLayout):
             dataSet = "FNC"
         elif self.manager.get_screen("select_window").ids.set_3.active:
             dataSet = "MPCHI"
-        elif self.manager.get_screen("select_window").ids.set_3.active:
+        elif self.manager.get_screen("select_window").ids.set_4.active:
             dataSet = "EmergentLite"
         percent = int(self.manager.get_screen("select_window").ids.percent.text)
         df = db.get_record_from_result(model,dataSet,percent)
@@ -240,7 +240,7 @@ class ModelStatWindow(Screen,GridLayout):
             dataset = "FNC"
         elif self.manager.get_screen("select_window").ids.set_3.active:
             dataset = "MPCHI"
-        elif self.manager.get_screen("select_window").ids.set_3.active:
+        elif self.manager.get_screen("select_window").ids.set_4.active:
             dataset = "EmergentLite"
         modle = self.ids.title.text.split(" ")[0]
         percent = int(self.manager.get_screen("select_window").ids.percent.text)
@@ -262,7 +262,7 @@ class ModelStatWindow(Screen,GridLayout):
             dataset = "FNC"
         elif self.manager.get_screen("select_window").ids.set_3.active:
             dataset = "MPCHI"
-        elif self.manager.get_screen("select_window").ids.set_3.active:
+        elif self.manager.get_screen("select_window").ids.set_4.active:
             dataset = "EmergentLite"
         modle = self.ids.title.text.split(" ")[0]
         percent = int(self.manager.get_screen("select_window").ids.percent.text)
