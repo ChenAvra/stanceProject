@@ -188,10 +188,8 @@ def start_Specific_Model(models, dataset_name, train_percent):
         # plot confusion matrix
         PROJECT_ROOT = os.path.abspath(__file__)
         BASE_DIR = os.path.dirname(PROJECT_ROOT)
-        cm_path = BASE_DIR + '\\DB\\ConfusionMatrix\\' + m_name + '_ ' + dataset_name + '.png'
-        cm = confusion_matrix(y_test, y_pred)
         cm_path = BASE_DIR + '\\DB\\ConfusionMatrix\\' + m_name + '_ ' + dataset_name + '_ ' + str(train_percent) + '.png'
-
+        cm = confusion_matrix(y_test, y_pred)
         plot_confusion_matrix(cm_path, cm, target_names=np.unique(y_test), title="Confusion Matrix", normalize=False)
 
         # plot ROC Curve and find roc_auc accuracy
@@ -200,7 +198,7 @@ def start_Specific_Model(models, dataset_name, train_percent):
         plot_multiclass_roc(y_test, y_pred, roc_path, n_classes=num_of_labels, figsize=(16, 10))
 
 
-        # save reults in dictionary
+        # save results in dictionary
         results[m_name] = {}
         results[m_name]['accuracy'] = acc
         results[m_name]['class_report'] = cr
