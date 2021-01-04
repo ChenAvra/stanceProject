@@ -2,8 +2,10 @@ import os
 
 import sklearn
 import sklearn.model_selection as model_selection
-from sklearn.metrics import confusion_matrix, accuracy_score
+from sklearn.metrics import confusion_matrix, accuracy_score, roc_auc_score, roc_curve, auc
 import numpy as np
+import matplotlib.pyplot as plt
+from sklearn.preprocessing import LabelBinarizer
 
 from Backend.DB.DBManager import *
 from Backend.UCLMR.runUCLMR import *
@@ -44,8 +46,6 @@ def plot_confusion_matrix(path, cm, target_names, title='Confusion matrix', cmap
     http://scikit-learn.org/stable/auto_examples/model_selection/plot_confusion_matrix.html
 
     """
-    import matplotlib.pyplot as plt
-    import numpy as np
     import itertools
 
     if cmap is None:
@@ -82,10 +82,52 @@ def plot_confusion_matrix(path, cm, target_names, title='Confusion matrix', cmap
     plt.tight_layout()
     plt.savefig(path)
     # plt.show()
-    plt.close()
+    # plt.close()
 
 def get_unique_labels(df):
     return df.Stance.unique()
+
+
+def multiclass_roc_auc_score(y_test, y_pred, average="macro"):
+    lb = LabelBinarizer()
+    lb.fit(y_test)
+    y_test = lb.transform(y_test)
+    y_pred = lb.transform(y_pred)
+    return roc_auc_score(y_test, y_pred, average=average)
+
+
+def plot_multiclass_roc(y_test, y_pred, path, n_classes, figsize=(17, 6)):
+
+    # structures
+    fpr = dict()
+    tpr = dict()
+    roc_auc = dict()
+
+    # calculate dummies once
+    y_test_dummies = pd.get_dummies(y_test, drop_first=False).values
+    y_pred_dummies = pd.get_dummies(y_pred, drop_first=False).values
+    for i in range(n_classes):
+        fpr[i], tpr[i], _ = roc_curve(y_test_dummies[:, i], y_pred_dummies[:, i])
+        roc_auc[i] = auc(fpr[i], tpr[i])
+
+    # roc for each class
+    fig, ax = plt.subplots(figsize=figsize)
+    ax.plot([0, 1], [0, 1], 'k--')
+    ax.set_xlim([0.0, 1.0])
+    ax.set_ylim([0.0, 1.05])
+    ax.set_xlabel('False Positive Rate')
+    ax.set_ylabel('True Positive Rate')
+    ax.set_title('ROC Curve')
+    labels = np.unique(y_test)
+    for i in range(n_classes):
+        ax.plot(fpr[i], tpr[i], label='ROC curve (area = %0.2f) for label %s' % (roc_auc[i], labels[i]))
+    ax.legend(loc="best")
+    ax.grid(alpha=.4)
+    #sns.despine()
+    #plt.show()
+    plt.savefig(path)
+
+
 
 # the function recieve models array (strings), dataset_name, and the division percent to train and test
 def start_Specific_Model(models, dataset_name, train_percent):
@@ -138,24 +180,36 @@ def start_Specific_Model(models, dataset_name, train_percent):
         # each model returns y_test and y_predict
         # calculate accuracy, confusion matrix, classification report
 
-        cm = confusion_matrix(y_test, y_pred)
+        # calculate accuracy
+        acc = accuracy_score(y_test, y_pred)
+        # get classification report
+        cr = sklearn.metrics.classification_report(y_test, y_pred)
 
+        # plot confusion matrix
         PROJECT_ROOT = os.path.abspath(__file__)
         BASE_DIR = os.path.dirname(PROJECT_ROOT)
         cm_path = BASE_DIR + '\\DB\\ConfusionMatrix\\' + m_name + '_ ' + dataset_name + '.png'
-
+        cm = confusion_matrix(y_test, y_pred)
         plot_confusion_matrix(cm_path, cm, target_names=np.unique(y_test), title="Confusion Matrix", normalize=False)
 
-        acc = accuracy_score(y_test, y_pred)
-        cr = sklearn.metrics.classification_report(y_test, y_pred)
+        # plot ROC Curve and find roc_auc accuracy
+        roc_acc = multiclass_roc_auc_score(y_test, y_pred)
+        roc_path = BASE_DIR + '\\DB\\ROC\\' + m_name + '_ ' + dataset_name + '.png'
+        plot_multiclass_roc(y_test, y_pred, roc_path, n_classes=num_of_labels, figsize=(16, 10))
+
+
+        # save reults in dictionary
         results[m_name] = {}
         results[m_name]['accuracy'] = acc
         results[m_name]['class_report'] = cr
         results[m_name]['cm_path'] = cm_path
+        results[m_name]['roc_acc'] = roc_acc
+        results[m_name]['roc_path'] = roc_path
+
 
     return results
 
 
 models = list()
 models.append("UCLMR")
-start_Specific_Model(models, "FNC", 66)
+start_Specific_Model(models, "MPCHI", 70)
