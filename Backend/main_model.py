@@ -142,7 +142,7 @@ def start_Specific_Model(models, dataset_name, train_percent):
 
         PROJECT_ROOT = os.path.abspath(__file__)
         BASE_DIR = os.path.dirname(PROJECT_ROOT)
-        cm_path = BASE_DIR + '\\DB\\ConfusionMatrix\\' + m_name + '_ ' + dataset_name + '.png'
+        cm_path = BASE_DIR + '\\DB\\ConfusionMatrix\\' + m_name + '_ ' + dataset_name+ '_ ' + str(train_percent) + '.png'
 
         plot_confusion_matrix(cm_path, cm, target_names=np.unique(y_test), title="Confusion Matrix", normalize=False)
 
@@ -156,6 +156,6 @@ def start_Specific_Model(models, dataset_name, train_percent):
     return results
 
 
-models = list()
-models.append("UCLMR")
-start_Specific_Model(models, "FNC", 66)
+# models = list()
+# models.append("UCLMR")
+# start_Specific_Model(models, "FNC", 66)

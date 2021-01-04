@@ -16,12 +16,37 @@ class DataBase:
             self.conn = sqlite3.connect(db_path)
             self.cursor = self.conn.cursor()
             self.create_claimTable()
+            self.create_result_table()
             # self.fill_claim_table()
         else:
             self.conn = sqlite3.connect(db_path)
             self.cursor = self.conn.cursor()
 
 
+    def create_result_table(self):
+        self.cursor.execute("CREATE TABLE IF NOT EXISTS Result(Model TEXT NOT NULL, Dataset TEXT NOT NULL, Train_percent INTEGER NOT NULL, Accuracy INTEGER NOT NULL, Class_report TEXT NOT NULL, Cm_path TEXT NOT NULL)")
+        self.conn.commit()
+
+    def insert_records_to_result(self, model, dataset,train_percent, accuracy, class_report, cm_path):
+        query = 'INSERT INTO Result VALUES(?,?,?,?,?,?);'
+        self.cursor.execute(query,(model,dataset,train_percent,accuracy,class_report,cm_path))
+        self.conn.commit()
+
+    def get_record_from_result(self, model, dataset,train_percent ):
+        query = 'SELECT * FROM Result WHERE Model="{}" AND Dataset="{}" AND Train_percent={}'.format(model,dataset,str(train_percent))
+        # query = "SELECT * FROM Result"
+        df = pd.read_sql_query(query, self.conn)
+        return df
+
+    def delete_from_result(self):
+        query = 'DELETE FROM Result;'
+        self.cursor.execute(query)
+        self.conn.commit()
+
+    def drop_result(self):
+        query = "DROP TABLE Result;"
+        self.cursor.execute(query)
+        self.conn.commit()
 
     def create_claimTable(self):
         self.cursor.execute("CREATE TABLE IF NOT EXISTS Claims(Dataset_Number INTEGER NOT NULL, Claim TEXT NOT NULL, Sentence TEXT NOT NULL, Stance TEXT NOT NULL)")
@@ -67,5 +92,24 @@ class DataBase:
 # ax1.axis('equal')  # Equal aspect ratio ensures that pie is drawn as a circle.
 # plt.show()
 
+# db = DataBase()
+# db.drop_result()
+# db.create_result_table()
+# db.insert_records_to_result(1,1,100,30,"report","path")
+# db.delete_from_result()
+# df = db.get_record_from_result("UCLMR",4,75)
+# print(df.shape[0])
+# print(df)
+
+# accuracy = df['Accuracy'][0]
+# class_report = str(df['Class_report'][0])
+# class_report=class_report.replace('\n','')
+# arr = class_report.split(" ")
+# arr = list(filter(lambda x: len(x)>0,arr))
+# photo_path = df['Cm_path'][0]
+#
+# print(accuracy)
+# print(photo_path)
+# print(arr)
 
 
