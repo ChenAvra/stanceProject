@@ -10,6 +10,19 @@ from Backend.UCLMR.runUCLMR import *
 from Backend.SVM.runSVM import *
 from Backend.TAN.runTAN import *
 
+
+def split_data_topic_based(df_before_spliting, train_percent):
+    train_dataset = pd.DataFrame(columns=df_before_spliting.columns)
+    test_dataset = pd.DataFrame(columns=df_before_spliting.columns)
+    for topic in df_before_spliting.Claim.unique():
+        tmp_df=df_before_spliting.copy()
+        tmp_df=tmp_df[tmp_df['Claim']==topic]
+        tmp_train_dataset, tmp_test_dataset = model_selection.train_test_split(tmp_df, train_size=train_percent, shuffle=False)
+        train_dataset=train_dataset.append(tmp_train_dataset)
+        test_dataset=test_dataset.append(tmp_test_dataset)
+
+    return train_dataset, test_dataset
+
 # https://www.kaggle.com/grfiv4/plot-a-confusion-matrix
 def plot_confusion_matrix(path, cm, target_names, title='Confusion matrix', cmap=None, normalize=True):
     """
@@ -113,7 +126,8 @@ def start_Specific_Model(models, dataset_name, train_percent):
     if dataset_name == "FNC":
         df_train, df_test = model_selection.train_test_split(df, train_size=train_percent, shuffle=False)
     else:
-        df_train, df_test = model_selection.train_test_split(df, train_size=train_percent, random_state=42)
+        # df_train, df_test = model_selection.train_test_split(df, train_size=train_percent, random_state=42)
+        df_train, df_test = split_data_topic_based(df,train_percent)
 
     models_names_dict = {
         "SVM": ".SVM.runUCLMR.py",
