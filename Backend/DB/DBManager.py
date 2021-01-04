@@ -83,7 +83,8 @@ class DataBase:
 # print(db.get_dataset(4))
 
 # db = DataBase()
-# df = db.get_dataset(4)
+# df = db.get_dataset(5)
+# print(df)
 # print(df.groupby(['Stance']).count())
 # labels = 'Against: 540', 'Favor: 421', 'None: 572'
 # sizes = [540, 421, 572]
