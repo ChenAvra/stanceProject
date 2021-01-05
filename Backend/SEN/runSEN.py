@@ -1,5 +1,5 @@
-from .SEM import train_model_topic_based
-from .SEM import train_model_headline_based
+from .SEN import train_model_topic_based
+from .SEN import train_model_headline_based
 
 class SEN:
 

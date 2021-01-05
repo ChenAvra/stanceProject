@@ -9,7 +9,7 @@ from sklearn.preprocessing import LabelBinarizer
 
 from Backend.DB.DBManager import *
 from Backend.UCLMR.runUCLMR import *
-from Backend.SEN.runSEM import *
+from Backend.SEN.runSEN import *
 from Backend.TAN.runTAN import *
 
 
