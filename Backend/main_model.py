@@ -145,8 +145,11 @@ def plot_multiclass_roc(y_test, y_pred, path, n_classes, figsize=(17, 6)):
     #plt.show()
     plt.savefig(path)
 
-
-
+#the function get sentence and claim and returns his stance
+def get_one_stance(sentence,claim,stance):
+    tan = TAN()
+    stance=tan.get_one_stance(sentence,claim,stance)
+    return stance
 # the function recieve models array (strings), dataset_name, and the division percent to train and test
 def start_Specific_Model(models, dataset_name, train_percent):
 
@@ -231,6 +234,8 @@ def start_Specific_Model(models, dataset_name, train_percent):
     return results
 
 
-models = list()
-models.append("UCLMR")
-start_Specific_Model(models, "MPCHI", 70)
+# models = list()
+# models.append("UCLMR")
+# start_Specific_Model(models, "FNC", 66)
+
+# print(get_one_stance("I think it's bad",'Are E-Cigarettes safe?','AGAINST'))
