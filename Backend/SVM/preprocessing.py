@@ -60,9 +60,11 @@ def unzip_single_file(zip_file_name, output_file_name, output_file_path):
                             return
 
 def load_glove_embeddings():
-    glove_zip_file = ".\\SVM\\glove.6B.zip"
+    PROJECT_ROOT = os.path.abspath(__file__)
+    BASE_DIR = os.path.dirname(PROJECT_ROOT)
+    glove_zip_file = BASE_DIR+"\\glove.6B.zip"
     glove_vectors_file = "glove.6B.300d.txt"
-    glove_vectors_file_path= ".\\SVM\\glove.6B.300d.txt"
+    glove_vectors_file_path= BASE_DIR+"\\glove.6B.300d.txt"
 
     from six.moves.urllib.request import urlretrieve
 
@@ -77,7 +79,7 @@ def load_glove_embeddings():
     print("finished downloading")
 
     word2emb = {}
-    WORD2VEC_MODEL = ".\\SVM\\glove.6B.300d.txt"
+    WORD2VEC_MODEL = BASE_DIR+"\\glove.6B.300d.txt"
 
     fglove = open(WORD2VEC_MODEL,encoding="utf8")
     for line in fglove:
@@ -95,17 +97,19 @@ def split(word, word2emb):
 
 
 def preprocessing(dataPath, toRemveStopWords=True):
+    PROJECT_ROOT = os.path.abspath(__file__)
+    BASE_DIR = os.path.dirname(PROJECT_ROOT)
     wnl = WordNetLemmatizer()
     ps = PorterStemmer()
     stop_words = set(stopwords.words('english'))
 
 
     #Creating Normalization Dictionary
-    with open(".\\SVM\\noslang_data.json", "r") as f:
+    with open(BASE_DIR+"\\noslang_data.json", "r") as f:
         data1 = json.load(f)
 
     data2 = {}
-    with open(".\\SVM\\emnlp_dict.txt","r") as f:
+    with open(BASE_DIR+"\\emnlp_dict.txt","r") as f:
         lines = f.readlines()
         for line in lines:
             row = line.split('\t')
@@ -190,6 +194,8 @@ def preprocessing(dataPath, toRemveStopWords=True):
 
 def run_preprocessing():
     import os
-    arr = os.listdir(".\\SVM\\topics")
+    PROJECT_ROOT = os.path.abspath(__file__)
+    BASE_DIR = os.path.dirname(PROJECT_ROOT)
+    arr = os.listdir(BASE_DIR+"\\topics")
     for topic in arr:
-        preprocessing(".\\SVM\\topics\\"+topic)
+        preprocessing(BASE_DIR+"\\topics\\"+topic)

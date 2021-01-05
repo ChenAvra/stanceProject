@@ -39,7 +39,9 @@ def get_legal_directort_name(old_name):
     return new_name
 
 def split_to_folders_headline_based(train, test):
-    newpath = ".\\SVM\\topics"
+    PROJECT_ROOT = os.path.abspath(__file__)
+    BASE_DIR = os.path.dirname(PROJECT_ROOT)
+    newpath = BASE_DIR+".\\SVM\\topics"
     if not os.path.exists(newpath):
         os.makedirs(newpath)
     topicPath = ".\\SVM\\topics\\headline_based"
@@ -55,7 +57,9 @@ def split_to_folders_headline_based(train, test):
     new_df_test.to_csv(txtPath_test, index=None, sep='\t')
 
 def split_to_topic_folders(train, test):
-    newpath = ".\\SVM\\topics"
+    PROJECT_ROOT = os.path.abspath(__file__)
+    BASE_DIR = os.path.dirname(PROJECT_ROOT)
+    newpath = BASE_DIR+"\\topics"
     if not os.path.exists(newpath):
         os.makedirs(newpath)
     topic_list=[]
@@ -63,15 +67,15 @@ def split_to_topic_folders(train, test):
         new_topic = get_legal_directort_name(topic)
         topic_list.append(new_topic)
         #open folder for each topic
-        topicPath = ".\\SVM\\topics\\"+new_topic
+        topicPath = BASE_DIR+"\\topics\\"+new_topic
         if not os.path.exists(topicPath):
             os.makedirs(topicPath)
 
-        txtPath_train =".\\SVM\\topics\\"+new_topic+"\\train.txt"
+        txtPath_train =BASE_DIR+"\\topics\\"+new_topic+"\\train.txt"
         new_df_train=train.loc[train['Claim'] == topic]
         new_df_train.to_csv(txtPath_train, index=None, sep='\t')
 
-        txtPath_test =".\\SVM\\topics\\"+new_topic+"\\test.txt"
+        txtPath_test =BASE_DIR+"\\topics\\"+new_topic+"\\test.txt"
         new_df_test=test.loc[test['Claim'] == topic]
         new_df_test.to_csv(txtPath_test, index=None, sep='\t')
 
@@ -79,17 +83,18 @@ def split_to_topic_folders(train, test):
 
 stemmer = PorterStemmer()
 def union_feature_extraction():
-
-    arr = os.listdir(".\\SVM\\topics")
+    PROJECT_ROOT = os.path.abspath(__file__)
+    BASE_DIR = os.path.dirname(PROJECT_ROOT)
+    arr = os.listdir(BASE_DIR+"\\topics")
     for topic in arr:
-        STA_path_train = ".\\SVM\\topics\\"+topic+"\\STA_feature_extraction_train.csv"
-        ent_path_train = ".\\SVM\\topics\\"+topic+"\\ent_feature_extraction_train.csv"
-        senti_path_train = ".\\SVM\\topics\\"+topic+"\\senti_feature_extraction_train.csv"
-        STA_path_test = ".\\SVM\\topics\\" + topic + "\\STA_feature_extraction_test.csv"
-        ent_path_test = ".\\SVM\\topics\\" + topic + "\\ent_feature_extraction_test.csv"
-        senti_path_test = ".\\SVM\\topics\\" + topic + "\\senti_feature_extraction_test.csv"
-        train_path = ".\\SVM\\topics\\" + topic + "\\train.txt"
-        test_path = ".\\SVM\\topics\\" + topic + "\\test.txt"
+        STA_path_train = BASE_DIR+"\\topics\\"+topic+"\\STA_feature_extraction_train.csv"
+        ent_path_train = BASE_DIR+"\\topics\\"+topic+"\\ent_feature_extraction_train.csv"
+        senti_path_train = BASE_DIR+"\\topics\\"+topic+"\\senti_feature_extraction_train.csv"
+        STA_path_test = BASE_DIR+"\\topics\\" + topic + "\\STA_feature_extraction_test.csv"
+        ent_path_test = BASE_DIR+"\\topics\\" + topic + "\\ent_feature_extraction_test.csv"
+        senti_path_test = BASE_DIR+"\\topics\\" + topic + "\\senti_feature_extraction_test.csv"
+        train_path = BASE_DIR+"\\topics\\" + topic + "\\train.txt"
+        test_path = BASE_DIR+"\\topics\\" + topic + "\\test.txt"
 
         df_STA_train = pd.read_csv(STA_path_train, header=0)
         del df_STA_train['sentence']
@@ -128,12 +133,12 @@ def union_feature_extraction():
         final_test_df = [df_STA_test,df_ent_test,df_senti_test,df_test]
         final_test_df=pd.concat(final_test_df,axis=1)
 
-        featuresPath = ".\\SVM\\final_feature_set"
+        featuresPath = BASE_DIR+"\\final_feature_set"
         if not os.path.exists(featuresPath):
             os.makedirs(featuresPath)
-        csvPath_train = ".\\SVM\\final_feature_set\\{}_train.csv".format(topic)
+        csvPath_train = BASE_DIR+"\\final_feature_set\\{}_train.csv".format(topic)
         final_train_df.to_csv(csvPath_train, index=None)
-        csvPath_test = ".\\SVM\\final_feature_set\\{}_test.csv".format(topic)
+        csvPath_test = BASE_DIR+"\\final_feature_set\\{}_test.csv".format(topic)
         final_test_df.to_csv(csvPath_test, index=None)
 
 
@@ -141,9 +146,11 @@ def union_feature_extraction():
 
 
 def load_glove_embeddings_set():
+    PROJECT_ROOT = os.path.abspath(__file__)
+    BASE_DIR = os.path.dirname(PROJECT_ROOT)
     word2emb = []
     print("start to load data")
-    WORD2VEC_MODEL = "./glove.6B.300d.txt"
+    WORD2VEC_MODEL = BASE_DIR+"/glove.6B.300d.txt"
     fglove = open(WORD2VEC_MODEL,encoding="utf8")
     print("opened data file")
     for line in fglove:
@@ -154,14 +161,16 @@ def load_glove_embeddings_set():
     print("finish to load data")
     return set(word2emb)
 
-def create_normalise_dict(no_slang_data = "noslang_data.json", emnlp_dict = "emnlp_dict.txt"):
+def create_normalise_dict(no_slang_data = "\\noslang_data.json", emnlp_dict = "\\emnlp_dict.txt"):
+    PROJECT_ROOT = os.path.abspath(__file__)
+    BASE_DIR = os.path.dirname(PROJECT_ROOT)
     print("Creating Normalization Dictionary")
-    with open(no_slang_data, "r") as f:
+    with open(BASE_DIR+no_slang_data, "r") as f:
         data1 = json.load(f)
 
     data2 = {}
 
-    with open(emnlp_dict,"r") as f:
+    with open(BASE_DIR+emnlp_dict,"r") as f:
         lines = f.readlines()
         for line in lines:
             row = line.split('\t')
@@ -186,7 +195,9 @@ def svc_param_selection(X, y, nfolds):
 
 
 def train(topic):
-    train_dataset=pd.read_csv(".\\SVM\\final_feature_set\\{}_train.csv".format(topic))
+    PROJECT_ROOT = os.path.abspath(__file__)
+    BASE_DIR = os.path.dirname(PROJECT_ROOT)
+    train_dataset=pd.read_csv(BASE_DIR+"\\final_feature_set\\{}_train.csv".format(topic))
     train_dataset.sentiment[train_dataset.sentiment=='Neutral']=0
     train_dataset.sentiment[train_dataset.sentiment == 'Positive'] = 1
     train_dataset.sentiment[train_dataset.sentiment == 'Negative'] = 2
@@ -198,7 +209,7 @@ def train(topic):
     del train_dataset['pmi_NONE']
 
 
-    test_dataset=pd.read_csv(".\\SVM\\final_feature_set\\{}_test.csv".format(topic))
+    test_dataset=pd.read_csv(BASE_DIR+"\\final_feature_set\\{}_test.csv".format(topic))
     test_dataset.sentiment[test_dataset.sentiment=='Neutral']=0
     test_dataset.sentiment[test_dataset.sentiment == 'Positive'] = 1
     test_dataset.sentiment[test_dataset.sentiment == 'Negative'] = 2
@@ -224,13 +235,10 @@ def train(topic):
     return y_pred,y_test
 
 
-print("starting preprocessing")
+
 from .preprocessing import run_preprocessing
-print("first feature extraction")
 from .STA_feature_extraction import run_STA_feature_extraction
-print("second feature extraction")
 from .te_f import run_te_f_feature_extraction
-print("third feature extraction")
 from .sentiment_api_2 import run_sentiment_feature_extraction
 
 
@@ -251,9 +259,12 @@ def train_model_topic_based(df_train, df_test, labels, num_of_labels):
         print(accuracy_score(a,b))
         print("***********************")
     import shutil
-    shutil.rmtree('.\\SVM\\topics')
-    shutil.rmtree('.\\SVM\\final_feature_set')
-    return y_pred,y_pred
+    PROJECT_ROOT = os.path.abspath(__file__)
+    BASE_DIR = os.path.dirname(PROJECT_ROOT)
+    shutil.rmtree(BASE_DIR+'\\topics')
+    shutil.rmtree(BASE_DIR +'\\final_feature_set')
+
+    return y_test,y_pred
 
 def train_model_headline_based(df_train, df_test, labels, num_of_labels):
     split_to_folders_headline_based(df_train,df_test)
@@ -271,7 +282,9 @@ def train_model_headline_based(df_train, df_test, labels, num_of_labels):
     print(accuracy_score(a, b))
     print("***********************")
     import shutil
-    shutil.rmtree('.\\SVM\\topics')
-    shutil.rmtree('.\\SVM\\final_feature_set')
-    return y_pred, y_pred
+    PROJECT_ROOT = os.path.abspath(__file__)
+    BASE_DIR = os.path.dirname(PROJECT_ROOT)
+    shutil.rmtree(BASE_DIR+'\\topics')
+    shutil.rmtree(BASE_DIR +'\\final_feature_set')
+    return y_test, y_pred
 

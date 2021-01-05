@@ -105,8 +105,10 @@ def fit_to_size(matrix, shape):
     return res
 
 def split_data_into_scores(glove_wordmap):
+    PROJECT_ROOT = os.path.abspath(__file__)
+    BASE_DIR = os.path.dirname(PROJECT_ROOT)
     import csv
-    with open(".\\SVM\\snli_1.0_dev.txt", "r") as data:
+    with open(BASE_DIR+"\\snli_1.0_dev.txt", "r") as data:
         train = csv.DictReader(data, delimiter='\t')
         evi_sentences = []
         hyp_sentences = []
@@ -127,12 +129,14 @@ def split_data_into_scores(glove_wordmap):
         return (hyp_sentences, evi_sentences), labels, np.array(scores)
 
 def training_model():
-    glove_zip_file = ".\\SVM\\glove.6B.zip"
-    glove_vectors_file = ".\\SVM\\glove.6B.50d.txt"
+    PROJECT_ROOT = os.path.abspath(__file__)
+    BASE_DIR = os.path.dirname(PROJECT_ROOT)
+    glove_zip_file = BASE_DIR+"\\glove.6B.zip"
+    glove_vectors_file = BASE_DIR+"\\glove.6B.50d.txt"
     glove_vectors_file_name = "glove.6B.50d.txt"
 
-    snli_zip_file = ".\\SVM\\snli_1.0.zip"
-    snli_dev_file = ".\\SVM\\snli_1.0_dev.txt"
+    snli_zip_file = BASE_DIR+"\\snli_1.0.zip"
+    snli_dev_file = BASE_DIR+"\\snli_1.0_dev.txt"
     snli_dev_file_name = "snli_1.0_dev.txt"
     snli_full_dataset_file = "snli_1.0_train.txt"
 
@@ -312,7 +316,6 @@ def training_model():
     return sess, glove_wordmap,classification_scores, hyp, evi,N, y
 
 def ent_feature_extraction(sess, glove_wordmap,classification_scores, hyp, evi,N, y, txtFilePath, target, outputFile):
-
     Features_pmh = pd.read_csv(txtFilePath, sep="\t", header=0)
     # Features_pmh = pd.read_csv(
     #     'C:\\Users\\iris dreizenshtok\\Desktop\\programming\\Stance-Detection-in-Web-and-Social-Media-master\\SEN-SVM\\Data_SemE_P\\FM\\test.txt',
@@ -360,11 +363,13 @@ def ent_feature_extraction(sess, glove_wordmap,classification_scores, hyp, evi,N
 def run_te_f_feature_extraction():
     sess, glove_wordmap,classification_scores, hyp, evi,N, y = training_model()
     import os
-    arr = os.listdir(".\\SVM\\topics")
+    PROJECT_ROOT = os.path.abspath(__file__)
+    BASE_DIR = os.path.dirname(PROJECT_ROOT)
+    arr = os.listdir(BASE_DIR+"\\topics")
     for topic in arr:
         for k in ["train","test"]:
-            txtFileToRead=".\\SVM\\topics\\"+topic+"\\"+k+".txt"
-            outputFileToWrite = ".\\SVM\\topics\\"+topic+"\\ent_feature_extraction_"+k+".csv"
+            txtFileToRead=BASE_DIR+"\\topics\\"+topic+"\\"+k+".txt"
+            outputFileToWrite = BASE_DIR+"\\topics\\"+topic+"\\ent_feature_extraction_"+k+".csv"
             sess=ent_feature_extraction(sess, glove_wordmap,classification_scores, hyp, evi,N, y,txtFileToRead,topic,outputFileToWrite)
     sess.close()
     # produce_features(labels_array,".\\topics\\"+topic, build_lexicon(labels_array,".\\topics\\"+topic))

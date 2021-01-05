@@ -97,11 +97,13 @@ def sentiment_feature_extraction(pathToRead, pathToWrite):
 
 def run_sentiment_feature_extraction():
     import os
+    PROJECT_ROOT = os.path.abspath(__file__)
+    BASE_DIR = os.path.dirname(PROJECT_ROOT)
     os.popen('java -mx4g -cp "*" edu.stanford.nlp.pipeline.StanfordCoreNLPServer -port 9000 -timeout 15000')
-    arr = os.listdir(".\\SVM\\topics")
+    arr = os.listdir(BASE_DIR+"\\topics")
     for topic in arr:
         for k in ["train","test"]:
-            txtFileToRead=".\\SVM\\topics\\"+topic+"\\"+k+".txt"
-            outputFileToWrite = ".\\SVM\\topics\\"+topic+"\\senti_feature_extraction_"+k+".csv"
+            txtFileToRead=BASE_DIR+"\\topics\\"+topic+"\\"+k+".txt"
+            outputFileToWrite = BASE_DIR+"\\topics\\"+topic+"\\senti_feature_extraction_"+k+".csv"
             sentiment_feature_extraction(txtFileToRead,outputFileToWrite)
 
