@@ -17,10 +17,13 @@ import math
 import sys
 import nltk
 nltk.download('universal_tagset')
+import os
 
 def load_glove_embeddings_set():
+    PROJECT_ROOT = os.path.abspath(__file__)
+    BASE_DIR = os.path.dirname(PROJECT_ROOT)
     word2emb = []
-    WORD2VEC_MODEL = ".\\SVM\\glove.6B.300d.txt"
+    WORD2VEC_MODEL = BASE_DIR+"\\glove.6B.300d.txt"
     fglove = open(WORD2VEC_MODEL,encoding="utf8")
     for line in fglove:
         cols = line.strip().split()
@@ -29,14 +32,16 @@ def load_glove_embeddings_set():
     fglove.close()
     return set(word2emb)
 
-def create_normalise_dict(no_slang_data = ".\\SVM\\noslang_data.json", emnlp_dict = ".\\SVM\\emnlp_dict.txt"):
+def create_normalise_dict(no_slang_data = "\\noslang_data.json", emnlp_dict = "\\emnlp_dict.txt"):
+    PROJECT_ROOT = os.path.abspath(__file__)
+    BASE_DIR = os.path.dirname(PROJECT_ROOT)
     print("Creating Normalization Dictionary")
-    with open(no_slang_data, encoding="utf8") as f:
+    with open(BASE_DIR+no_slang_data, encoding="utf8") as f:
         data1 = json.load(f)
 
     data2 = {}
 
-    with open(emnlp_dict,encoding="utf8") as f:
+    with open(BASE_DIR+emnlp_dict,encoding="utf8") as f:
         lines = f.readlines()
         for line in lines:
             row = line.split('\t')
@@ -373,10 +378,13 @@ def produce_features(labels_array,topic_path,Lexicon, word_dict, norm_dict):
     print(end-start)
 
 def run_STA_feature_extraction(labels_array):
+    import os
+    PROJECT_ROOT = os.path.abspath(__file__)
+    BASE_DIR = os.path.dirname(PROJECT_ROOT)
     word_dict, norm_dict = load_glove_embeddings_set(), create_normalise_dict()
     import os
-    arr = os.listdir(".\\SVM\\topics")
+    arr = os.listdir(BASE_DIR+"\\topics")
     for topic in arr:
         print("feature extraction - STA - for topic:", topic)
-        produce_features(labels_array,".\\SVM\\topics\\"+topic, build_lexicon(labels_array,".\\SVM\\topics\\"+topic,word_dict, norm_dict), word_dict, norm_dict)
+        produce_features(labels_array,BASE_DIR+"\\topics\\"+topic, build_lexicon(labels_array,BASE_DIR+"\\topics\\"+topic,word_dict, norm_dict), word_dict, norm_dict)
 

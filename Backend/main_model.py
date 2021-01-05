@@ -9,7 +9,7 @@ from sklearn.preprocessing import LabelBinarizer
 
 from Backend.DB.DBManager import *
 from Backend.UCLMR.runUCLMR import *
-from Backend.SVM.runSVM import *
+from Backend.SEN.runSEN import *
 from Backend.TAN.runTAN import *
 
 
@@ -171,25 +171,20 @@ def start_Specific_Model(models, dataset_name, train_percent):
 
     if dataset_name == "FNC":
         df_train, df_test = model_selection.train_test_split(df, train_size=train_percent, shuffle=False)
-    elif dataset_name == "semEval2016" or dataset_name == "MPCHI":
+    elif dataset_name == "semEval2016" or dataset_name == "semEval2017" or dataset_name == "MPCHI":
         # df_train, df_test = model_selection.train_test_split(df, train_size=train_percent, random_state=42)
         df_train, df_test = split_data_topic_based(df, train_percent)
     else:
         df_train, df_test = model_selection.train_test_split(df, train_size=train_percent, random_state=42)
 
-    models_names_dict = {
-        "SVM": ".SVM.runUCLMR.py",
-        "UCLMR": ".UCLMR.runUCLMR.py",
-        "TAN": ".TAN.runUCLMR.py",
-    }
 
     results = {}
 
     # for each  model name in models array run the model
     for m_name in models:
-        if m_name == "SVM":
-            svm = SVM()
-            y_test, y_pred = svm.run_SVM(df_train, df_test, labels, num_of_labels)
+        if m_name == "SEN":
+            sen = SEN()
+            y_test, y_pred = sen.run_SEN(df_train, df_test, labels, num_of_labels)
         elif m_name == "UCLMR":
             uclmr = UCLMR()
             y_test, y_pred = uclmr.run_UCLMR(df_train, df_test, labels, num_of_labels)
