@@ -116,9 +116,15 @@ def plot_multiclass_roc(y_test, y_pred, path, n_classes, figsize=(17, 6)):
     tpr = dict()
     roc_auc = dict()
 
-    # calculate dummies once
-    y_test_dummies = pd.get_dummies(y_test, drop_first=False).values
-    y_pred_dummies = pd.get_dummies(y_pred, drop_first=False).values
+    lb = LabelBinarizer()
+    lb.fit(y_test)
+    y_test_dummies = lb.transform(y_test)
+    y_pred_dummies = lb.transform(y_pred)
+
+    y_test_labels = np.unique(y_test)
+
+    # y_test_dummies = pd.get_dummies(y_test, drop_first=False).values
+    # y_pred_dummies = pd.get_dummies(y_pred, drop_first=False).values
     for i in range(n_classes):
         fpr[i], tpr[i], _ = roc_curve(y_test_dummies[:, i], y_pred_dummies[:, i])
         roc_auc[i] = auc(fpr[i], tpr[i])
@@ -131,9 +137,8 @@ def plot_multiclass_roc(y_test, y_pred, path, n_classes, figsize=(17, 6)):
     ax.set_xlabel('False Positive Rate')
     ax.set_ylabel('True Positive Rate')
     ax.set_title('ROC Curve')
-    labels = np.unique(y_test)
     for i in range(n_classes):
-        ax.plot(fpr[i], tpr[i], label='ROC curve (area = %0.2f) for label %s' % (roc_auc[i], labels[i]))
+        ax.plot(fpr[i], tpr[i], label='ROC curve (area = %0.2f) for label %s' % (roc_auc[i], y_test_labels[i]))
     ax.legend(loc="best")
     ax.grid(alpha=.4)
     #sns.despine()
@@ -226,6 +231,6 @@ def start_Specific_Model(models, dataset_name, train_percent):
     return results
 
 
-# models = list()
-# models.append("UCLMR")
-# start_Specific_Model(models, "FNC", 66)
+models = list()
+models.append("UCLMR")
+start_Specific_Model(models, "MPCHI", 70)
