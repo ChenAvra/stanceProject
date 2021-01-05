@@ -2,6 +2,8 @@ import json
 import os
 import glob
 import sys
+import zipfile
+
 from nltk.corpus import stopwords
 from nltk.tokenize import word_tokenize
 from nltk.stem import PorterStemmer,WordNetLemmatizer
@@ -43,9 +45,39 @@ def clean_str(string, TREC=False):
     string = re.sub(r"\s{2,}", " ", string)
     return string.strip() if TREC else string.strip().lower()
 
+def unzip_single_file(zip_file_name, output_file_name):
+    """
+        If the outFile is already created, don't recreate
+        If the outFile does not exist, create it from the zipFile
+    """
+    if not os.path.isfile(output_file_name):
+        with open(output_file_name, 'wb') as out_file:
+            with zipfile.ZipFile(zip_file_name) as zipped:
+                for info in zipped.infolist():
+                    if output_file_name in info.filename:
+                        with zipped.open(info) as requested_file:
+                            out_file.write(requested_file.read())
+                            return
+
 def load_glove_embeddings():
+    glove_zip_file = ".\\SVM\\glove.6B.zip"
+    glove_vectors_file = ".\\SVM\\glove.6B.300d.txt"
+
+    from six.moves.urllib.request import urlretrieve
+
+    # large file - 862 MB
+    if (not os.path.isfile(glove_zip_file) and
+            not os.path.isfile(glove_vectors_file)):
+        print("don't have the file, downloading it - may take a few minutes")
+        urlretrieve("http://nlp.stanford.edu/data/glove.6B.zip",
+                    glove_zip_file)
+
+    unzip_single_file(glove_zip_file, glove_vectors_file)
+    print("finished downloading")
+
     word2emb = {}
     WORD2VEC_MODEL = ".\\SVM\\glove.6B.300d.txt"
+
     fglove = open(WORD2VEC_MODEL,encoding="utf8")
     for line in fglove:
         cols = line.strip().split()
