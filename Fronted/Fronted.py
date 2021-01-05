@@ -51,7 +51,7 @@ class SelectWindow(Screen,GridLayout):
         else:
             text = ""
             if index=="method1":
-                text="Method 1 Information:"
+                text="a SVM based stance detection model using three sets of\n features – stance vector, textual entailment and sentiment feature.\n The stance vector is created on a sentence level based on\n an assumption that the main information present in a sentence\n revolves around some particular parts-of-speech.\n Thus these parts-of-speech are the main building blocks of the\n stance expressed by a sentence towards a particular claim.\n To identify the sentiment feature a standard sentiment analyzer\n given in Stanford CoreNLP Toolkit is used.\n For the textual entailment feature, Tensor Flow4 is used,\n where textual entailment is estimated using word\n vectorization, recurrent neural networks with\n LSTM and dropout as a regularization method."
             elif index=="method2":
                 text="This algorithm was created by UCL Machine  Reading (UCLMR) \n\n during Stage 1 of the Fake News Challenge (FNC-1) in 2017.\n\n It is based on a single, end-to-end system consisting of lexical \n\n as well as similarity features passed through a multi-layer \n\n perceptron with one hidden layer. UCLMR won third place in \n\n the FNC however out of the three best scoring teams, \n\n UCLMR’s classifier is the simplest and easiest to understand."
             elif index=="method3":
@@ -360,7 +360,8 @@ class UserStanceWindow(Screen,GridLayout):
             layout = GridLayout(cols=1)
             layout.add_widget(Label(text='Topic:  ' + self.topic.text))
             layout.add_widget(Label(text='Sentence:  ' + self.sentence.text))
-            layout.add_widget(Label(text='Stance:  Supported'))
+            label = main_model.get_one_stance(self.sentence.text,self.topic.text)
+            layout.add_widget(Label(text='Stance:  {}'.format(label)))
             layout.add_widget(Label(text=''))
             layout.add_widget(close_button)
             popup = Popup(title='Reveal Your Stance', content=layout, size_hint=(None, None), size=(500, 500))

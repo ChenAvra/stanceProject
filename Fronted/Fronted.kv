@@ -247,11 +247,6 @@
                         row_default_height: 50
 
                         Label:
-                        Label:
-                        Label:
-                        Label:
-                        Label:
-                        Label:
                             text: "SEN"
                         Button:
                             text: "!"
@@ -284,6 +279,19 @@
                             on_press: root.info_btn("method3")
                         CheckBox:
                             id: method_3
+                        Label:
+                        Label:
+                        Label:
+                        Label:
+                        Label:
+                        Label:
+                            text: "Train Percent: "
+                        Label:
+                        TextInput:
+                            id: percent
+                            text: "75"
+                            size: 50, 50
+                            size_hint: None, None
 
                 GridLayout:
                     cols: 5
@@ -405,13 +413,7 @@
                     Label:
                     Label:
                     Label:
-                    Label:
-                        text: "Train Percent: "
-                    TextInput:
-                        id: percent
-                        text: "75"
-                        size: 50, 50
-                        size_hint: None, None
+
                     Label:
             GridLayout:
                 cols: 3
