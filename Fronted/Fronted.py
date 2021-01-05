@@ -44,6 +44,9 @@ class SelectWindow(Screen,GridLayout):
         elif index=="dataset4":
             self.manager.get_screen("dataset_stat_window").entry("4", True)
             self.manager.current = 'dataset_stat_window'
+        elif index == "dataset5":
+            self.manager.get_screen("dataset_stat_window").entry("5", True)
+            self.manager.current = 'dataset_stat_window'
 
         else:
             text = ""
@@ -63,7 +66,7 @@ class SelectWindow(Screen,GridLayout):
             popup.open()
             close_button.bind(on_press=popup.dismiss)
 
-    def run_btn(self,model1,model2,model3,set_1,set_2,set_3,set_4,percent):
+    def run_btn(self,model1,model2,model3,set_1,set_2,set_3,set_4,set_5,percent):
         dataSet = -1
         models = []
         models_name= []
@@ -80,6 +83,9 @@ class SelectWindow(Screen,GridLayout):
         elif set_4.active:
             dataSet='EmergentLite'
             datasetNumber=4
+        elif set_5.active:
+            dataSet = 'semEval2017'
+            datasetNumber = 5
         if model1.active:
             models.append(1)
             models_name.append("SEN")
@@ -181,6 +187,8 @@ class ModelStatWindow(Screen,GridLayout):
             dataSet = "MPCHI"
         elif self.manager.get_screen("select_window").ids.set_4.active:
             dataSet = "EmergentLite"
+        elif self.manager.get_screen("select_window").ids.set_5.active:
+            dataSet = "semEval2017"
         percent = int(self.manager.get_screen("select_window").ids.percent.text)
         df = db.get_record_from_result(model,dataSet,percent)
 
@@ -255,6 +263,8 @@ class ModelStatWindow(Screen,GridLayout):
             dataset = "MPCHI"
         elif self.manager.get_screen("select_window").ids.set_4.active:
             dataset = "EmergentLite"
+        elif self.manager.get_screen("select_window").ids.set_5.active:
+            dataset = "semEval2017"
         modle = self.ids.title.text.split(" ")[0]
         percent = int(self.manager.get_screen("select_window").ids.percent.text)
         db = DBManager.DataBase()
@@ -277,6 +287,8 @@ class ModelStatWindow(Screen,GridLayout):
             dataset = "MPCHI"
         elif self.manager.get_screen("select_window").ids.set_4.active:
             dataset = "EmergentLite"
+        elif self.manager.get_screen("select_window").ids.set_5.active:
+            dataset = "semEval2017"
         modle = self.ids.title.text.split(" ")[0]
         percent = int(self.manager.get_screen("select_window").ids.percent.text)
         db = DBManager.DataBase()
@@ -301,7 +313,7 @@ class DataSetStatWindow(Screen,GridLayout):
             self.ids.back_select.disabled = True
 
         if dataset=="1":
-            self.ids.title.text = "semEval2016 info"
+            self.ids.title.text = "semEval 2016 info"
             self.ids.info.text = "This dataset was provided at the SemEval competition in 2016. The data provided contains instances of: tweets, id, target, and stance,\n\n where stance is one of  the following: for, against, none. The dataset contains 4,042 records."
             self.ids.dataset_photo.source= 'semEval2016.png'
         elif dataset=="2":
@@ -316,6 +328,11 @@ class DataSetStatWindow(Screen,GridLayout):
             self.ids.title.text = "EmergentLite info"
             self.ids.info.text = "This dataset contains claims extracted from rumour sites and Twitter, with 300 claims and 2,595 headlines.\n\n The stance is one of the following: for, against, observing."
             self.ids.dataset_photo.source= 'emergent.png'
+        elif dataset=="5":
+            self.ids.title.text = "semEval 2017 info"
+            self.ids.info.text = "bla bla bla"
+            self.ids.dataset_photo.source= 'Semeval 2017.png'
+
 
 
 class UserStanceWindow(Screen,GridLayout):
