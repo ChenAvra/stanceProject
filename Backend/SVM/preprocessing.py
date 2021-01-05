@@ -45,13 +45,13 @@ def clean_str(string, TREC=False):
     string = re.sub(r"\s{2,}", " ", string)
     return string.strip() if TREC else string.strip().lower()
 
-def unzip_single_file(zip_file_name, output_file_name):
+def unzip_single_file(zip_file_name, output_file_name, output_file_path):
     """
         If the outFile is already created, don't recreate
         If the outFile does not exist, create it from the zipFile
     """
-    if not os.path.isfile(output_file_name):
-        with open(output_file_name, 'wb') as out_file:
+    if not os.path.isfile(output_file_path):
+        with open(output_file_path, 'wb') as out_file:
             with zipfile.ZipFile(zip_file_name) as zipped:
                 for info in zipped.infolist():
                     if output_file_name in info.filename:
@@ -61,7 +61,8 @@ def unzip_single_file(zip_file_name, output_file_name):
 
 def load_glove_embeddings():
     glove_zip_file = ".\\SVM\\glove.6B.zip"
-    glove_vectors_file = ".\\SVM\\glove.6B.300d.txt"
+    glove_vectors_file = "glove.6B.300d.txt"
+    glove_vectors_file_path= ".\\SVM\\glove.6B.300d.txt"
 
     from six.moves.urllib.request import urlretrieve
 
@@ -72,7 +73,7 @@ def load_glove_embeddings():
         urlretrieve("http://nlp.stanford.edu/data/glove.6B.zip",
                     glove_zip_file)
 
-    unzip_single_file(glove_zip_file, glove_vectors_file)
+    unzip_single_file(glove_zip_file, glove_vectors_file,glove_vectors_file_path)
     print("finished downloading")
 
     word2emb = {}

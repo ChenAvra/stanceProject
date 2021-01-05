@@ -12,7 +12,7 @@ import json
 import os
 
 
-os.popen('java -mx4g -cp "*" edu.stanford.nlp.pipeline.StanfordCoreNLPServer -port 9000 -timeout 15000')
+
 
 #storing Result
 # before Executing this,we have to start the Stanford Server through Terminal
@@ -97,6 +97,7 @@ def sentiment_feature_extraction(pathToRead, pathToWrite):
 
 def run_sentiment_feature_extraction():
     import os
+    os.popen('java -mx4g -cp "*" edu.stanford.nlp.pipeline.StanfordCoreNLPServer -port 9000 -timeout 15000')
     arr = os.listdir(".\\SVM\\topics")
     for topic in arr:
         for k in ["train","test"]:

@@ -46,13 +46,13 @@ def sent_process(sent):
     sent = [word for word in sent.split() if word.lower() not in stopwords.words('english')]
     return " ".join(sent)
 
-def unzip_single_file(zip_file_name, output_file_name):
+def unzip_single_file(zip_file_name, output_file_name, output_file_path):
     """
         If the outFile is already created, don't recreate
         If the outFile does not exist, create it from the zipFile
     """
     if not os.path.isfile(output_file_name):
-        with open(output_file_name, 'wb') as out_file:
+        with open(output_file_path, 'wb') as out_file:
             with zipfile.ZipFile(zip_file_name) as zipped:
                 for info in zipped.infolist():
                     if output_file_name in info.filename:
@@ -129,9 +129,11 @@ def split_data_into_scores(glove_wordmap):
 def training_model():
     glove_zip_file = ".\\SVM\\glove.6B.zip"
     glove_vectors_file = ".\\SVM\\glove.6B.50d.txt"
+    glove_vectors_file_name = "glove.6B.50d.txt"
 
     snli_zip_file = ".\\SVM\\snli_1.0.zip"
     snli_dev_file = ".\\SVM\\snli_1.0_dev.txt"
+    snli_dev_file_name = "snli_1.0_dev.txt"
     snli_full_dataset_file = "snli_1.0_train.txt"
 
     from six.moves.urllib.request import urlretrieve
@@ -142,14 +144,14 @@ def training_model():
         urlretrieve("http://nlp.stanford.edu/data/glove.6B.zip",
                     glove_zip_file)
 
-    # medium-sized file - 94.6 MB
+    # # medium-sized file - 94.6 MB
     if (not os.path.isfile(snli_zip_file) and
             not os.path.isfile(snli_dev_file)):
         urlretrieve("https://nlp.stanford.edu/projects/snli/snli_1.0.zip",
                     snli_zip_file)
 
-    unzip_single_file(glove_zip_file, glove_vectors_file)
-    unzip_single_file(snli_zip_file, snli_dev_file)
+    unzip_single_file(glove_zip_file, glove_vectors_file_name, glove_vectors_file)
+    unzip_single_file(snli_zip_file,snli_dev_file_name , snli_dev_file)
 
     glove_wordmap = {}
     with open(glove_vectors_file, encoding="utf8") as glove:
