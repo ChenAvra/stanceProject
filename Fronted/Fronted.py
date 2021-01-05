@@ -211,7 +211,7 @@ class ModelStatWindow(Screen,GridLayout):
         none_recall = arr[16]
         none_f = arr[17]
         none_support = arr[18]
-        if dataSet == "FNC":
+        if dataSet == "FNC" or dataSet=="semEval2017":
             self.ids.t4.text = str(arr[19])
             self.ids.t4p.text = str(arr[20])
             self.ids.t4r.text = str(arr[21])
