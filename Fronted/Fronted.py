@@ -82,7 +82,7 @@ class SelectWindow(Screen,GridLayout):
             datasetNumber=4
         if model1.active:
             models.append(1)
-            models_name.append("SVM")
+            models_name.append("SEN")
         if model2.active:
             models.append(2)
             models_name.append("UCLMR")
@@ -135,8 +135,8 @@ class StatWindow(Screen,GridLayout):
         db = DBManager.DataBase()
         self.models = models
         self.dataset= str(dataSet)
-        if "SVM" in models:
-            df = db.get_record_from_result("SVM", dataSet, percent)
+        if "SEN" in models:
+            df = db.get_record_from_result("SEN", dataSet, percent)
             self.ids.button1.disabled = False
             self.ids.method_1_accuracy.text = "{} Accuracy".format(float("{:.2f}".format(df['Accuracy'][0])))
         else:

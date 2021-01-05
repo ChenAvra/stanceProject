@@ -21,7 +21,7 @@ def sentiment_feature_extraction(pathToRead, pathToWrite):
     data = pd.read_csv(pathToRead, sep="\t", header=0)
     error_count=0
     # data = pd.read_csv(
-    #     'C:\\Users\\iris dreizenshtok\\Desktop\\programming\\Stance-Detection-in-Web-and-Social-Media-master\\SEN-SVM\\Data_MPCHI\\HRT\\test.txt',
+    #     'C:\\Users\\iris dreizenshtok\\Desktop\\programming\\Stance-Detection-in-Web-and-Social-Media-master\\SEN-SEN\\Data_MPCHI\\HRT\\test.txt',
     #     sep="\t", header=0)
     # Extracting Sentences
     sentence = data['Sentence']

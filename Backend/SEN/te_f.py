@@ -318,7 +318,7 @@ def training_model():
 def ent_feature_extraction(sess, glove_wordmap,classification_scores, hyp, evi,N, y, txtFilePath, target, outputFile):
     Features_pmh = pd.read_csv(txtFilePath, sep="\t", header=0)
     # Features_pmh = pd.read_csv(
-    #     'C:\\Users\\iris dreizenshtok\\Desktop\\programming\\Stance-Detection-in-Web-and-Social-Media-master\\SEN-SVM\\Data_SemE_P\\FM\\test.txt',
+    #     'C:\\Users\\iris dreizenshtok\\Desktop\\programming\\Stance-Detection-in-Web-and-Social-Media-master\\SEN-SEN\\Data_SemE_P\\FM\\test.txt',
     #     sep="\t", header=0)
 
     length_features = len(Features_pmh)

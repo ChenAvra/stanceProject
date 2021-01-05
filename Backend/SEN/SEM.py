@@ -41,18 +41,18 @@ def get_legal_directort_name(old_name):
 def split_to_folders_headline_based(train, test):
     PROJECT_ROOT = os.path.abspath(__file__)
     BASE_DIR = os.path.dirname(PROJECT_ROOT)
-    newpath = BASE_DIR+".\\SVM\\topics"
+    newpath = BASE_DIR+".\\SEN\\topics"
     if not os.path.exists(newpath):
         os.makedirs(newpath)
-    topicPath = ".\\SVM\\topics\\headline_based"
+    topicPath = ".\\SEN\\topics\\headline_based"
     if not os.path.exists(topicPath):
         os.makedirs(topicPath)
 
-    txtPath_train = ".\\SVM\\topics\\headline_based\\train.txt"
+    txtPath_train = ".\\SEN\\topics\\headline_based\\train.txt"
     new_df_train = train
     new_df_train.to_csv(txtPath_train, index=None, sep='\t')
 
-    txtPath_test = ".\\SVM\\topics\\headline_based\\test.txt"
+    txtPath_test = ".\\SEN\\topics\\headline_based\\test.txt"
     new_df_test = test
     new_df_test.to_csv(txtPath_test, index=None, sep='\t')
 
