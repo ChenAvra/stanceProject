@@ -150,19 +150,19 @@ class StatWindow(Screen,GridLayout):
         if "SEN" in models:
             df = db.get_record_from_result("SEN", dataSet, percent)
             self.ids.button1.disabled = False
-            self.ids.method_1_accuracy.text = "{} Accuracy".format(float("{:.2f}".format(df['Accuracy'][0])))
+            self.ids.method_1_accuracy.text = str(float("{:.2f}".format(df['Accuracy'][0])))
         else:
             self.ids.button1.disabled = True
         if "UCLMR" in models:
             df = db.get_record_from_result("UCLMR",dataSet,percent)
             self.ids.button2.disabled = False
-            self.ids.method_2_accuracy.text = "{} Accuracy".format(float("{:.2f}".format(df['Accuracy'][0])))
+            self.ids.method_2_accuracy.text = str(float("{:.2f}".format(df['Accuracy'][0])))
         else:
             self.ids.button2.disabled = True
         if "TAN" in models:
             df = db.get_record_from_result("TAN", dataSet, percent)
             self.ids.button3.disabled = False
-            self.ids.method_3_accuracy.text = "{} Accuracy".format(float("{:.2f}".format(df['Accuracy'][0])))
+            self.ids.method_3_accuracy.text = str(float("{:.2f}".format(df['Accuracy'][0])))
         else:
             self.ids.button3.disabled = True
         self.ids.dataset_button.text = "{} info".format(dataSet)
@@ -336,27 +336,27 @@ class DataSetStatWindow(Screen,GridLayout):
             self.ids.back_select.disabled = True
 
         if dataset=="1":
-            self.ids.title.text = "semEval 2016 info"
+            # self.ids.title.text = "semEval 2016 info"
             self.ids.info.text = "This dataset was provided at the SemEval competition in 2016. The data provided contains instances of: tweets, id, target, and stance,\n\n where stance is one of  the following: for, against, none. The dataset contains 4,042 records."
             self.ids.dataset_photo.source= 'semEval2016.png'
         elif dataset=="2":
-            self.ids.title.text = "FNC-1 info"
+            # self.ids.title.text = "FNC-1 info"
             self.ids.info.text = "This dataset was provided at the Fake News Chalenge (FNC-1) in 2017. The data provided contains instances of: headline, body and stance,\n\n where stance is one of  the following: unrelated, discuss, agree, disagree. The dataset contains 75,385 records."
             self.ids.dataset_photo.source= 'FNC.png'
         elif dataset=="3":
-            self.ids.title.text = "MPCHI info"
+            # self.ids.title.text = "MPCHI info"
             self.ids.info.text = "This dataset contains health-related online news articles. The data provided contains instances of: tweets, id, target and stance,\n\n where stance is one of  the following: favor, against, none. The dataset contains 1,533 records."
             self.ids.dataset_photo.source= 'mpchi.png'
         elif dataset=="4":
-            self.ids.title.text = "EmergentLite info"
+            # self.ids.title.text = "EmergentLite info"
             self.ids.info.text = "This dataset contains claims extracted from rumour sites and Twitter, with 300 claims and 2,595 headlines.\n\n The stance is one of the following: for, against, observing."
             self.ids.dataset_photo.source= 'emergent.png'
         elif dataset=="5":
-            self.ids.title.text = "semEval 2017 info"
+            # self.ids.title.text = "semEval 2017 info"
             self.ids.info.text = "bla bla bla"
             self.ids.dataset_photo.source= 'Semeval 2017.png'
         elif dataset=="6":
-            self.ids.title.text = "Somasundaran Wiebe info"
+            # self.ids.title.text = "Somasundaran Wiebe info"
             self.ids.info.text = "bla bla bla"
             self.ids.dataset_photo.source= 'SomasundaranWiebe.png'
 
@@ -368,9 +368,9 @@ class UserStanceWindow(Screen,GridLayout):
 
     def test(self):
         dropdown = DropDown()
-        for index in ["E-ciggarettes are safer than normal ciggarettes","Sun exposure can lead to skin cancer","Vitamin C prevents common cold","Women should take HRT post menopause","MMR vaccine can cause autism","atheism","hillary clinton","legalization of abortion","climate change is a real concern","feminist movement"]:
+        for index in ['Atheism', 'Hillary Clinton','Legalization of Abortion', 'Climate Change is a Real Concern','Feminist Movement']:
             # Adding button in drop down list
-            btn = Button(text=index, size_hint_y=None, height=40)
+            btn = Button(text=index,bold=True, size_hint_y=None, height=40, background_color= (.411, .568, .924, 1))
 
             # binding the button to show the text when selected
             btn.bind(on_release=lambda btn: dropdown.select(btn.text))

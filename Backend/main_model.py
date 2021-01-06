@@ -122,9 +122,9 @@ def plot_multiclass_roc(y_test, y_pred, path, n_classes, figsize=(17, 6)):
     y_pred_dummies = lb.transform(y_pred)
 
     y_test_labels = np.unique(y_test)
-
-    # y_test_dummies = pd.get_dummies(y_test, drop_first=False).values
-    # y_pred_dummies = pd.get_dummies(y_pred, drop_first=False).values
+    if (n_classes == 2):
+        y_test_dummies = pd.get_dummies(y_test, drop_first=False).values
+        y_pred_dummies = pd.get_dummies(y_pred, drop_first=False).values
     for i in range(n_classes):
         fpr[i], tpr[i], _ = roc_curve(y_test_dummies[:, i], y_pred_dummies[:, i])
         roc_auc[i] = auc(fpr[i], tpr[i])
@@ -156,6 +156,7 @@ def start_Specific_Model(models, dataset_name, train_percent):
         "FNC" : 3,
         "MPCHI" : 4,
         "EmergentLite" : 5,
+        "SomasundaranWiebe" : 6,
     }
 
     dataset_id = dataset_names_dict[dataset_name]
@@ -171,7 +172,7 @@ def start_Specific_Model(models, dataset_name, train_percent):
 
     if dataset_name == "FNC":
         df_train, df_test = model_selection.train_test_split(df, train_size=train_percent, shuffle=False)
-    elif dataset_name == "semEval2016" or dataset_name == "semEval2017" or dataset_name == "MPCHI":
+    elif dataset_name == "semEval2016" or dataset_name == "semEval2017" or dataset_name == "MPCHI" or dataset_name == "SomasundaranWiebe":
         # df_train, df_test = model_selection.train_test_split(df, train_size=train_percent, random_state=42)
         df_train, df_test = split_data_topic_based(df, train_percent)
     else:
@@ -197,6 +198,7 @@ def start_Specific_Model(models, dataset_name, train_percent):
 
         # calculate accuracy
         acc = accuracy_score(y_test, y_pred)
+        acc = float("{:.3f}".format(acc))
         # get classification report
         cr = sklearn.metrics.classification_report(y_test, y_pred)
 
@@ -209,6 +211,7 @@ def start_Specific_Model(models, dataset_name, train_percent):
 
         # plot ROC Curve and find roc_auc accuracy
         roc_acc = multiclass_roc_auc_score(y_test, y_pred)
+        roc_acc = float("{:.3f}".format(roc_acc))
         roc_path = BASE_DIR + '\\DB\\ROC\\' + m_name + '_ ' + dataset_name + '_ ' + str(train_percent) + '.png'
         plot_multiclass_roc(y_test, y_pred, roc_path, n_classes=num_of_labels, figsize=(16, 10))
 
@@ -231,7 +234,7 @@ def get_one_stance(sentence, claim):
     return stance
 
 # models = list()
-# models.append("TAN")
-# start_Specific_Model(models, "semEval2016", 80)
+# models.append("UCLMR")
+# start_Specific_Model(models, "FNC", 66)
 
-# print(get_one_stance("I believe in god",'Atheism'))
+# print(get_one_stance("I think she is a nice woman",'Hillary Clinton'))
