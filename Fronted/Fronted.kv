@@ -630,6 +630,11 @@
             Label:
 
 <ModelStatWindow>:
+    canvas.before:
+        Rectangle:
+            pos: self.pos
+            size: self.size
+            source: 'statistics.PNG'
     RelativeLayout:
         cols: 1
 
@@ -642,6 +647,7 @@
                 pos_hint: {'top': 1.0, 'right': .6}
                 font_size: '50sp'
                 color: 1, .8, .4, .85
+                opacity: 0
 
         GridLayout:
             cols: 3
