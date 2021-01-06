@@ -150,19 +150,19 @@ class StatWindow(Screen,GridLayout):
         if "SEN" in models:
             df = db.get_record_from_result("SEN", dataSet, percent)
             self.ids.button1.disabled = False
-            self.ids.method_1_accuracy.text = "{} Accuracy".format(float("{:.2f}".format(df['Accuracy'][0])))
+            self.ids.method_1_accuracy.text = str(float("{:.2f}".format(df['Accuracy'][0])))
         else:
             self.ids.button1.disabled = True
         if "UCLMR" in models:
             df = db.get_record_from_result("UCLMR",dataSet,percent)
             self.ids.button2.disabled = False
-            self.ids.method_2_accuracy.text = "{} Accuracy".format(float("{:.2f}".format(df['Accuracy'][0])))
+            self.ids.method_2_accuracy.text = str(float("{:.2f}".format(df['Accuracy'][0])))
         else:
             self.ids.button2.disabled = True
         if "TAN" in models:
             df = db.get_record_from_result("TAN", dataSet, percent)
             self.ids.button3.disabled = False
-            self.ids.method_3_accuracy.text = "{} Accuracy".format(float("{:.2f}".format(df['Accuracy'][0])))
+            self.ids.method_3_accuracy.text = str(float("{:.2f}".format(df['Accuracy'][0])))
         else:
             self.ids.button3.disabled = True
         self.ids.dataset_button.text = "{} info".format(dataSet)

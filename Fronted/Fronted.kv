@@ -18,70 +18,71 @@
                 color: 1, .8, .4, .85
 
 
-        GridLayout:
-            cols: 1
-            # row_force_default: True
-            # row_default_height: 50
-
-            GridLayout:
-                cols: 2
-                row_force_default: True
-                row_default_height: 200
-
-                Label:
-                Label:
 
 
             GridLayout:
-                cols: 5
+                cols: 12
                 row_force_default: True
                 row_default_height: 50
-                Label:
-                Label:
-                Label:
-                Label:
-                Label:
-                Label:
-                Label:
-                Label:
-                Label:
-                Label:
-                Label:
-                Label:
-                Label:
-                Label:
-                Label:
-                Label:
-                Label:
-                Label:
-                Label:
-                Label:
+                pos_hint: {'top': .4}
 
+                Label:
+                Label:
+                Label:
+                Label:
+                Label:
                 Label:
                 Button:
                     text: "Run algorithms"
                     size: 250, 40
                     size_hint: None, None
-                    pos_hint: {'top': .15, 'right': .8}
+                    # pos_hint: {'top': .15, 'right': .8}
                     font_size: '25sp'
                     background_normal: 'normal.png'
-                    background_color: 1, .8, .4, .85
+                    background_color: .411, .568, .924, 1
                     markup: True
                     bold: True
                     on_press: root.manager.current = 'select_window'
+                Label:
+                Label:
+                Label:
+                Label:
+                Label:
 
+                Label:
+                Label:
+                Label:
+                Label:
+                Label:
+                Label:
+                Label:
+                Label:
+                Label:
+                Label:
+                Label:
+                Label:
+
+                Label:
+                Label:
+                Label:
+                Label:
+                Label:
                 Label:
                 Button:
                     text: "Try it yourself!"
                     size: 250, 40
                     size_hint: None, None
-                    pos_hint: {'top': .15, 'right': .8}
+                    # pos_hint: {'top': .15, 'right': .8}
                     font_size: '25sp'
                     background_normal: 'normal.png'
-                    background_color: 1, .8, .4, .85
+                    background_color: .411, .568, .924, 1
                     markup: True
                     bold: True
                     on_press: root.manager.current = 'user_stance'
+                Label:
+                Label:
+                Label:
+                Label:
                 Label:
 
 
@@ -542,17 +543,22 @@
                 color: 1, .8, .4, .85
 
         GridLayout:
-            cols: 7
+            cols: 6
             row_force_default: True
-            row_default_height: 75
-            pos_hint: {'top': .85}
+            row_default_height: 70
+            pos_hint: {'top': .82}
+
+
             Label:
             Label:
             Label:
                 text:"Algorithm"
+                font_size: '32sp'
+                bold: True
             Label:
                 text:"Accuracy"
-            Label:
+                font_size: '32sp'
+                bold: True
             Label:
             Label:
 
@@ -562,71 +568,75 @@
             Label:
             Label:
                 text: "SEN"
-                font_size: '30sp'
+                font_size: '28sp'
             Label:
                 id: method_1_accuracy
             Button:
+                bold: True
                 id: button1
                 text: "Show statistics"
                 size: 150, 50
                 size_hint: None, None
-                # font_size: '30sp'
+                font_size: '20sp'
                 background_normal: 'normal.png'
                 background_color: 1, .8, .4, .85
                 on_press: root.select_model("SEN")
             Label:
-            Label:
+
             Label:
             Label:
             Label:
                 text: "UCLMR"
-                font_size: '30sp'
+                font_size: '28sp'
             Label:
                 id: method_2_accuracy
-                font_size: '30sp'
+                font_size: '28sp'
             Button:
+                bold: True
                 id: button2
                 text: "Show statistics"
                 size: 150, 50
                 size_hint: None, None
                 # pos_hint: {'top': .15, 'right': .4}
-                # font_size: '30sp'
+                font_size: '20sp'
                 background_normal: 'normal.png'
                 background_color: 1, .8, .4, .85
                 on_press: root.select_model("UCLMR")
             Label:
-            Label:
+
             Label:
             Label:
             Label:
                 text: "TAN"
-                font_size: '30sp'
+                font_size: '28sp'
             Label:
                 id: method_3_accuracy
-                font_size: '30sp'
+                font_size: '28sp'
                 # text: "45% Accuracy"
             Button:
+                bold: True
                 id: button3
                 text: "Show statistics"
                 size: 150, 50
                 size_hint: None, None
                 # pos_hint: {'top': .15, 'right': .4}
-                # font_size: '30sp'
+                font_size: '20sp'
                 background_normal: 'normal.png'
                 background_color: 1, .8, .4, .85
                 on_press: root.select_model("TAN")
             Label:
-            Label:
+
             Label:
             Label:
             Label:
             Label:
             Button:
                 id: dataset_button
+                bold: True
                 size: 150, 50
                 size_hint: None, None
                 # pos_hint: {'top': .15, 'right': .4}
-                # font_size: '30sp'
+                font_size: '20sp'
                 background_normal: 'normal.png'
                 background_color: 1, .8, .4, .85
                 on_press: root.select_dataset()
