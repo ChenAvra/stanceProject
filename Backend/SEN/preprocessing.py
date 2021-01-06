@@ -70,7 +70,7 @@ def load_glove_embeddings():
 
     # large file - 862 MB
     if (not os.path.isfile(glove_zip_file) and
-            not os.path.isfile(glove_vectors_file)):
+            not os.path.isfile(glove_vectors_file_path)):
         print("don't have the file, downloading it - may take a few minutes")
         urlretrieve("http://nlp.stanford.edu/data/glove.6B.zip",
                     glove_zip_file)
