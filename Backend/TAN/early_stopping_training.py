@@ -216,7 +216,7 @@ def train_bagging_tan_CV(x_train, y_train, x_test, y_test, vector_target,labels,
 
     PROJECT_ROOT = os.path.abspath(__file__)
     BASE_DIR = os.path.dirname(PROJECT_ROOT)
-    model_path = BASE_DIR + '\\' + name_file + '.pt'
+    model_path = BASE_DIR + '\\save' + name_file + '.pt'
 
     torch.save(models_to_save,model_path)
     return conf_matrix,labels_pred,score,model,len(ensemble_models)
@@ -246,7 +246,7 @@ def train_bagging_tan_CV(x_train, y_train, x_test, y_test, vector_target,labels,
 
 # x_train=[], y_train=[], x_test=[], y_tes=[], vector_targe=[]
 def run_model(df_train, df_test, labels, num_of_labels,claim):
-
+    version='tan'
     topic_string=''
 
     stances, word2emb, word_ind, ind_word, embedding_matrix, device, \
@@ -258,13 +258,13 @@ def run_model(df_train, df_test, labels, num_of_labels,claim):
     x_train[:], y_train[:] = zip(*combined)
 
 
-    fin_matrix,labels_pred,score,model,len_ensemble_model= train_bagging_tan_CV(x_train, y_train, x_test, y_test, vector_target,labels,device,embedding_matrix,claim,version=version,n_epochs=1,batch_size=50,l2=0.0,dropout = 0.6,n_folds=2,)
+    fin_matrix,labels_pred,score,model,len_ensemble_model= train_bagging_tan_CV(x_train, y_train, x_test, y_test, vector_target,labels,device,embedding_matrix,claim,version=version,n_epochs=50,batch_size=50,l2=1.0,dropout = 0.5,n_folds=5)
 
-    return labels_pred,y_test,len_ensemble_model,labels,embedding_matrix
+    return labels_pred,y_test,len_ensemble_model,labels,embedding_matrix,word_ind
 
 
 
-def pred_one_stance(labels,embedding_matrix,sentence,claim,stance):
+def pred_one_stance(labels,embedding_matrix,sentence,claim,stance,word_ind_load):
     models_after_load={}
     stances = {}
     topic_string=''
@@ -293,7 +293,7 @@ def pred_one_stance(labels,embedding_matrix,sentence,claim,stance):
     X_test=[sentence]
     df2 = pd.DataFrame(list(zip(Y_test, X_test)),
                    columns =['Stance', 'Sentence'])
-    x_after_proc, vector_target_after_proc  = pre_proce_one_stance(topic_string,df2,labels,claim,dev = "cpu")
+    x_after_proc, vector_target_after_proc  = pre_proce_one_stance(word_ind_load,topic_string,df2,labels,claim,dev = "cpu")
     with torch.no_grad():
         # conf_matrix = np.zeros((2, len(labels)))
         for j in range(len(x_after_proc)):

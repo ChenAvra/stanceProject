@@ -1,4 +1,5 @@
 import os
+import pickle
 
 from gensim.models import KeyedVectors
 import  numpy as np
@@ -15,13 +16,22 @@ def Pred(df_train, df_test, labels, num_of_labels):
         df_train_per_claim=df_train.loc[df_train['Claim'] == claim]
         df_test_per_claim=df_test.loc[df_test['Claim'] == claim]
 
-        labels_pred, y_test, len_ensemble_model, labels, embedding_matrix=run_model(df_train_per_claim, df_test_per_claim, labels, num_of_labels,claim)
+        labels_pred, y_test, len_ensemble_model, labels, embedding_matrix,word_ind=run_model(df_train_per_claim, df_test_per_claim, labels, num_of_labels,claim)
         embedding_matrix_per_claim.update({claim:embedding_matrix})
         len_ensemble_models_all.update({claim:len_ensemble_model})
         file_name = str(claim).replace(' ', "")
         file_name1 = str(file_name).replace('-', "")
         file_name2 = str(file_name1).replace('?', "")
 
+        #write word ind to dictionary file
+        PROJECT_ROOT = os.path.abspath(__file__)
+        BASE_DIR = os.path.dirname(PROJECT_ROOT)
+        word_ind_file = BASE_DIR + '\\' + file_name2 + '.pkl'
+
+        a_file = open(word_ind_file, "wb")
+        pickle.dump(word_ind, a_file)
+        a_file.close()
+        #save word embeddong
         PROJECT_ROOT = os.path.abspath(__file__)
         BASE_DIR = os.path.dirname(PROJECT_ROOT)
         WORD2VEC_MODEL = BASE_DIR + '\\'+file_name2+'.txt'
@@ -64,16 +74,24 @@ def get_predict_per_stance(sentence,claim,stance):
     WORD2VEC_MODEL = BASE_DIR + '\\' + file_name2 + '.txt'
     # model = KeyedVectors.load_word2vec_format(WORD2VEC_MODEL, binary=False)
     embedding_matrix_per_claim=[]
+    #load embedding matrix
     with open(WORD2VEC_MODEL, 'rb') as f:
         embedding_matrix_per_claim = np.load(f)
 
+    #load word_ind
+    PROJECT_ROOT = os.path.abspath(__file__)
+    BASE_DIR = os.path.dirname(PROJECT_ROOT)
+    word_ind_file = BASE_DIR + '\\' + file_name2 + '.pkl'
+    a_file = open(word_ind_file, "rb")
+    word_ind_load = pickle.load(a_file)
+    a_file.close()
 
     dataset_id = dataset_names_dict[dataset]
     db = DataBase()
     df = db.get_dataset(dataset_id)
     labels=df.Stance.unique()
 
-    stance=pred_one_stance(labels,embedding_matrix_per_claim,sentence,claim,stance)
+    stance=pred_one_stance(labels,embedding_matrix_per_claim,sentence,claim,stance,word_ind_load)
     return stance
 
 
