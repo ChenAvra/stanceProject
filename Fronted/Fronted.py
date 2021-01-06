@@ -336,27 +336,27 @@ class DataSetStatWindow(Screen,GridLayout):
             self.ids.back_select.disabled = True
 
         if dataset=="1":
-            self.ids.title.text = "semEval 2016 info"
+            # self.ids.title.text = "semEval 2016 info"
             self.ids.info.text = "This dataset was provided at the SemEval competition in 2016. The data provided contains instances of: tweets, id, target, and stance,\n\n where stance is one of  the following: for, against, none. The dataset contains 4,042 records."
             self.ids.dataset_photo.source= 'semEval2016.png'
         elif dataset=="2":
-            self.ids.title.text = "FNC-1 info"
+            # self.ids.title.text = "FNC-1 info"
             self.ids.info.text = "This dataset was provided at the Fake News Chalenge (FNC-1) in 2017. The data provided contains instances of: headline, body and stance,\n\n where stance is one of  the following: unrelated, discuss, agree, disagree. The dataset contains 75,385 records."
             self.ids.dataset_photo.source= 'FNC.png'
         elif dataset=="3":
-            self.ids.title.text = "MPCHI info"
+            # self.ids.title.text = "MPCHI info"
             self.ids.info.text = "This dataset contains health-related online news articles. The data provided contains instances of: tweets, id, target and stance,\n\n where stance is one of  the following: favor, against, none. The dataset contains 1,533 records."
             self.ids.dataset_photo.source= 'mpchi.png'
         elif dataset=="4":
-            self.ids.title.text = "EmergentLite info"
+            # self.ids.title.text = "EmergentLite info"
             self.ids.info.text = "This dataset contains claims extracted from rumour sites and Twitter, with 300 claims and 2,595 headlines.\n\n The stance is one of the following: for, against, observing."
             self.ids.dataset_photo.source= 'emergent.png'
         elif dataset=="5":
-            self.ids.title.text = "semEval 2017 info"
+            # self.ids.title.text = "semEval 2017 info"
             self.ids.info.text = "bla bla bla"
             self.ids.dataset_photo.source= 'Semeval 2017.png'
         elif dataset=="6":
-            self.ids.title.text = "Somasundaran Wiebe info"
+            # self.ids.title.text = "Somasundaran Wiebe info"
             self.ids.info.text = "bla bla bla"
             self.ids.dataset_photo.source= 'SomasundaranWiebe.png'
 

@@ -808,17 +808,15 @@
 
 
 <DataSetStatWindow>:
+    canvas.before:
+        Rectangle:
+            pos: self.pos
+            size: self.size
+            source: 'dataset.PNG'
     RelativeLayout:
         cols: 1
         RelativeLayout:
-            Label:
-                id: title
-                # text: "DataSet Stat"
-                bold: True
-                size_hint: .20, .10
-                pos_hint: {'top': 1.0, 'right': .6}
-                font_size: '50sp'
-                color: 1, .8, .4, .85
+
 
             Label:
                 id: info
@@ -828,13 +826,11 @@
         GridLayout:
             cols: 1
             row_force_default: True
-            row_default_height: 300
+            row_default_height: 400
             pos_hint: {'top': .65}
 
             Image:
                 id: dataset_photo
-
-
 
 
         GridLayout:
