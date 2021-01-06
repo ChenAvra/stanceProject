@@ -88,6 +88,11 @@
 
 
 <UserStanceWindow>:
+    canvas.before:
+        Rectangle:
+            pos: self.pos
+            size: self.size
+            source: 'revealstance.PNG'
     topic: topic
     sentence: sentence
 
@@ -211,6 +216,11 @@
                         root.manager.current = 'welcome'
 
 <SelectWindow>:
+    canvas.before:
+        Rectangle:
+            pos: self.pos
+            size: self.size
+            source: 'comparealgo.PNG'
     RelativeLayout:
         cols: 1
 
@@ -530,6 +540,12 @@
                     on_press: root.manager.current = 'welcome'
 
 <StatWindow>:
+    canvas.before:
+        Rectangle:
+            pos: self.pos
+            size: self.size
+            source: 'results.PNG'
+
     RelativeLayout:
         cols: 1
 
