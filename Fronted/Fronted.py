@@ -370,7 +370,7 @@ class UserStanceWindow(Screen,GridLayout):
         dropdown = DropDown()
         for index in ['Atheism', 'Hillary Clinton','Legalization of Abortion', 'Climate Change is a Real Concern','Feminist Movement']:
             # Adding button in drop down list
-            btn = Button(text=index, size_hint_y=None, height=40)
+            btn = Button(text=index,bold=True, size_hint_y=None, height=40, background_color= (.411, .568, .924, 1))
 
             # binding the button to show the text when selected
             btn.bind(on_release=lambda btn: dropdown.select(btn.text))
