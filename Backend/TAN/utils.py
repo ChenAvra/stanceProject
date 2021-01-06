@@ -129,8 +129,11 @@ def load_dataset(topic_string,df_train,df_test,labels,dataset,dev = "cuda"):
             return [word]
         return wordninja.split(word)
 
-
-    assert dataset in ['Are E-Cigarettes safe?', 'Does Sunlight exposure lead to skin cancer?', 'Does Vitamin C prevent common cold?', 'Should women take HRT post-menopause?', 'Does MMR Vaccine lead to autism in children?', 'atheism', 'hillary clinton', 'legalization of abortion', 'climate change is a real concern', 'feminist movement'], "unknown dataset"
+    assert dataset in ['Are E-Cigarettes safe?', 'Does Sunlight exposure lead to skin cancer?',
+                       'Does Vitamin C prevent common cold?', 'Should women take HRT post-menopause?',
+                       'Does MMR Vaccine lead to autism in children?', 'Atheism', 'Hillary Clinton',
+                       'Legalization of Abortion', 'Climate Change is a Real Concern',
+                       'Feminist Movement'], "unknown dataset"
 
     folder = "Data_SemE_P"
 
@@ -149,37 +152,37 @@ def load_dataset(topic_string,df_train,df_test,labels,dataset,dev = "cuda"):
     elif dataset == 'Does MMR Vaccine lead to autism in children?':
         topic = 'MMR vaccine can cause autism'
         folder = "Data_MPCHI_P"
-    elif dataset == 'atheism' :
-        topic = "atheism"
-    elif dataset == 'hillary clinton' :
-        topic = "hillary clinton"
-    elif dataset == 'legalization of abortion' :
-        topic = "legalization of abortion"
-    elif dataset == 'climate change is a real concern' :
-        topic = "climate change is a real concern"
-    elif dataset == 'feminist movement' :
-        topic = "feminist movement"
+    elif dataset == 'Atheism':
+        topic = "Atheism"
+    elif dataset == 'Hillary Clinton':
+        topic = "Hillary Clinton"
+    elif dataset == 'Legalization of Abortion':
+        topic = "Legalization of Abortion"
+    elif dataset == 'Climate Change is a Real Concern':
+        topic = "Climate Change is a Real Concern"
+    elif dataset == 'Feminist Movement':
+        topic = "Feminist Movement"
     elif dataset == 'vaccines cause autism':
         topic = "vaccines cause autism"
     elif dataset == 'vaccines treat influenza':
         topic = "vaccines treat influenza"
     else:
-        topic=topic_string
+        topic = topic_string
     print(topic)
-    PROJECT_ROOT = os.path.abspath('__file__')
+    PROJECT_ROOT = os.path.abspath(__file__)
     BASE_DIR = os.path.dirname(PROJECT_ROOT)
-    cm_path1 = BASE_DIR + '\\TAN\\noslang_data.json'
-    PROJECT_ROOT = os.path.abspath('__file__')
+    cm_path1 = BASE_DIR + '\\noslang_data.json'
+    PROJECT_ROOT = os.path.abspath(__file__)
     BASE_DIR = os.path.dirname(PROJECT_ROOT)
-    cm_path2 = BASE_DIR + '\\TAN\\emnlp_dict.txt'
+    cm_path2 = BASE_DIR + '\\emnlp_dict.txt'
     normalization_dict = create_normalise_dict(no_slang_data = cm_path1, emnlp_dict = cm_path2)
 
     target = normalise(normalization_dict,clean_str(topic))
 
     word2emb = {}
-    PROJECT_ROOT = os.path.abspath('__file__')
+    PROJECT_ROOT = os.path.abspath(__file__)
     BASE_DIR = os.path.dirname(PROJECT_ROOT)
-    WORD2VEC_MODEL = BASE_DIR + '\\TAN\\glove.6B.300d.txt'
+    WORD2VEC_MODEL = BASE_DIR + '\\glove.6B.300d.txt'
     fglove = open(WORD2VEC_MODEL, encoding="utf8")
     for line in fglove:
         cols = line.strip().split()
@@ -372,9 +375,9 @@ def pre_proce_one_stance(topic_string,df,labels,dataset,dev = "cuda"):
 
     assert dataset in ['Are E-Cigarettes safe?', 'Does Sunlight exposure lead to skin cancer?',
                        'Does Vitamin C prevent common cold?', 'Should women take HRT post-menopause?',
-                       'Does MMR Vaccine lead to autism in children?', 'atheism', 'hillary clinton',
-                       'legalization of abortion', 'climate change is a real concern',
-                       'feminist movement'], "unknown dataset"
+                       'Does MMR Vaccine lead to autism in children?', 'Atheism', 'Hillary Clinton',
+                       'Legalization of Abortion', 'Climate Change is a Real Concern',
+                       'Feminist Movement'], "unknown dataset"
 
     folder = "Data_SemE_P"
 
@@ -393,16 +396,16 @@ def pre_proce_one_stance(topic_string,df,labels,dataset,dev = "cuda"):
     elif dataset == 'Does MMR Vaccine lead to autism in children?':
         topic = 'MMR vaccine can cause autism'
         folder = "Data_MPCHI_P"
-    elif dataset == 'atheism':
-        topic = "atheism"
-    elif dataset == 'hillary clinton':
-        topic = "hillary clinton"
-    elif dataset == 'legalization of abortion':
-        topic = "legalization of abortion"
-    elif dataset == 'climate change is a real concern':
-        topic = "climate change is a real concern"
-    elif dataset == 'feminist movement':
-        topic = "feminist movement"
+    elif dataset == 'Atheism':
+        topic = "Atheism"
+    elif dataset == 'Hillary Clinton':
+        topic = "Hillary Clinton"
+    elif dataset == 'Legalization of Abortion':
+        topic = "Legalization of Abortion"
+    elif dataset == 'Climate Change is a Real Concern':
+        topic = "Climate Change is a Real Concern"
+    elif dataset == 'Feminist Movement':
+        topic = "Feminist Movement"
     elif dataset == 'vaccines cause autism':
         topic = "vaccines cause autism"
     elif dataset == 'vaccines treat influenza':
@@ -410,20 +413,20 @@ def pre_proce_one_stance(topic_string,df,labels,dataset,dev = "cuda"):
     else:
         topic = topic_string
     print(topic)
-    PROJECT_ROOT = os.path.abspath('__file__')
+    PROJECT_ROOT = os.path.abspath(__file__)
     BASE_DIR = os.path.dirname(PROJECT_ROOT)
-    cm_path1 = BASE_DIR + '\\TAN\\noslang_data.json'
-    PROJECT_ROOT = os.path.abspath('__file__')
+    cm_path1 = BASE_DIR + '\\noslang_data.json'
+    PROJECT_ROOT = os.path.abspath(__file__)
     BASE_DIR = os.path.dirname(PROJECT_ROOT)
-    cm_path2 = BASE_DIR + '\\TAN\\emnlp_dict.txt'
+    cm_path2 = BASE_DIR + '\\emnlp_dict.txt'
     normalization_dict = create_normalise_dict(no_slang_data=cm_path1, emnlp_dict=cm_path2)
 
     target = normalise(normalization_dict, clean_str(topic))
 
     word2emb = {}
-    PROJECT_ROOT = os.path.abspath('__file__')
+    PROJECT_ROOT = os.path.abspath(__file__)
     BASE_DIR = os.path.dirname(PROJECT_ROOT)
-    WORD2VEC_MODEL = BASE_DIR + '\\TAN\\glove.6B.300d.txt'
+    WORD2VEC_MODEL = BASE_DIR + '\\glove.6B.300d.txt'
     fglove = open(WORD2VEC_MODEL, encoding="utf8")
     for line in fglove:
         cols = line.strip().split()

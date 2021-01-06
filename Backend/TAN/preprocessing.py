@@ -82,7 +82,7 @@ def load_glove_embeddings():
         word2emb[word]=embedding
     fglove.close()
     return word2emb
-print("im here")
+
 
 # raw_folders = ['./Data_SemE','./Data_MPCHI']
 # processed_folders = ['./Data_SemE_P','./Data_MPCHI_P']
