@@ -368,7 +368,7 @@ class UserStanceWindow(Screen,GridLayout):
 
     def test(self):
         dropdown = DropDown()
-        for index in ["E-ciggarettes are safer than normal ciggarettes","Sun exposure can lead to skin cancer","Vitamin C prevents common cold","Women should take HRT post menopause","MMR vaccine can cause autism","atheism","hillary clinton","legalization of abortion","climate change is a real concern","feminist movement"]:
+        for index in ['Atheism', 'Hillary Clinton','Legalization of Abortion', 'Climate Change is a Real Concern','Feminist Movement']:
             # Adding button in drop down list
             btn = Button(text=index, size_hint_y=None, height=40)
 

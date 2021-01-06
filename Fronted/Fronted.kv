@@ -235,50 +235,70 @@
                     row_default_height: 50
 
                     Label:
-                    Label:
-                        text: "Select Algorithms"
-                        bold: True
-                        font_size: '20sp'
+                    GridLayout:
+                        cols:2
+                        Label:
+                            text: "Select Algorithms"
+                            bold: True
+                            font_size: '20sp'
+                        Label:
                     Label:
 
                     GridLayout:
-                        cols: 4
+                        cols: 5
                         row_force_default: True
                         row_default_height: 50
 
                         Label:
                             text: "SEN"
-                        Button:
-                            text: "!"
-                            size: 25, 40
-                            size_hint: None, None
-                            on_press: root.info_btn("method1")
+                        GridLayout:
+                            cols:2
+                            Label:
+                            Button:
+                                text: "!"
+                                size: 25, 40
+                                size_hint: None, None
+                                pos_hint: None,None
+                                on_press: root.info_btn("method1")
                         CheckBox:
                             id: method_1
+                            pos_hint: {'left': 1.0}
                         # Label:
                         # Label:
                         Label:
+                        Label:
+
+
                         Label:
                             text: "UCLMR"
-                        Button:
-                            text: "!"
-                            size: 25, 40
-                            size_hint: None, None
-                            on_press: root.info_btn("method2")
+                        GridLayout:
+                            cols: 2
+                            Label:
+                            Button:
+                                text: "!"
+                                size: 25, 40
+                                size_hint: None, None
+                                on_press: root.info_btn("method2")
                         CheckBox:
                             id: method_2
                         # Label:
                         # Label:
                         Label:
                         Label:
+                        Label:
                             text: "TAN"
-                        Button:
-                            text: "!"
-                            size: 25, 40
-                            size_hint: None, None
-                            on_press: root.info_btn("method3")
+                        GridLayout:
+                            cols: 2
+                            Label:
+                            Button:
+                                text: "!"
+                                size: 25, 40
+                                size_hint: None, None
+                                on_press: root.info_btn("method3")
                         CheckBox:
                             id: method_3
+                        Label:
+                        Label:
                         Label:
                         Label:
                         Label:
@@ -326,11 +346,16 @@
 
                         Label:
                             text: "semEval2016"
-                        Button:
-                            text: "!"
-                            size: 25, 40
-                            size_hint: None, None
-                            on_press: root.info_btn("dataset1")
+                        GridLayout:
+                            cols: 4
+                            Label:
+                            Label:
+                            Button:
+                                text: "!"
+                                size: 25, 40
+                                size_hint: None, None
+                                on_press: root.info_btn("dataset1")
+                            Label:
                         CheckBox:
                             id: set_1
                             on_press:
@@ -342,11 +367,16 @@
 
                         Label:
                             text: "semEval2017"
-                        Button:
-                            text: "!"
-                            size: 25, 40
-                            size_hint: None, None
-                            on_press: root.info_btn("dataset5")
+                        GridLayout:
+                            cols: 4
+                            Label:
+                            Label:
+                            Button:
+                                text: "!"
+                                size: 25, 40
+                                size_hint: None, None
+                                on_press: root.info_btn("dataset5")
+                            Label:
                         CheckBox:
                             id: set_5
                             on_press:
@@ -358,11 +388,16 @@
 
                         Label:
                             text: "MPCHI"
-                        Button:
-                            text: "!"
-                            size: 25, 40
-                            size_hint: None, None
-                            on_press: root.info_btn("dataset3")
+                        GridLayout:
+                            cols: 4
+                            Label:
+                            Label:
+                            Button:
+                                text: "!"
+                                size: 25, 40
+                                size_hint: None, None
+                                on_press: root.info_btn("dataset3")
+                            Label:
                         CheckBox:
                             id: set_3
                             on_press:
@@ -373,12 +408,17 @@
                                 set_6.active = False
 
                         Label:
-                            text: "Somasundaran Wiebe"
-                        Button:
-                            text: "!"
-                            size: 25, 40
-                            size_hint: None, None
-                            on_press: root.info_btn("dataset6")
+                            text: "Somasundaran\n Wiebe"
+                        GridLayout:
+                            cols: 4
+                            Label:
+                            Label:
+                            Button:
+                                text: "!"
+                                size: 25, 40
+                                size_hint: None, None
+                                on_press: root.info_btn("dataset6")
+                            Label:
                         CheckBox:
                             id: set_6
                             on_press:

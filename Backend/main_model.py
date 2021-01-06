@@ -234,4 +234,4 @@ def get_one_stance(sentence, claim):
 # models.append("UCLMR")
 # start_Specific_Model(models, "FNC", 66)
 
-# print(get_one_stance("I think she is a nice woman",'Hillary Clinton'))
+# print(get_one_stance("I don't believe in god",'Atheism'))
