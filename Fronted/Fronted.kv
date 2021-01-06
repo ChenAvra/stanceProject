@@ -209,7 +209,7 @@
                             cols:2
                             Label:
                             Button:
-                                text: "!"
+                                text: "i"
                                 size: 25, 40
                                 size_hint: None, None
                                 pos_hint: None,None
@@ -229,7 +229,7 @@
                             cols: 2
                             Label:
                             Button:
-                                text: "!"
+                                text: "i"
                                 size: 25, 40
                                 size_hint: None, None
                                 on_press: root.info_btn("method2")
@@ -245,7 +245,7 @@
                             cols: 2
                             Label:
                             Button:
-                                text: "!"
+                                text: "i"
                                 size: 25, 40
                                 size_hint: None, None
                                 on_press: root.info_btn("method3")
@@ -305,7 +305,7 @@
                             Label:
                             Label:
                             Button:
-                                text: "!"
+                                text: "i"
                                 size: 25, 40
                                 size_hint: None, None
                                 on_press: root.info_btn("dataset1")
@@ -326,7 +326,7 @@
                             Label:
                             Label:
                             Button:
-                                text: "!"
+                                text: "i"
                                 size: 25, 40
                                 size_hint: None, None
                                 on_press: root.info_btn("dataset5")
@@ -347,7 +347,7 @@
                             Label:
                             Label:
                             Button:
-                                text: "!"
+                                text: "i"
                                 size: 25, 40
                                 size_hint: None, None
                                 on_press: root.info_btn("dataset3")
@@ -368,7 +368,7 @@
                             Label:
                             Label:
                             Button:
-                                text: "!"
+                                text: "i"
                                 size: 25, 40
                                 size_hint: None, None
                                 on_press: root.info_btn("dataset6")
@@ -390,7 +390,7 @@
                         Label:
                             text: "FNC-1"
                         Button:
-                            text: "!"
+                            text: "i"
                             size: 25, 40
                             size_hint: None, None
                             on_press: root.info_btn("dataset2")
@@ -408,7 +408,7 @@
                         Label:
                             text: "EmergentLite"
                         Button:
-                            text: "!"
+                            text: "i"
                             size: 25, 40
                             size_hint: None, None
                             on_press:root.info_btn("dataset4")
@@ -478,7 +478,7 @@
         GridLayout:
             cols: 6
             row_force_default: True
-            row_default_height: 70
+            row_default_height: 60
             pos_hint: {'top': .82}
 
 
@@ -508,11 +508,14 @@
                 bold: True
                 id: button1
                 text: "Show statistics"
-                size: 150, 50
+                size: 180, 50
                 size_hint: None, None
+                pos_hint: {'top': .43, 'right': .55}
                 font_size: '20sp'
                 background_normal: 'normal.png'
-                background_color: 1, .8, .4, .85
+                background_color: .411, .568, .924, 1
+                markup: True
+
                 on_press: root.select_model("SEN")
             Label:
 
@@ -528,12 +531,13 @@
                 bold: True
                 id: button2
                 text: "Show statistics"
-                size: 150, 50
+                text: "Show statistics"
+                size: 180, 50
                 size_hint: None, None
-                # pos_hint: {'top': .15, 'right': .4}
+                pos_hint: {'top': .43, 'right': .55}
                 font_size: '20sp'
                 background_normal: 'normal.png'
-                background_color: 1, .8, .4, .85
+                background_color: .411, .568, .924, 1
                 on_press: root.select_model("UCLMR")
             Label:
 
@@ -550,12 +554,12 @@
                 bold: True
                 id: button3
                 text: "Show statistics"
-                size: 150, 50
+                size: 180, 50
                 size_hint: None, None
-                # pos_hint: {'top': .15, 'right': .4}
+                pos_hint: {'top': .43, 'right': .55}
                 font_size: '20sp'
                 background_normal: 'normal.png'
-                background_color: 1, .8, .4, .85
+                background_color: .411, .568, .924, 1
                 on_press: root.select_model("TAN")
             Label:
 
@@ -566,34 +570,33 @@
             Button:
                 id: dataset_button
                 bold: True
-                size: 150, 50
+                size: 180, 50
                 size_hint: None, None
-                # pos_hint: {'top': .15, 'right': .4}
+                pos_hint: {'top': .43, 'right': .55}
                 font_size: '20sp'
                 background_normal: 'normal.png'
-                background_color: 1, .8, .4, .85
+                background_color: .411, .568, .924, 1
                 on_press: root.select_dataset()
 
-        GridLayout:
-            cols: 3
-            row_force_default: True
-            row_default_height: 50
-            pos_hint: {'top': .15}
+        RelativeLayout:
 
-            Label:
+
             Button:
                 text: "Back to the algorithms"
-                # size_hint: .20, .10
-                # pos_hint: {'top': .15, 'right': .4}
+                size: 250, 40
+                size_hint: None, None
+                pos_hint: {'top': .23, 'right': .59}
                 font_size: '20sp'
                 background_normal: 'normal.png'
-                background_color: 1, .8, .4, .85
+                background_color: .411, .568, .924, 1
+                markup: True
+                bold: True
                 on_press:
                     method_1_accuracy.text = ""
                     method_2_accuracy.text = ""
                     method_3_accuracy.text = ""
                     root.manager.current = 'select_window'
-            Label:
+
 
 <ModelStatWindow>:
     RelativeLayout:
@@ -608,6 +611,8 @@
                 pos_hint: {'top': 1.0, 'right': .6}
                 font_size: '50sp'
                 color: 1, .8, .4, .85
+                opacity: 0
+
 
         GridLayout:
             cols: 3
@@ -821,22 +826,28 @@
             Button:
                 id: back_stat
                 text: "Back to the statistics"
-                # size_hint: .20, .10
-                # pos_hint: {'top': .15, 'right': .4}
+                size: 250, 40
+                size_hint: None, None
+                pos_hint: {'top': .23, 'right': .59}
                 font_size: '20sp'
                 background_normal: 'normal.png'
-                background_color: 1, .8, .4, .85
+                background_color: .411, .568, .924, 1
+                markup: True
+                bold: True
                 on_press: root.manager.current = 'stat_window'
 
             Label:
             Button:
                 id: back_select
                 text: "Back to the algorithms"
-                # size_hint: .20, .10
-                # pos_hint: {'top': .15, 'right': .4}
+                size: 250, 40
+                size_hint: None, None
+                pos_hint: {'top': .23, 'right': .59}
                 font_size: '20sp'
                 background_normal: 'normal.png'
-                background_color: 1, .8, .4, .85
+                background_color: .411, .568, .924, 1
+                markup: True
+                bold: True
                 on_press: root.manager.current = 'select_window'
 
             Label:
