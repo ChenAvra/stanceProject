@@ -8,16 +8,6 @@
     RelativeLayout:
         cols: 1
 
-        RelativeLayout:
-            Label:
-                text: "SYSTANCE"
-                bold: True
-                size_hint: .20, .10
-                pos_hint: {'top': 1, 'right': .6}
-                font_size: '80sp'
-                color: 1, .8, .4, .85
-
-
         GridLayout:
             cols: 1
             # row_force_default: True
@@ -87,20 +77,16 @@
 
 
 <UserStanceWindow>:
+    canvas.before:
+        Rectangle:
+            pos: self.pos
+            size: self.size
+            source: 'revealstance.PNG'
     topic: topic
     sentence: sentence
 
     RelativeLayout:
         cols: 1
-
-        RelativeLayout:
-            Label:
-                text: "Let's reveal your stance!"
-                bold: True
-                size_hint: .20, .10
-                pos_hint: {'top': 1.0, 'right': .6}
-                font_size: '50sp'
-                color: 1, .8, .4, .85
 
         GridLayout:
             cols: 1
@@ -210,17 +196,13 @@
                         root.manager.current = 'welcome'
 
 <SelectWindow>:
+    canvas.before:
+        Rectangle:
+            pos: self.pos
+            size: self.size
+            source: 'comparealgo.PNG'
     RelativeLayout:
         cols: 1
-
-        RelativeLayout:
-            Label:
-                text: "Let's Compare Algorithms"
-                bold: True
-                size_hint: .20, .10
-                pos_hint: {'top': 1.0, 'right': .6}
-                font_size: '50sp'
-                color: 1, .8, .4, .85
 
         GridLayout:
             cols: 1
@@ -529,17 +511,14 @@
                     on_press: root.manager.current = 'welcome'
 
 <StatWindow>:
+    canvas.before:
+        Rectangle:
+            pos: self.pos
+            size: self.size
+            source: 'results.PNG'
+
     RelativeLayout:
         cols: 1
-
-        RelativeLayout:
-            Label:
-                text: "Results"
-                bold: True
-                size_hint: .20, .10
-                pos_hint: {'top': 1.0, 'right': .6}
-                font_size: '70sp'
-                color: 1, .8, .4, .85
 
         GridLayout:
             cols: 7
