@@ -338,6 +338,7 @@
                                 set_3.active = False
                                 set_4.active = False
                                 set_5.active = False
+                                set_6.active = False
 
                         Label:
                             text: "semEval2017"
@@ -353,6 +354,7 @@
                                 set_2.active = False
                                 set_3.active = False
                                 set_4.active = False
+                                set_6.active = False
 
                         Label:
                             text: "MPCHI"
@@ -368,7 +370,23 @@
                                 set_2.active = False
                                 set_4.active = False
                                 set_5.active = False
+                                set_6.active = False
 
+                        Label:
+                            text: "Somasundaran Wiebe"
+                        Button:
+                            text: "!"
+                            size: 25, 40
+                            size_hint: None, None
+                            on_press: root.info_btn("dataset6")
+                        CheckBox:
+                            id: set_6
+                            on_press:
+                                set_1.active = False
+                                set_2.active = False
+                                set_3.active = False
+                                set_4.active = False
+                                set_5.active = False
 
                     GridLayout:
                         cols: 3
@@ -389,6 +407,7 @@
                                 set_3.active = False
                                 set_4.active = False
                                 set_5.active = False
+                                set_6.active = False
 
                     # Label:
 
@@ -406,6 +425,7 @@
                                 set_2.active = False
                                 set_3.active = False
                                 set_5.active = False
+                                set_6.active = False
                     Label:
                     Label:
                     Label:
@@ -447,7 +467,7 @@
                     font_size: '20sp'
                     background_normal: 'normal.png'
                     background_color: 1, .8, .4, .85
-                    on_press: root.run_btn(method_1,method_2,method_3,set_1,set_2,set_3,set_4,set_5,percent)
+                    on_press: root.run_btn(method_1,method_2,method_3,set_1,set_2,set_3,set_4,set_5,set_6,percent)
 
 
                 Label:

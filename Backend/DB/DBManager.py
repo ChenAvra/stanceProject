@@ -58,21 +58,27 @@ class DataBase:
         if df.shape[0]>0:
             return
         # self.cursor.execute("CREATE TABLE IF NOT EXISTS Claims(Dataset_Number INTEGER NOT NULL, Claim TEXT NOT NULL, Sentence TEXT NOT NULL, Stance TEXT NOT NULL)")
-        with open(path) as csv_file:
-            csv_reader = csv.reader(csv_file, delimiter=',')
-            # for line in csv_reader:
-            #     print(line)
-            query = "INSERT INTO Claims VALUES({},?,?,?);".format(dataset_number)
-            self.cursor.executemany(query, csv_reader)
+        if dataset_number==6:
+            with open(path, "r", encoding='utf-8') as csv_file:
+                csv_reader = csv.reader(csv_file, delimiter=',')
+                # for line in csv_reader:
+                #     print(line)
+                query = "INSERT INTO Claims VALUES({},?,?,?);".format(dataset_number)
+                self.cursor.executemany(query, csv_reader)
+        else:
+            with open(path) as csv_file:
+                csv_reader = csv.reader(csv_file, delimiter=',')
+                # for line in csv_reader:
+                #     print(line)
+                query = "INSERT INTO Claims VALUES({},?,?,?);".format(dataset_number)
+                self.cursor.executemany(query, csv_reader)
         self.conn.commit()
 
     def insert_semEveal_2017(self, path, dataset_number):
         df = self.get_dataset(dataset_number)
         if df.shape[0]>0:
             return
-
         f = open(path, "r", encoding='utf-8')
-
         for x in f:
             d = eval(x)
             print(d)
@@ -90,7 +96,6 @@ class DataBase:
                     topic = "sydneysiege"
                 if not topic=="":
                     self.cursor.execute("INSERT INTO Claims VALUES (?,?,?,?);",(dataset_number, topic, d['text'], d['label']))
-
         self.conn.commit()
 
         # f = open(path, "r")
@@ -115,9 +120,10 @@ class DataBase:
 # db = DataBase()
 # db.insert_semEveal_2017("semeval2017.txt",2)
 # db.delete_dataset(2)
-# db.fill_claim_table("semEval2016.csv",1)
+# db.fill_claim_table("SomasundaranWiebe.csv",6)
+# print(db.get_dataset(6))
 # df = db.get_dataset(1)
-# print(df.shape[0])
+# print(df.columns)
 
 # db.fill_claim_table("semEval2016.csv",1)
 # db.fill_claim_table("FNC.csv",3)
@@ -126,11 +132,11 @@ class DataBase:
 # print(db.get_dataset(2))
 
 # db = DataBase()
-# df = db.get_dataset(2)
+# df = db.get_dataset(6)
 # # print(df)
 # print(df.groupby(['Stance']).count())
-# labels = 'comment: 1753', 'deny: 221', 'query: 224', 'support: 619'
-# sizes = [1753, 221, 224, 619]
+# labels = 'Against: 3160', 'Favor: 3961'
+# sizes = [3160, 3961]
 # fig1, ax1 = plt.subplots()
 # ax1.pie(sizes, labels=labels, autopct='%1.1f%%', startangle=90)
 # ax1.axis('equal')  # Equal aspect ratio ensures that pie is drawn as a circle.
