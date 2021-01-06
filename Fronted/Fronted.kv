@@ -1,15 +1,20 @@
 <WelcomeWindow>:
+    canvas.before:
+        Rectangle:
+            pos: self.pos
+            size: self.size
+            source: 'Capture.PNG'
 
     RelativeLayout:
         cols: 1
 
         RelativeLayout:
             Label:
-                text: "Stance Detection Algorithm Comparison"
+                text: "SYSTANCE"
                 bold: True
                 size_hint: .20, .10
-                pos_hint: {'top': 1.0, 'right': .6}
-                font_size: '50sp'
+                pos_hint: {'top': 1, 'right': .6}
+                font_size: '80sp'
                 color: 1, .8, .4, .85
 
 
@@ -25,10 +30,7 @@
 
                 Label:
                 Label:
-                Image:
-                    source: 'photo1.png'
-                Image:
-                    source: 'photo2.png'
+
 
             GridLayout:
                 cols: 5
@@ -58,9 +60,10 @@
                 Label:
                 Button:
                     text: "Run algorithms"
-                    size_hint: .20, .1
+                    size: 250, 40
+                    size_hint: None, None
                     pos_hint: {'top': .15, 'right': .8}
-                    font_size: '20sp'
+                    font_size: '25sp'
                     background_normal: 'normal.png'
                     background_color: 1, .8, .4, .85
                     markup: True
@@ -70,9 +73,10 @@
                 Label:
                 Button:
                     text: "Try it yourself!"
-                    size_hint: .20, .1
+                    size: 250, 40
+                    size_hint: None, None
                     pos_hint: {'top': .15, 'right': .8}
-                    font_size: '20sp'
+                    font_size: '25sp'
                     background_normal: 'normal.png'
                     background_color: 1, .8, .4, .85
                     markup: True
@@ -309,7 +313,7 @@
                         Label:
                         TextInput:
                             id: percent
-                            text: "75"
+                            text: "80"
                             size: 50, 50
                             size_hint: None, None
 
@@ -332,10 +336,10 @@
                     row_default_height: 50
 
                     Label:
-                        text: "Topic Base Datasets"
+                        text: "Topic Based Datasets"
                         bold: True
                     Label:
-                        text: "Headline Base Datasets"
+                        text: "Headline Based Datasets"
                         bold: True
                     Label:
 
@@ -534,7 +538,7 @@
                 bold: True
                 size_hint: .20, .10
                 pos_hint: {'top': 1.0, 'right': .6}
-                font_size: '50sp'
+                font_size: '70sp'
                 color: 1, .8, .4, .85
 
         GridLayout:
@@ -546,6 +550,7 @@
             Label:
             Label:
                 text: "SEN"
+                font_size: '30sp'
             Label:
                 id: method_1_accuracy
             Button:
@@ -553,7 +558,7 @@
                 text: "Show statistics"
                 size: 150, 50
                 size_hint: None, None
-                # font_size: '20sp'
+                # font_size: '30sp'
                 background_normal: 'normal.png'
                 background_color: 1, .8, .4, .85
                 on_press: root.select_model("SEN")
@@ -563,15 +568,17 @@
             Label:
             Label:
                 text: "UCLMR"
+                font_size: '30sp'
             Label:
                 id: method_2_accuracy
+                font_size: '30sp'
             Button:
                 id: button2
                 text: "Show statistics"
                 size: 150, 50
                 size_hint: None, None
                 # pos_hint: {'top': .15, 'right': .4}
-                # font_size: '20sp'
+                # font_size: '30sp'
                 background_normal: 'normal.png'
                 background_color: 1, .8, .4, .85
                 on_press: root.select_model("UCLMR")
@@ -581,8 +588,10 @@
             Label:
             Label:
                 text: "TAN"
+                font_size: '30sp'
             Label:
                 id: method_3_accuracy
+                font_size: '30sp'
                 # text: "45% Accuracy"
             Button:
                 id: button3
@@ -590,7 +599,7 @@
                 size: 150, 50
                 size_hint: None, None
                 # pos_hint: {'top': .15, 'right': .4}
-                # font_size: '20sp'
+                # font_size: '30sp'
                 background_normal: 'normal.png'
                 background_color: 1, .8, .4, .85
                 on_press: root.select_model("TAN")
@@ -605,7 +614,7 @@
                 size: 150, 50
                 size_hint: None, None
                 # pos_hint: {'top': .15, 'right': .4}
-                # font_size: '20sp'
+                # font_size: '30sp'
                 background_normal: 'normal.png'
                 background_color: 1, .8, .4, .85
                 on_press: root.select_dataset()
