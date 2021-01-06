@@ -234,4 +234,4 @@ def get_one_stance(sentence, claim):
 # models.append("TAN")
 # start_Specific_Model(models, "semEval2016", 80)
 
-print(get_one_stance("I believe in god",'Atheism'))
+# print(get_one_stance("I believe in god",'Atheism'))

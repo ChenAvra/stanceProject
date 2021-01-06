@@ -12,7 +12,9 @@ def Pred(df_train, df_test, labels, num_of_labels):
     all_topic_labels=[]
     all_topic_y_test=[]
 
-    for claim in (df_train.Claim.unique()):
+    list=['Feminist Movement','Hillary Clinton','Legalization of Abortion']
+    # for claim in (df_train.Claim.unique()):
+    for claim in list:
         df_train_per_claim=df_train.loc[df_train['Claim'] == claim]
         df_test_per_claim=df_test.loc[df_test['Claim'] == claim]
 
