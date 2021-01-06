@@ -247,12 +247,7 @@
                         row_default_height: 50
 
                         Label:
-                        Label:
-                        Label:
-                        Label:
-                        Label:
-                        Label:
-                            text: "SVM (need to change)"
+                            text: "SEN"
                         Button:
                             text: "!"
                             size: 25, 40
@@ -284,6 +279,19 @@
                             on_press: root.info_btn("method3")
                         CheckBox:
                             id: method_3
+                        Label:
+                        Label:
+                        Label:
+                        Label:
+                        Label:
+                        Label:
+                            text: "Train Percent: "
+                        Label:
+                        TextInput:
+                            id: percent
+                            text: "75"
+                            size: 50, 50
+                            size_hint: None, None
 
                 GridLayout:
                     cols: 5
@@ -304,10 +312,10 @@
                     row_default_height: 50
 
                     Label:
-                        text: "Twitter Datasets"
+                        text: "Topic Base Datasets"
                         bold: True
                     Label:
-                        text: "Article Datasets"
+                        text: "Headline Base Datasets"
                         bold: True
                     Label:
 
@@ -329,6 +337,25 @@
                                 set_2.active = False
                                 set_3.active = False
                                 set_4.active = False
+                                set_5.active = False
+                                set_6.active = False
+
+                        Label:
+                            text: "semEval2017"
+                        Button:
+                            text: "!"
+                            size: 25, 40
+                            size_hint: None, None
+                            on_press: root.info_btn("dataset5")
+                        CheckBox:
+                            id: set_5
+                            on_press:
+                                set_1.active = False
+                                set_2.active = False
+                                set_3.active = False
+                                set_4.active = False
+                                set_6.active = False
+
                         Label:
                             text: "MPCHI"
                         Button:
@@ -342,7 +369,24 @@
                                 set_1.active = False
                                 set_2.active = False
                                 set_4.active = False
+                                set_5.active = False
+                                set_6.active = False
 
+                        Label:
+                            text: "Somasundaran Wiebe"
+                        Button:
+                            text: "!"
+                            size: 25, 40
+                            size_hint: None, None
+                            on_press: root.info_btn("dataset6")
+                        CheckBox:
+                            id: set_6
+                            on_press:
+                                set_1.active = False
+                                set_2.active = False
+                                set_3.active = False
+                                set_4.active = False
+                                set_5.active = False
 
                     GridLayout:
                         cols: 3
@@ -362,6 +406,8 @@
                                 set_1.active = False
                                 set_3.active = False
                                 set_4.active = False
+                                set_5.active = False
+                                set_6.active = False
 
                     # Label:
 
@@ -378,6 +424,8 @@
                                 set_1.active = False
                                 set_2.active = False
                                 set_3.active = False
+                                set_5.active = False
+                                set_6.active = False
                     Label:
                     Label:
                     Label:
@@ -385,13 +433,7 @@
                     Label:
                     Label:
                     Label:
-                    Label:
-                        text: "Train Percent: "
-                    TextInput:
-                        id: percent
-                        text: "75"
-                        size: 50, 50
-                        size_hint: None, None
+
                     Label:
             GridLayout:
                 cols: 3
@@ -425,7 +467,7 @@
                     font_size: '20sp'
                     background_normal: 'normal.png'
                     background_color: 1, .8, .4, .85
-                    on_press: root.run_btn(method_1,method_2,method_3,set_1,set_2,set_3,set_4,percent)
+                    on_press: root.run_btn(method_1,method_2,method_3,set_1,set_2,set_3,set_4,set_5,set_6,percent)
 
 
                 Label:
@@ -463,7 +505,7 @@
             Label:
             Label:
             Label:
-                text: "SVM (need to change)"
+                text: "SEN"
             Label:
                 id: method_1_accuracy
             Button:
@@ -474,7 +516,7 @@
                 # font_size: '20sp'
                 background_normal: 'normal.png'
                 background_color: 1, .8, .4, .85
-                on_press: root.select_model("SVM")
+                on_press: root.select_model("SEN")
             Label:
             Label:
             Label:

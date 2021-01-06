@@ -44,11 +44,17 @@ class SelectWindow(Screen,GridLayout):
         elif index=="dataset4":
             self.manager.get_screen("dataset_stat_window").entry("4", True)
             self.manager.current = 'dataset_stat_window'
+        elif index == "dataset5":
+            self.manager.get_screen("dataset_stat_window").entry("5", True)
+            self.manager.current = 'dataset_stat_window'
+        elif index == "dataset6":
+            self.manager.get_screen("dataset_stat_window").entry("6", True)
+            self.manager.current = 'dataset_stat_window'
 
         else:
             text = ""
             if index=="method1":
-                text="Method 1 Information:"
+                text="a SVM based stance detection model using three sets of\n features – stance vector, textual entailment and sentiment feature.\n The stance vector is created on a sentence level based on\n an assumption that the main information present in a sentence\n revolves around some particular parts-of-speech.\n Thus these parts-of-speech are the main building blocks of the\n stance expressed by a sentence towards a particular claim.\n To identify the sentiment feature a standard sentiment analyzer\n given in Stanford CoreNLP Toolkit is used.\n For the textual entailment feature, Tensor Flow4 is used,\n where textual entailment is estimated using word\n vectorization, recurrent neural networks with\n LSTM and dropout as a regularization method."
             elif index=="method2":
                 text="This algorithm was created by UCL Machine  Reading (UCLMR) \n\n during Stage 1 of the Fake News Challenge (FNC-1) in 2017.\n\n It is based on a single, end-to-end system consisting of lexical \n\n as well as similarity features passed through a multi-layer \n\n perceptron with one hidden layer. UCLMR won third place in \n\n the FNC however out of the three best scoring teams, \n\n UCLMR’s classifier is the simplest and easiest to understand."
             elif index=="method3":
@@ -63,7 +69,7 @@ class SelectWindow(Screen,GridLayout):
             popup.open()
             close_button.bind(on_press=popup.dismiss)
 
-    def run_btn(self,model1,model2,model3,set_1,set_2,set_3,set_4,percent):
+    def run_btn(self,model1,model2,model3,set_1,set_2,set_3,set_4,set_5,set_6,percent):
         dataSet = -1
         models = []
         models_name= []
@@ -80,6 +86,12 @@ class SelectWindow(Screen,GridLayout):
         elif set_4.active:
             dataSet='EmergentLite'
             datasetNumber=4
+        elif set_5.active:
+            dataSet = 'semEval2017'
+            datasetNumber = 5
+        elif set_6.active:
+            dataSet = 'SomasundaranWiebe'
+            datasetNumber = 6
         if model1.active:
             models.append(1)
             models_name.append("SEN")
@@ -181,6 +193,10 @@ class ModelStatWindow(Screen,GridLayout):
             dataSet = "MPCHI"
         elif self.manager.get_screen("select_window").ids.set_4.active:
             dataSet = "EmergentLite"
+        elif self.manager.get_screen("select_window").ids.set_5.active:
+            dataSet = "semEval2017"
+        elif self.manager.get_screen("select_window").ids.set_6.active:
+            dataSet = "SomasundaranWiebe"
         percent = int(self.manager.get_screen("select_window").ids.percent.text)
         df = db.get_record_from_result(model,dataSet,percent)
 
@@ -199,25 +215,35 @@ class ModelStatWindow(Screen,GridLayout):
         favor_recall = arr[11]
         favor_f = arr[12]
         favor_support = arr[13]
-        none_precision = arr[15]
-        none_recall = arr[16]
-        none_f = arr[17]
-        none_support = arr[18]
-        if dataSet == "FNC":
-            self.ids.t4.text = str(arr[19])
-            self.ids.t4p.text = str(arr[20])
-            self.ids.t4r.text = str(arr[21])
-            self.ids.t4f.text = str(arr[22])
-            self.ids.t4q.text = str(arr[23])
-            wavg_precision = arr[34]
-            wavg_recall = arr[35]
-            wavg_f = arr[36]
-            wavg_support = arr[37]
+        if dataSet == "SomasundaranWiebe":
+            none_precision=""
+            none_recall=""
+            none_f=""
+            none_support=""
+            wavg_precision = arr[24]
+            wavg_recall = arr[25]
+            wavg_f = arr[26]
+            wavg_support = arr[27]
         else:
-            wavg_precision = arr[29]
-            wavg_recall = arr[30]
-            wavg_f = arr[31]
-            wavg_support = arr[32]
+            none_precision = arr[15]
+            none_recall = arr[16]
+            none_f = arr[17]
+            none_support = arr[18]
+            if dataSet == "FNC" or dataSet=="semEval2017":
+                self.ids.t4.text = str(arr[19])
+                self.ids.t4p.text = str(arr[20])
+                self.ids.t4r.text = str(arr[21])
+                self.ids.t4f.text = str(arr[22])
+                self.ids.t4q.text = str(arr[23])
+                wavg_precision = arr[34]
+                wavg_recall = arr[35]
+                wavg_f = arr[36]
+                wavg_support = arr[37]
+            else:
+                wavg_precision = arr[29]
+                wavg_recall = arr[30]
+                wavg_f = arr[31]
+                wavg_support = arr[32]
 
 
 
@@ -227,7 +253,8 @@ class ModelStatWindow(Screen,GridLayout):
         # self.ids.matrix.on_press = self.show_matrix(matrix_path)
         self.ids.t1.text = str(arr[4])
         self.ids.t2.text = str(arr[9])
-        self.ids.t3.text = str(arr[14])
+        if not dataSet == "SomasundaranWiebe":
+            self.ids.t3.text = str(arr[14])
         self.ids.ap.text = str(against_precision)
         self.ids.ar.text = str(against_recall)
         self.ids.af.text = str(against_f)
@@ -255,6 +282,10 @@ class ModelStatWindow(Screen,GridLayout):
             dataset = "MPCHI"
         elif self.manager.get_screen("select_window").ids.set_4.active:
             dataset = "EmergentLite"
+        elif self.manager.get_screen("select_window").ids.set_5.active:
+            dataset = "semEval2017"
+        elif self.manager.get_screen("select_window").ids.set_6.active:
+            dataset = "SomasundaranWiebe"
         modle = self.ids.title.text.split(" ")[0]
         percent = int(self.manager.get_screen("select_window").ids.percent.text)
         db = DBManager.DataBase()
@@ -277,6 +308,10 @@ class ModelStatWindow(Screen,GridLayout):
             dataset = "MPCHI"
         elif self.manager.get_screen("select_window").ids.set_4.active:
             dataset = "EmergentLite"
+        elif self.manager.get_screen("select_window").ids.set_5.active:
+            dataset = "semEval2017"
+        elif self.manager.get_screen("select_window").ids.set_6.active:
+            dataset = "SomasundaranWiebe"
         modle = self.ids.title.text.split(" ")[0]
         percent = int(self.manager.get_screen("select_window").ids.percent.text)
         db = DBManager.DataBase()
@@ -301,7 +336,7 @@ class DataSetStatWindow(Screen,GridLayout):
             self.ids.back_select.disabled = True
 
         if dataset=="1":
-            self.ids.title.text = "semEval2016 info"
+            self.ids.title.text = "semEval 2016 info"
             self.ids.info.text = "This dataset was provided at the SemEval competition in 2016. The data provided contains instances of: tweets, id, target, and stance,\n\n where stance is one of  the following: for, against, none. The dataset contains 4,042 records."
             self.ids.dataset_photo.source= 'semEval2016.png'
         elif dataset=="2":
@@ -316,6 +351,15 @@ class DataSetStatWindow(Screen,GridLayout):
             self.ids.title.text = "EmergentLite info"
             self.ids.info.text = "This dataset contains claims extracted from rumour sites and Twitter, with 300 claims and 2,595 headlines.\n\n The stance is one of the following: for, against, observing."
             self.ids.dataset_photo.source= 'emergent.png'
+        elif dataset=="5":
+            self.ids.title.text = "semEval 2017 info"
+            self.ids.info.text = "bla bla bla"
+            self.ids.dataset_photo.source= 'Semeval 2017.png'
+        elif dataset=="6":
+            self.ids.title.text = "Somasundaran Wiebe info"
+            self.ids.info.text = "bla bla bla"
+            self.ids.dataset_photo.source= 'SomasundaranWiebe.png'
+
 
 
 class UserStanceWindow(Screen,GridLayout):
@@ -343,7 +387,8 @@ class UserStanceWindow(Screen,GridLayout):
             layout = GridLayout(cols=1)
             layout.add_widget(Label(text='Topic:  ' + self.topic.text))
             layout.add_widget(Label(text='Sentence:  ' + self.sentence.text))
-            layout.add_widget(Label(text='Stance:  Supported'))
+            label = main_model.get_one_stance(self.sentence.text,self.topic.text)
+            layout.add_widget(Label(text='Stance:  {}'.format(label)))
             layout.add_widget(Label(text=''))
             layout.add_widget(close_button)
             popup = Popup(title='Reveal Your Stance', content=layout, size_hint=(None, None), size=(500, 500))

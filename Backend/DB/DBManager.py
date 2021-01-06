@@ -3,6 +3,7 @@ import sqlite3
 from os.path import exists
 import pandas as pd
 import csv
+import json
 import matplotlib.pyplot as plt
 from pandas import DataFrame
 
@@ -53,15 +54,54 @@ class DataBase:
         self.conn.commit()
 
     def fill_claim_table(self,path,dataset_number):
+        df = self.get_dataset(dataset_number)
+        if df.shape[0]>0:
+            return
         # self.cursor.execute("CREATE TABLE IF NOT EXISTS Claims(Dataset_Number INTEGER NOT NULL, Claim TEXT NOT NULL, Sentence TEXT NOT NULL, Stance TEXT NOT NULL)")
-        with open(path) as csv_file:
-            csv_reader = csv.reader(csv_file, delimiter=',')
-            # for line in csv_reader:
-            #     print(line)
-            query = "INSERT INTO Claims VALUES({},?,?,?);".format(dataset_number)
-            self.cursor.executemany(query, csv_reader)
+        if dataset_number==6:
+            with open(path, "r", encoding='utf-8') as csv_file:
+                csv_reader = csv.reader(csv_file, delimiter=',')
+                # for line in csv_reader:
+                #     print(line)
+                query = "INSERT INTO Claims VALUES({},?,?,?);".format(dataset_number)
+                self.cursor.executemany(query, csv_reader)
+        else:
+            with open(path) as csv_file:
+                csv_reader = csv.reader(csv_file, delimiter=',')
+                # for line in csv_reader:
+                #     print(line)
+                query = "INSERT INTO Claims VALUES({},?,?,?);".format(dataset_number)
+                self.cursor.executemany(query, csv_reader)
         self.conn.commit()
 
+    def insert_semEveal_2017(self, path, dataset_number):
+        df = self.get_dataset(dataset_number)
+        if df.shape[0]>0:
+            return
+        f = open(path, "r", encoding='utf-8')
+        for x in f:
+            d = eval(x)
+            print(d)
+            topic = ""
+            if not d['text']=="":
+                if d['topic']=='charliehebdo':
+                    topic = "charlie hebdo"
+                elif d['topic']=='ferguson':
+                    topic = "ferguson"
+                elif d['topic']=='germanwings-crash':
+                    topic = "germanwings crash"
+                elif d['topic'] == 'ottawashooting':
+                    topic = "ottawa shooting"
+                elif d['topic'] == 'sydneysiege':
+                    topic = "sydneysiege"
+                if not topic=="":
+                    self.cursor.execute("INSERT INTO Claims VALUES (?,?,?,?);",(dataset_number, topic, d['text'], d['label']))
+        self.conn.commit()
+
+        # f = open(path, "r")
+        # print(f.readline())
+        # for x in f:
+        #     print(x)
 
     def get_dataset(self, dataset_number):
         query = "SELECT Claim,Sentence,Stance FROM Claims WHERE Dataset_Number=" + str(dataset_number)
@@ -75,7 +115,16 @@ class DataBase:
         self.cursor.execute("DELETE FROM Claims WHERE Dataset_Number=?", (dataset_number,))
         self.conn.commit()
 
+
+
 # db = DataBase()
+# db.insert_semEveal_2017("semeval2017.txt",2)
+# db.delete_dataset(2)
+# db.fill_claim_table("SomasundaranWiebe.csv",6)
+# print(db.get_dataset(6))
+# df = db.get_dataset(1)
+# print(df.columns)
+
 # db.fill_claim_table("semEval2016.csv",1)
 # db.fill_claim_table("FNC.csv",3)
 # db.fill_claim_table("MPCHI.csv",4)
@@ -83,11 +132,11 @@ class DataBase:
 # print(db.get_dataset(2))
 
 # db = DataBase()
-# df = db.get_dataset(5)
-# print(df)
+# df = db.get_dataset(6)
+# # print(df)
 # print(df.groupby(['Stance']).count())
-# labels = 'Against: 540', 'Favor: 421', 'None: 572'
-# sizes = [540, 421, 572]
+# labels = 'Against: 3160', 'Favor: 3961'
+# sizes = [3160, 3961]
 # fig1, ax1 = plt.subplots()
 # ax1.pie(sizes, labels=labels, autopct='%1.1f%%', startangle=90)
 # ax1.axis('equal')  # Equal aspect ratio ensures that pie is drawn as a circle.

@@ -225,9 +225,9 @@ def start_Specific_Model(models, dataset_name, train_percent):
     return results
 
 #the function recieves a sentence and claim and returns its stance
-def get_one_stance(sentence, claim, stance):
+def get_one_stance(sentence, claim):
     tan = TAN()
-    stance = tan.get_one_stance(sentence, claim, stance)
+    stance = tan.get_one_stance(sentence, claim)
     return stance
 
 # models = list()
