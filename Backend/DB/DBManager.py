@@ -80,7 +80,7 @@ class DataBase:
 # db.fill_claim_table("FNC.csv",3)
 # db.fill_claim_table("MPCHI.csv",4)
 # db.fill_claim_table("EmergentLite.csv",5)
-# print(db.get_dataset(4))
+# print(db.get_dataset(2))
 
 # db = DataBase()
 # df = db.get_dataset(5)
