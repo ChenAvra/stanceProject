@@ -214,8 +214,11 @@ def train_bagging_tan_CV(x_train, y_train, x_test, y_test, vector_target,labels,
     name_file=str(name_file).replace("-","")
     name_file=str(name_file).replace("?","")
 
+    PROJECT_ROOT = os.path.abspath(__file__)
+    BASE_DIR = os.path.dirname(PROJECT_ROOT)
+    model_path = BASE_DIR + '\\' + name_file + '.pt'
 
-    torch.save(models_to_save, 'C:\\Users\\Chen\\Desktop\\save'+name_file+'.pt')
+    torch.save(models_to_save,model_path)
     return conf_matrix,labels_pred,score,model,len(ensemble_models)
 
 
@@ -261,7 +264,7 @@ def run_model(df_train, df_test, labels, num_of_labels,claim):
 
 
 
-def pred_one_stance(len_ensemble_model,labels,embedding_matrix,sentence,claim,stance):
+def pred_one_stance(labels,embedding_matrix,sentence,claim,stance):
     models_after_load={}
     stances = {}
     topic_string=''
@@ -273,10 +276,15 @@ def pred_one_stance(len_ensemble_model,labels,embedding_matrix,sentence,claim,st
     file_name = str(claim).replace(' ', "")
     file_name1 = str(file_name).replace('-', "")
     file_name2 = str(file_name1).replace('?', "")
-    len_ensemble_model=1
+
+    PROJECT_ROOT = os.path.abspath(__file__)
+    BASE_DIR = os.path.dirname(PROJECT_ROOT)
+    path = BASE_DIR + '\\save' + file_name2 + '.pt'
+    checkpoint = torch.load(path)
+
+    len_ensemble_model=len(checkpoint)
     for i in range(len_ensemble_model):
         modelA = LSTM_TAN(version, 300, 100, len(embedding_matrix), len(labels), embedding_matrix, dropout=0.6).to('cpu')
-        checkpoint = torch.load('C:\\Users\\Chen\\Desktop\\save'+file_name2+'.pt')
         modelA.load_state_dict(checkpoint[i])
         models_after_load.update({i:modelA})
 

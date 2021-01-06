@@ -22,9 +22,9 @@ def Pred(df_train, df_test, labels, num_of_labels):
         file_name1 = str(file_name).replace('-', "")
         file_name2 = str(file_name1).replace('?', "")
 
-        PROJECT_ROOT = os.path.abspath('__file__')
+        PROJECT_ROOT = os.path.abspath(__file__)
         BASE_DIR = os.path.dirname(PROJECT_ROOT)
-        WORD2VEC_MODEL = BASE_DIR + '\\TAN\\'+file_name2+'.txt'
+        WORD2VEC_MODEL = BASE_DIR + '\\'+file_name2+'.txt'
         with open(WORD2VEC_MODEL, 'wb') as f:
             np.save(f, embedding_matrix)
         # embedding_matrix.save("word2vec."+str(claim))
@@ -39,9 +39,9 @@ def get_predict_per_stance(sentence,claim,stance):
     listMPCHI=['Are E-Cigarettes safe?', 'Does Sunlight exposure lead to skin cancer?',
                        'Does Vitamin C prevent common cold?', 'Should women take HRT post-menopause?',
                        'Does MMR Vaccine lead to autism in children?' ]
-    listSemEval2016=['atheism', 'hillary clinton',
-                       'legalization of abortion', 'climate change is a real concern',
-                       'feminist movement']
+    listSemEval2016=['Atheism', 'Hillary Clinton',
+                       'Legalization of Abortion', 'Climate Change is a Real Concern',
+                       'Feminist Movement']
 
     if claim in listMPCHI:
         dataset ='MPCHI'
@@ -59,9 +59,9 @@ def get_predict_per_stance(sentence,claim,stance):
     file_name1 = str(file_name).replace('-', "")
     file_name2 = str(file_name1).replace('?', "")
 
-    PROJECT_ROOT = os.path.abspath('__file__')
+    PROJECT_ROOT = os.path.abspath(__file__)
     BASE_DIR = os.path.dirname(PROJECT_ROOT)
-    WORD2VEC_MODEL = BASE_DIR + '\\TAN\\' + file_name2 + '.txt'
+    WORD2VEC_MODEL = BASE_DIR + '\\' + file_name2 + '.txt'
     # model = KeyedVectors.load_word2vec_format(WORD2VEC_MODEL, binary=False)
     embedding_matrix_per_claim=[]
     with open(WORD2VEC_MODEL, 'rb') as f:
@@ -73,7 +73,7 @@ def get_predict_per_stance(sentence,claim,stance):
     df = db.get_dataset(dataset_id)
     labels=df.Stance.unique()
 
-    stance=pred_one_stance(2,labels,embedding_matrix_per_claim,sentence,claim,stance)
+    stance=pred_one_stance(labels,embedding_matrix_per_claim,sentence,claim,stance)
     return stance
 
 

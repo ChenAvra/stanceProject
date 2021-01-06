@@ -227,11 +227,11 @@ def start_Specific_Model(models, dataset_name, train_percent):
 #the function recieves a sentence and claim and returns its stance
 def get_one_stance(sentence, claim):
     tan = TAN()
-    stance = tan.get_one_stance(sentence, claim)
+    stance = tan.get_one_stance(sentence, claim,stance='AGAINST')
     return stance
 
 # models = list()
 # models.append("UCLMR")
 # start_Specific_Model(models, "FNC", 66)
 
-# print(get_one_stance("I think it's bad",'Are E-Cigarettes safe?','AGAINST'))
+# print(get_one_stance("I think she is a nice woman",'Hillary Clinton'))
