@@ -31,6 +31,17 @@ class WelcomeWindow(Screen,GridLayout):
 
 class SelectWindow(Screen,GridLayout):
 
+    def alart_tan(self, method_3):
+        if method_3.active:
+
+            close_button = Button(text="close", size_hint=(None, None), size=(475, 50))
+            layout = GridLayout(cols=1)
+            layout.add_widget(Label(text="Please note, the TAN algorithm is suitable\n\n to work with only topic-based datasets.\n\n We do not recommend to use it with headline-based datasets."))
+            layout.add_widget(close_button)
+            popup = Popup(title='Warning', content=layout, size_hint=(None, None), size=(500, 500))
+            popup.open()
+            close_button.bind(on_press=popup.dismiss)
+
     def info_btn(self,index):
         if index=="dataset1":
             self.manager.get_screen("dataset_stat_window").entry("1",True)

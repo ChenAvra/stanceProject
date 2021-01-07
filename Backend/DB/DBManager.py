@@ -175,7 +175,8 @@ class DataBase:
 # db.create_result_table()
 # db.insert_records_to_result(1,1,100,30,"report","path")
 # db.delete_from_result()
-# df = db.get_record_from_result("UCLMR",4,75)
+# df = db.get_record_from_result("UCLMR","MPCHI",80)
+# print(df["roc_acc"][0])
 # print(df.shape[0])
 # print(df)
 
