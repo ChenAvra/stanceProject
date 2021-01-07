@@ -90,7 +90,7 @@ class SelectWindow(Screen,GridLayout):
             dataSet = 'semEval2017'
             datasetNumber = 5
         elif set_6.active:
-            dataSet = 'SomasundaranWiebe'
+            dataSet = 'MPQA'
             datasetNumber = 6
         if model1.active:
             models.append(1)
@@ -153,18 +153,21 @@ class StatWindow(Screen,GridLayout):
             self.ids.method_1_accuracy.text = str(float("{:.2f}".format(df['Accuracy'][0])))
         else:
             self.ids.button1.disabled = True
+            self.ids.method_1_accuracy.text = "-"
         if "UCLMR" in models:
             df = db.get_record_from_result("UCLMR",dataSet,percent)
             self.ids.button2.disabled = False
             self.ids.method_2_accuracy.text = str(float("{:.2f}".format(df['Accuracy'][0])))
         else:
             self.ids.button2.disabled = True
+            self.ids.method_2_accuracy.text = "-"
         if "TAN" in models:
             df = db.get_record_from_result("TAN", dataSet, percent)
             self.ids.button3.disabled = False
             self.ids.method_3_accuracy.text = str(float("{:.2f}".format(df['Accuracy'][0])))
         else:
             self.ids.button3.disabled = True
+            self.ids.method_3_accuracy.text = "-"
         self.ids.dataset_button.text = "{} info".format(dataSet)
         self.manager.get_screen("dataset_stat_window").entry(str(datasetNumber))
 
@@ -196,7 +199,7 @@ class ModelStatWindow(Screen,GridLayout):
         elif self.manager.get_screen("select_window").ids.set_5.active:
             dataSet = "semEval2017"
         elif self.manager.get_screen("select_window").ids.set_6.active:
-            dataSet = "SomasundaranWiebe"
+            dataSet = "MPQA"
         percent = int(self.manager.get_screen("select_window").ids.percent.text)
         df = db.get_record_from_result(model,dataSet,percent)
 
@@ -215,7 +218,7 @@ class ModelStatWindow(Screen,GridLayout):
         favor_recall = arr[11]
         favor_f = arr[12]
         favor_support = arr[13]
-        if dataSet == "SomasundaranWiebe":
+        if dataSet == "MPQA":
             none_precision=""
             none_recall=""
             none_f=""
@@ -253,7 +256,7 @@ class ModelStatWindow(Screen,GridLayout):
         # self.ids.matrix.on_press = self.show_matrix(matrix_path)
         self.ids.t1.text = str(arr[4])
         self.ids.t2.text = str(arr[9])
-        if not dataSet == "SomasundaranWiebe":
+        if not dataSet == "MPQA":
             self.ids.t3.text = str(arr[14])
         self.ids.ap.text = str(against_precision)
         self.ids.ar.text = str(against_recall)
@@ -285,7 +288,7 @@ class ModelStatWindow(Screen,GridLayout):
         elif self.manager.get_screen("select_window").ids.set_5.active:
             dataset = "semEval2017"
         elif self.manager.get_screen("select_window").ids.set_6.active:
-            dataset = "SomasundaranWiebe"
+            dataset = "MPQA"
         modle = self.ids.title.text.split(" ")[0]
         percent = int(self.manager.get_screen("select_window").ids.percent.text)
         db = DBManager.DataBase()
@@ -311,7 +314,7 @@ class ModelStatWindow(Screen,GridLayout):
         elif self.manager.get_screen("select_window").ids.set_5.active:
             dataset = "semEval2017"
         elif self.manager.get_screen("select_window").ids.set_6.active:
-            dataset = "SomasundaranWiebe"
+            dataset = "MPQA"
         modle = self.ids.title.text.split(" ")[0]
         percent = int(self.manager.get_screen("select_window").ids.percent.text)
         db = DBManager.DataBase()
@@ -353,11 +356,11 @@ class DataSetStatWindow(Screen,GridLayout):
             self.ids.dataset_photo.source= 'emergent.png'
         elif dataset=="5":
             # self.ids.title.text = "semEval 2017 info"
-            self.ids.info.text = "bla bla bla"
+            self.ids.info.text = "This dataset was provided at the SemEval competition in 2017. The data provided contains instances of: a statement, a reply tweet and a stance, where stance is\n\n one of  the following: support, deny, query (the author of the response asks for additional evidence in relation to the veracity of the rumour they are responding to)\n\n and comment (the author of the response makes their own comment without a clear contribution to assessing the veracity of the rumour they are responding to).\n\n The dataset contains 2,817 recordsa"
             self.ids.dataset_photo.source= 'Semeval 2017.png'
         elif dataset=="6":
             # self.ids.title.text = "Somasundaran Wiebe info"
-            self.ids.info.text = "bla bla bla"
+            self.ids.info.text = "This dataset contains political debates about several topics such as healthcare, gay rights, abortion and more and their stance towards that topic (for or against).\n\n It was taken from MPQA (Multi-Perspective Question Answering). The dataset contains 7,121 debate posts."
             self.ids.dataset_photo.source= 'SomasundaranWiebe.png'
 
 
@@ -387,7 +390,13 @@ class UserStanceWindow(Screen,GridLayout):
             layout = GridLayout(cols=1)
             layout.add_widget(Label(text='Topic:  ' + self.topic.text))
             layout.add_widget(Label(text='Sentence:  ' + self.sentence.text))
-            label = main_model.get_one_stance(self.sentence.text,self.topic.text)
+            db = DBManager.DataBase()
+            df = db.get_record_from_Stance_Result(self.topic.text,self.sentence.text)
+            if not df.shape[0]==0:
+                label=df['Stance'][0]
+            else:
+                label = main_model.get_one_stance(self.sentence.text, self.topic.text)
+                db.insert_to_Stance_Result(self.topic.text,self.sentence.text,label)
             layout.add_widget(Label(text='Stance:  {}'.format(label)))
             layout.add_widget(Label(text=''))
             layout.add_widget(close_button)
