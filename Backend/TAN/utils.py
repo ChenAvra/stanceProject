@@ -129,11 +129,11 @@ def load_dataset(topic_string,df_train,df_test,labels,dataset,dev = "cuda"):
             return [word]
         return wordninja.split(word)
 
-    assert dataset in ['Are E-Cigarettes safe?', 'Does Sunlight exposure lead to skin cancer?',
-                       'Does Vitamin C prevent common cold?', 'Should women take HRT post-menopause?',
-                       'Does MMR Vaccine lead to autism in children?', 'Atheism', 'Hillary Clinton',
-                       'Legalization of Abortion', 'Climate Change is a Real Concern',
-                       'Feminist Movement'], "unknown dataset"
+    # assert dataset in ['Are E-Cigarettes safe?', 'Does Sunlight exposure lead to skin cancer?',
+    #                    'Does Vitamin C prevent common cold?', 'Should women take HRT post-menopause?',
+    #                    'Does MMR Vaccine lead to autism in children?', 'Atheism', 'Hillary Clinton',
+    #                    'Legalization of Abortion', 'Climate Change is a Real Concern',
+    #                    'Feminist Movement'], "unknown dataset"
 
     folder = "Data_SemE_P"
 
@@ -373,14 +373,14 @@ def pre_proce_one_stance(word_ind_load,topic_string,df,labels,dataset,dev = "cud
             return [word]
         return wordninja.split(word)
 
-    assert dataset in ['Are E-Cigarettes safe?', 'Does Sunlight exposure lead to skin cancer?',
-                       'Does Vitamin C prevent common cold?', 'Should women take HRT post-menopause?',
-                       'Does MMR Vaccine lead to autism in children?', 'Atheism', 'Hillary Clinton',
-                       'Legalization of Abortion', 'Climate Change is a Real Concern',
-                       'Feminist Movement'], "unknown dataset"
+    # assert dataset in ['Are E-Cigarettes safe?', 'Does Sunlight exposure lead to skin cancer?',
+    #                    'Does Vitamin C prevent common cold?', 'Should women take HRT post-menopause?',
+    #                    'Does MMR Vaccine lead to autism in children?', 'Atheism', 'Hillary Clinton',
+    #                    'Legalization of Abortion', 'Climate Change is a Real Concern',
+    #                    'Feminist Movement'], "unknown dataset"
 
     folder = "Data_SemE_P"
-
+    topic_string=''
     if dataset == 'Are E-Cigarettes safe?':
         topic = 'E-ciggarettes are safer than normal ciggarettes'
         folder = "Data_MPCHI_P"
