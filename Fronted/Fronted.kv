@@ -647,12 +647,15 @@
                 Label:
                 Label:
                 Button:
-                    id: matrix
                     text: "Show Confusion Matrix"
-                    font_size: '13sp'
-                    bold: True
+                    size: 250, 40
+                    size_hint: None, None
+                    pos_hint: {'top': .23, 'right': .59}
+                    font_size: '20sp'
                     background_normal: 'normal.png'
-                    background_color: 1, .8, .4, .85
+                    background_color: .411, .568, .924, 1
+                    markup: True
+                    bold: True
                     on_press: root.show_matrix()
                 Label:
                 Label:
@@ -662,10 +665,14 @@
                 Button:
                     id: ROC
                     text: "Show ROC Curve"
-                    font_size: '13sp'
-                    bold: True
+                    size: 250, 40
+                    size_hint: None, None
+                    pos_hint: {'top': .23, 'right': .59}
+                    font_size: '20sp'
                     background_normal: 'normal.png'
-                    background_color: 1, .8, .4, .85
+                    background_color: .411, .568, .924, 1
+                    markup: True
+                    bold: True
                     on_press: root.show_ROC()
                 # Image:
                 #     id: matrix
@@ -782,11 +789,14 @@
             Label:
             Button:
                 text: "Back to the statistics"
-                # size_hint: .20, .10
-                # pos_hint: {'top': .15, 'right': .4}
+                size: 250, 40
+                size_hint: None, None
+                pos_hint: {'top': .23, 'right': .59}
                 font_size: '20sp'
                 background_normal: 'normal.png'
-                background_color: 1, .8, .4, .85
+                background_color: .411, .568, .924, 1
+                markup: True
+                bold: True
                 on_press: root.manager.current = 'stat_window'
             Label:
 
