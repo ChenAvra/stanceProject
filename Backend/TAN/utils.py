@@ -129,11 +129,11 @@ def load_dataset(topic_string,df_train,df_test,labels,dataset,dev = "cuda"):
             return [word]
         return wordninja.split(word)
 
-    # assert dataset in ['Are E-Cigarettes safe?', 'Does Sunlight exposure lead to skin cancer?',
-    #                    'Does Vitamin C prevent common cold?', 'Should women take HRT post-menopause?',
-    #                    'Does MMR Vaccine lead to autism in children?', 'Atheism', 'Hillary Clinton',
-    #                    'Legalization of Abortion', 'Climate Change is a Real Concern',
-    #                    'Feminist Movement'], "unknown dataset"
+    assert dataset in ['Are E-Cigarettes safe?', 'Does Sunlight exposure lead to skin cancer?',
+                       'Does Vitamin C prevent common cold?', 'Should women take HRT post-menopause?',
+                       'Does MMR Vaccine lead to autism in children?', 'Atheism', 'Hillary Clinton',
+                       'Legalization of Abortion', 'Climate Change is a Real Concern',
+                       'Feminist Movement'], "unknown dataset"
 
     folder = "Data_SemE_P"
 
