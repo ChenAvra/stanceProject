@@ -243,8 +243,8 @@ def get_one_stance(sentence, claim):
     stance = tan.get_one_stance(sentence, claim,stance='AGAINST')
     return stance
 
-models = list()
-models.append("TAN")
-start_Specific_Model(models, "EmergentLite", 60)
+# models = list()
+# models.append("TAN")
+# start_Specific_Model(models, "EmergentLite", 60)
 
 # print(get_one_stance("I think she is a nice woman",'Hillary Clinton'))

@@ -276,7 +276,7 @@ def run_model(df_train, df_test, labels, num_of_labels,claim):
     x_train[:], y_train[:] = zip(*combined)
 
 
-    fin_matrix,labels_pred,score,model,len_ensemble_model= train_bagging_tan_CV(stances,x_train, y_train, x_test, y_test, vector_target,labels,device,embedding_matrix,claim,version=version,n_epochs=30,batch_size=50,l2=1.0,dropout = 0.5,n_folds=3)
+    fin_matrix,labels_pred,score,model,len_ensemble_model= train_bagging_tan_CV(stances,x_train, y_train, x_test, y_test, vector_target,labels,device,embedding_matrix,claim,version=version,n_epochs=20,batch_size=50,l2=1.0,dropout = 0.5,n_folds=3)
 
     return labels_pred,y_test,len_ensemble_model,labels,embedding_matrix,word_ind
 
