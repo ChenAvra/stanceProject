@@ -18,7 +18,7 @@ import os
 # before Executing this,we have to start the Stanford Server through Terminal
 def sentiment_feature_extraction(pathToRead, pathToWrite):
     # reading Input file
-    data = pd.read_csv(pathToRead, sep="\t", header=0)
+    data = pd.read_csv(pathToRead, header=0)
     error_count=0
     # data = pd.read_csv(
     #     'C:\\Users\\iris dreizenshtok\\Desktop\\programming\\Stance-Detection-in-Web-and-Social-Media-master\\SEN-SEN\\Data_MPCHI\\HRT\\test.txt',
@@ -46,7 +46,7 @@ def sentiment_feature_extraction(pathToRead, pathToWrite):
         count_1 = 0  # counting Negative Sentiment
         count_2 = 0  # counting Neutral Sentiment
         count_3 = 0  # counting Positive Sentiment
-        if(res != 'Could not handle incoming annotation'):
+        if(res != 'Could not handle incoming annotation' and res != 'CoreNLP request timed out. Your document may be too long.'):
             for s in (res['sentences']):
                 if (s["sentimentValue"]):
                     count = count + 1
@@ -103,7 +103,7 @@ def run_sentiment_feature_extraction():
     arr = os.listdir(BASE_DIR+"\\topics")
     for topic in arr:
         for k in ["train","test"]:
-            txtFileToRead=BASE_DIR+"\\topics\\"+topic+"\\"+k+".txt"
+            csvFileToRead=BASE_DIR+"\\topics\\"+topic+"\\"+k+".csv"
             outputFileToWrite = BASE_DIR+"\\topics\\"+topic+"\\senti_feature_extraction_"+k+".csv"
-            sentiment_feature_extraction(txtFileToRead,outputFileToWrite)
+            sentiment_feature_extraction(csvFileToRead,outputFileToWrite)
 

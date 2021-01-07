@@ -54,7 +54,7 @@ def create_normalise_dict(no_slang_data = "\\noslang_data.json", emnlp_dict = "\
 
 
 def sent_process(sent,word_dict, norm_dict):
-
+    sent=str(sent)
     sent = re.sub(r"[^A-Za-z0-9(),!?\'\`#]", " ", sent)
     sent = re.sub(r"#SemST", "", sent)
     sent = re.sub(r"#([A-Za-z0-9]*)", r"# \1 #", sent)
@@ -113,7 +113,7 @@ def build_lexicon(labels_array,topic_Path,word_dict, norm_dict):
     def prob_cond1(word1, word2, Features, total):
         return ((co_relation[(word1, word2)] + 1))
 
-    raw = pd.read_csv(topic_Path+"//train_clean.txt", sep="\t", header=0)
+    raw = pd.read_csv(topic_Path+"//train_clean.csv",header=0)
 
     # Features Extraction
     porter = PorterStemmer()
@@ -316,7 +316,7 @@ def produce_features(labels_array,topic_path,Lexicon, word_dict, norm_dict):
     for l in ['train','test']:
         l1= l+"_clean"
         print("checking path:", l1)
-        raw=pd.read_csv(topic_path+'\\{}.txt'.format(l1), sep="\t", header=0)
+        raw=pd.read_csv(topic_path+'\\{}.csv'.format(l1), header=0)
 
         Stop_words=set(stopwords.words('english'))
         Features=raw[['Sentence']]
