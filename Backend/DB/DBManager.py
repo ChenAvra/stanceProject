@@ -115,9 +115,21 @@ class DataBase:
         self.cursor.execute("DELETE FROM Claims WHERE Dataset_Number=?", (dataset_number,))
         self.conn.commit()
 
+    def get_all_result(self):
+        query = 'SELECT Model,Dataset,Train_percent,Accuracy FROM Result'
+        # query = "SELECT * FROM Result"
+        df = pd.read_sql_query(query, self.conn)
+        return df
 
 
 # db = DataBase()
+# result = db.get_all_result()
+# print(result)
+# for r in range(result.shape[0]):
+#     print(result[0])
+    # print(result[r]['Model'], db.get_all_result()[r]['Dataset'], db.get_all_result()[r]['Train_percent'],db.get_all_result()[r]['Accuracy'])
+
+
 # db.insert_semEveal_2017("semeval2017.txt",2)
 # db.delete_dataset(2)
 # db.fill_claim_table("SomasundaranWiebe.csv",6)
