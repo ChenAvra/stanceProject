@@ -315,8 +315,8 @@ def training_model():
                   "{:.5f}".format(acc))
     return sess, glove_wordmap,classification_scores, hyp, evi,N, y
 
-def ent_feature_extraction(sess, glove_wordmap,classification_scores, hyp, evi,N, y, txtFilePath, target, outputFile):
-    Features_pmh = pd.read_csv(txtFilePath, sep="\t", header=0)
+def ent_feature_extraction(sess, glove_wordmap, classification_scores, hyp, evi, N, y, csvFilePath, target, outputFile):
+    Features_pmh = pd.read_csv(csvFilePath, header=0)
     # Features_pmh = pd.read_csv(
     #     'C:\\Users\\iris dreizenshtok\\Desktop\\programming\\Stance-Detection-in-Web-and-Social-Media-master\\SEN-SEN\\Data_SemE_P\\FM\\test.txt',
     #     sep="\t", header=0)
@@ -338,24 +338,36 @@ def ent_feature_extraction(sess, glove_wordmap,classification_scores, hyp, evi,N
             evidences = [Features_pmh['Sentence'][i]]
         else:
             evidences = [Features_pmh['Sentence'][i]]
+        if(evidences[0]!=''):
+            hypotheses = [Features_pmh['Claim'][i]]
+            # hypotheses = [target]
 
-        hypotheses = [Features_pmh['Claim'][i]]
-        # hypotheses = [target]
+            sentence2 = [fit_to_size(np.vstack(sentence2sequence(evidence,glove_wordmap)[0]), (max_evidence_length, vector_size)) for
+                         evidence in evidences]
 
-        sentence2 = [fit_to_size(np.vstack(sentence2sequence(evidence,glove_wordmap)[0]), (max_evidence_length, vector_size)) for
-                     evidence in evidences]
+            sentence1 = [fit_to_size(np.vstack(sentence2sequence(hypothesis,glove_wordmap)[0]), (max_hypothesis_length, vector_size)) for
+                         hypothesis in hypotheses]
 
-        sentence1 = [fit_to_size(np.vstack(sentence2sequence(hypothesis,glove_wordmap)[0]), (max_hypothesis_length, vector_size)) for
-                     hypothesis in hypotheses]
+            prediction = sess.run(classification_scores,
+                                  feed_dict={hyp: (sentence1 * N), evi: (sentence2 * N), y: [[0, 0, 0]] * N})
+            # print(["Positive", "Neutral", "Negative"][np.argmax(prediction[0])]+" entailment")
+            result.append(["Positive", "Neutral", "Negative"][np.argmax(prediction[0])])
+            pred.append(prediction[0])
+            wr.writerow(
+                {'Text': Features_pmh['Sentence'][i], 'hypotheses': hypotheses, "result": result[i], 'pos_scr': pred[i][0],
+                 'neg_scr': pred[i][2], 'nut_scr': pred[i][1], })
+        else:
+            print("adding zeros because the input doesn't fit the library, i is:", i)
+            pred.append([0,0,0])
+            result.append("Neutral")
+            print(Features_pmh['Sentence'][i])
+            print(Features_pmh['Claim'][i])
+            wr.writerow(
+                {'Text': Features_pmh['Sentence'][i], 'hypotheses': [Features_pmh['Claim'][i]], "result": "Neutral",
+                 'pos_scr': '0',
+                 'neg_scr': '0', 'nut_scr': '0', })
 
-        prediction = sess.run(classification_scores,
-                              feed_dict={hyp: (sentence1 * N), evi: (sentence2 * N), y: [[0, 0, 0]] * N})
-        # print(["Positive", "Neutral", "Negative"][np.argmax(prediction[0])]+" entailment")
-        result.append(["Positive", "Neutral", "Negative"][np.argmax(prediction[0])])
-        pred.append(prediction[0])
-        wr.writerow(
-            {'Text': Features_pmh['Sentence'][i], 'hypotheses': hypotheses, "result": result[i], 'pos_scr': pred[i][0],
-             'neg_scr': pred[i][2], 'nut_scr': pred[i][1], })
+
 
     file.close()
     return sess
@@ -368,8 +380,8 @@ def run_te_f_feature_extraction():
     arr = os.listdir(BASE_DIR+"\\topics")
     for topic in arr:
         for k in ["train","test"]:
-            txtFileToRead=BASE_DIR+"\\topics\\"+topic+"\\"+k+".txt"
+            csvFileToRead= BASE_DIR + "\\topics\\" + topic + "\\" + k + ".csv"
             outputFileToWrite = BASE_DIR+"\\topics\\"+topic+"\\ent_feature_extraction_"+k+".csv"
-            sess=ent_feature_extraction(sess, glove_wordmap,classification_scores, hyp, evi,N, y,txtFileToRead,topic,outputFileToWrite)
+            sess=ent_feature_extraction(sess, glove_wordmap, classification_scores, hyp, evi, N, y, csvFileToRead, topic, outputFileToWrite)
     sess.close()
     # produce_features(labels_array,".\\topics\\"+topic, build_lexicon(labels_array,".\\topics\\"+topic))

@@ -41,20 +41,20 @@ def get_legal_directort_name(old_name):
 def split_to_folders_headline_based(train, test):
     PROJECT_ROOT = os.path.abspath(__file__)
     BASE_DIR = os.path.dirname(PROJECT_ROOT)
-    newpath = BASE_DIR+".\\SEN\\topics"
+    newpath = BASE_DIR+"\\topics"
     if not os.path.exists(newpath):
         os.makedirs(newpath)
-    topicPath = ".\\SEN\\topics\\headline_based"
+    topicPath = BASE_DIR+"\\topics\\headline_based"
     if not os.path.exists(topicPath):
         os.makedirs(topicPath)
 
-    txtPath_train = ".\\SEN\\topics\\headline_based\\train.txt"
+    txtPath_train = BASE_DIR+"\\topics\\headline_based\\train.csv"
     new_df_train = train
-    new_df_train.to_csv(txtPath_train, index=None, sep='\t')
+    new_df_train.to_csv(txtPath_train, index=None)
 
-    txtPath_test = ".\\SEN\\topics\\headline_based\\test.txt"
+    txtPath_test = BASE_DIR+"\\topics\\headline_based\\test.csv"
     new_df_test = test
-    new_df_test.to_csv(txtPath_test, index=None, sep='\t')
+    new_df_test.to_csv(txtPath_test, index=None)
 
 def split_to_topic_folders(train, test):
     PROJECT_ROOT = os.path.abspath(__file__)
@@ -71,13 +71,13 @@ def split_to_topic_folders(train, test):
         if not os.path.exists(topicPath):
             os.makedirs(topicPath)
 
-        txtPath_train =BASE_DIR+"\\topics\\"+new_topic+"\\train.txt"
+        txtPath_train =BASE_DIR+"\\topics\\"+new_topic+"\\train.csv"
         new_df_train=train.loc[train['Claim'] == topic]
-        new_df_train.to_csv(txtPath_train, index=None, sep='\t')
+        new_df_train.to_csv(txtPath_train, index=None)
 
-        txtPath_test =BASE_DIR+"\\topics\\"+new_topic+"\\test.txt"
+        txtPath_test =BASE_DIR+"\\topics\\"+new_topic+"\\test.csv"
         new_df_test=test.loc[test['Claim'] == topic]
-        new_df_test.to_csv(txtPath_test, index=None, sep='\t')
+        new_df_test.to_csv(txtPath_test, index=None)
 
     return topic_list
 
@@ -93,8 +93,8 @@ def union_feature_extraction():
         STA_path_test = BASE_DIR+"\\topics\\" + topic + "\\STA_feature_extraction_test.csv"
         ent_path_test = BASE_DIR+"\\topics\\" + topic + "\\ent_feature_extraction_test.csv"
         senti_path_test = BASE_DIR+"\\topics\\" + topic + "\\senti_feature_extraction_test.csv"
-        train_path = BASE_DIR+"\\topics\\" + topic + "\\train.txt"
-        test_path = BASE_DIR+"\\topics\\" + topic + "\\test.txt"
+        train_path = BASE_DIR+"\\topics\\" + topic + "\\train.csv"
+        test_path = BASE_DIR+"\\topics\\" + topic + "\\test.csv"
 
         df_STA_train = pd.read_csv(STA_path_train, header=0)
         del df_STA_train['sentence']
@@ -120,11 +120,11 @@ def union_feature_extraction():
         del df_senti_test['negative']
         del df_senti_test['neutral']
 
-        df_train = pd.read_csv(train_path, sep="\t", header=0)
+        df_train = pd.read_csv(train_path, header=0)
         df_train = df_train[['Stance','Sentence']].copy()
 
 
-        df_test = pd.read_csv(test_path, sep="\t", header=0)
+        df_test = pd.read_csv(test_path, header=0)
         df_test = df_test [['Stance','Sentence']].copy()
 
         final_train_df = [df_STA_train,df_ent_train,df_senti_train,df_train]
@@ -204,9 +204,9 @@ def train(topic):
     y_train=train_dataset['Stance'].copy()
     del train_dataset['Stance']
     del train_dataset['Sentence']
-    del train_dataset['pmi_FAVOR']
-    del train_dataset['pmi_AGAINST']
-    del train_dataset['pmi_NONE']
+    # del train_dataset['pmi_FAVOR']
+    # del train_dataset['pmi_AGAINST']
+    # del train_dataset['pmi_NONE']
 
 
     test_dataset=pd.read_csv(BASE_DIR+"\\final_feature_set\\{}_test.csv".format(topic))
@@ -216,9 +216,9 @@ def train(topic):
     y_test=test_dataset['Stance'].copy()
     del test_dataset['Stance']
     del test_dataset['Sentence']
-    del test_dataset['pmi_FAVOR']
-    del test_dataset['pmi_AGAINST']
-    del test_dataset['pmi_NONE']
+    # del test_dataset['pmi_FAVOR']
+    # del test_dataset['pmi_AGAINST']
+    # del test_dataset['pmi_NONE']
     
     best_params = svc_param_selection(train_dataset,y_train,nfolds=5)
     print(best_params)

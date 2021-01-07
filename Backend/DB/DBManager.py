@@ -53,6 +53,11 @@ class DataBase:
         df = pd.read_sql_query(query, self.conn)
         return df
 
+    def delete_record_from_result(self, model, dataset,train_percent ):
+        query = 'DELETE FROM Result WHERE Model="{}" AND Dataset="{}" AND Train_percent={}'.format(model, dataset,str(train_percent))
+        self.cursor.execute(query)
+        self.conn.commit()
+
     def delete_from_result(self):
         query = 'DELETE FROM Result;'
         self.cursor.execute(query)
@@ -136,15 +141,13 @@ class DataBase:
         return df
 
 
+
+
+
+
 # db = DataBase()
 # db.create_Stance_Result_table()
-# result = db.get_all_result()
-# print(result)
-# for r in range(result.shape[0]):
-#     print(result[0])
-    # print(result[r]['Model'], db.get_all_result()[r]['Dataset'], db.get_all_result()[r]['Train_percent'],db.get_all_result()[r]['Accuracy'])
-
-
+# print(db.get_all_result())
 # db.insert_semEveal_2017("semeval2017.txt",2)
 # db.delete_dataset(2)
 # db.fill_claim_table("SomasundaranWiebe.csv",6)
@@ -192,3 +195,20 @@ class DataBase:
 # print(arr)
 
 
+#writing record to csv
+db = DataBase()
+df=db.get_record_from_result('SEN', 'semEval2016', 60)
+import os
+PROJECT_ROOT = os.path.abspath(__file__)
+BASE_DIR = os.path.dirname(PROJECT_ROOT)
+df.to_csv(BASE_DIR+"\\myRecord.csv", index=False)
+#
+#
+# #read record from csv and write to db
+# db = DataBase()
+# import os
+# PROJECT_ROOT = os.path.abspath(__file__)
+# BASE_DIR = os.path.dirname(PROJECT_ROOT)
+# df=pd.read_csv(BASE_DIR+"\\myRecord.csv", header=0)
+# for i in range(len(df)):
+#     db.insert_records_to_result(df[i][0], )

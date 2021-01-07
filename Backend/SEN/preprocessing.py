@@ -124,73 +124,75 @@ def preprocessing(dataPath, toRemveStopWords=True):
     for k in ["train", "test"]:
         n_count = 0
         s_words = 0
-        new_lines = []
+        # new_lines = []
         old_lines = []
-        new_data_path=dataPath+"\\"+k+".txt"
-        with open(new_data_path, "r", encoding="utf8") as fp:
-            lines = fp.readlines()
-            i=0
-            for line in lines:
-                if(i==0):
-                    i=i+1
+        new_data_path=dataPath+"\\"+k+".csv"
+        data = pd.read_csv(new_data_path, header=0)
+        # lines=data['Claim']
+        # with open(new_data_path, "r", encoding="utf8") as fp:
+        # lines = fp.readlines()
+        i=0
+        for i in range(len(data['Sentence'])):
+            # x = line.split("\t")
+            line=data['Sentence'][i]
+            old_sent = copy.deepcopy(line)
+            old_lines.append(old_sent)
+            sent = clean_str(line)
+            word_tokens = sent.split(' ')
+
+            # Normalization
+            normalized_tokens = []
+            for word in word_tokens:
+                if word in normalization_dict.keys():
+                    normalized_tokens.append(normalization_dict[word])
+                    n_count += 1
                 else:
-                    x = line.split("\t")
-                    old_sent = copy.deepcopy(x[1])
-                    old_lines.append(old_sent)
-                    sent = clean_str(x[1])
-                    word_tokens = sent.split(' ')
+                    normalized_tokens.append(word)
 
-                    # Normalization
-                    normalized_tokens = []
-                    for word in word_tokens:
-                        if word in normalization_dict.keys():
-                            normalized_tokens.append(normalization_dict[word])
-                            n_count += 1
-                        else:
-                            normalized_tokens.append(word)
+            # Word Ninja Splitting
+            normalized_tokens_s = []
+            for word in normalized_tokens:
+                normalized_tokens_s.extend(split(word, word2emb))
 
-                    # Word Ninja Splitting
-                    normalized_tokens_s = []
-                    for word in normalized_tokens:
-                        normalized_tokens_s.extend(split(word, word2emb))
+            final_tokens = normalized_tokens_s
 
-                    final_tokens = normalized_tokens_s
+            if toRemveStopWords == True:
+                # Stop Word Removal
+                filtered_tokens = []
+                for w in normalized_tokens_s:
+                    if w not in stop_words:
+                        filtered_tokens.append(w)
+                    else:
+                        s_words += 1
 
-                    if toRemveStopWords == True:
-                        # Stop Word Removal
-                        filtered_tokens = []
-                        for w in normalized_tokens_s:
-                            if w not in stop_words:
-                                filtered_tokens.append(w)
-                            else:
-                                s_words += 1
+                # Stemming using Porter Stemmer
+                stemmed_tokens = []
+                for w in filtered_tokens:
+                    stemmed_tokens.append(ps.stem(w))
+                final_tokens = stemmed_tokens
 
-                        # Stemming using Porter Stemmer
-                        stemmed_tokens = []
-                        for w in filtered_tokens:
-                            stemmed_tokens.append(ps.stem(w))
-                        final_tokens = stemmed_tokens
-
-                    new_sent = ' '.join(final_tokens)
-                    x[1] = new_sent
-                    # if (len(x) == 3):
-                    #     if correct == 0:
-                    #         x.append('NONE\n')
-                    #         correct += 1
-                    #     else:
-                    #         x.append('FAVOR\n')
-                    new_line = '\t'.join(x)
-                    new_lines.append(new_line)
+            new_sent = ' '.join(final_tokens)
+            # x[1] = new_sent
+            # if (len(x) == 3):
+            #     if correct == 0:
+            #         x.append('NONE\n')
+            #         correct += 1
+            #     else:
+            #         x.append('FAVOR\n')
+            data['Sentence'][i]=new_sent
+            # new_line = '\t'.join(x)
+            # new_lines.append(new_line)
 
 
 
-            # Write to a txt file
-            with open(dataPath+"//"+k + "_clean.txt", "w") as wf:
-                lines_to_add=[]
-                lines_to_add.append("Claim\tSentence\tStance\n")
-                for line in new_lines:
-                    lines_to_add.append(line)
-                wf.writelines(lines_to_add)
+        # Write to a txt file
+        data.to_csv(dataPath+"//"+k + "_clean.csv", index=False)
+        # with open(dataPath+"//"+k + "_clean.csv", "w") as wf:
+        #     lines_to_add=[]
+        #     lines_to_add.append("Claim\tSentence\tStance\n")
+        #     for line in new_lines:
+        #         lines_to_add.append(line)
+        #     wf.writelines(lines_to_add)
 
 def run_preprocessing():
     import os
