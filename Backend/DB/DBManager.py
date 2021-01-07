@@ -23,6 +23,20 @@ class DataBase:
             self.conn = sqlite3.connect(db_path)
             self.cursor = self.conn.cursor()
 
+    def create_Stance_Result_table(self):
+        self.cursor.execute("CREATE TABLE IF NOT EXISTS Stance_Result(Topic TEXT NOT NULL, Sentence TEXT NOT NULL, Stance TEXT NOT NULL)")
+        self.conn.commit()
+
+    def insert_to_Stance_Result(self,topic,sentence,stance):
+        query = 'INSERT INTO Stance_Result VALUES(?,?,?);'
+        self.cursor.execute(query,(topic,sentence,stance))
+        self.conn.commit()
+
+    def get_record_from_Stance_Result(self,topic,sentence):
+        query = 'SELECT * FROM Stance_Result WHERE Topic="{}" AND Sentence="{}"'.format(topic,sentence)
+        # query = "SELECT * FROM Result"
+        df = pd.read_sql_query(query, self.conn)
+        return df
 
     def create_result_table(self):
         self.cursor.execute("CREATE TABLE IF NOT EXISTS Result(Model TEXT NOT NULL, Dataset TEXT NOT NULL, Train_percent INTEGER NOT NULL, Accuracy INTEGER NOT NULL, Class_report TEXT NOT NULL, Cm_path TEXT NOT NULL, roc_acc INTEGER NOT NULL, roc_path TEXT NOT NULL)")
@@ -123,6 +137,7 @@ class DataBase:
 
 
 # db = DataBase()
+# db.create_Stance_Result_table()
 # result = db.get_all_result()
 # print(result)
 # for r in range(result.shape[0]):

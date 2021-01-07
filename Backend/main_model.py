@@ -156,7 +156,7 @@ def start_Specific_Model(models, dataset_name, train_percent):
         "FNC" : 3,
         "MPCHI" : 4,
         "EmergentLite" : 5,
-        "SomasundaranWiebe" : 6,
+        "MPQA" : 6,
     }
 
     dataset_id = dataset_names_dict[dataset_name]
@@ -172,7 +172,7 @@ def start_Specific_Model(models, dataset_name, train_percent):
 
     if dataset_name == "FNC":
         df_train, df_test = model_selection.train_test_split(df, train_size=train_percent, shuffle=False)
-    elif dataset_name == "semEval2016" or dataset_name == "semEval2017" or dataset_name == "MPCHI" or dataset_name == "SomasundaranWiebe":
+    elif dataset_name == "semEval2016" or dataset_name == "semEval2017" or dataset_name == "MPCHI" or dataset_name == "MPQA":
         # df_train, df_test = model_selection.train_test_split(df, train_size=train_percent, random_state=42)
         df_train, df_test = split_data_topic_based(df, train_percent)
     else:
