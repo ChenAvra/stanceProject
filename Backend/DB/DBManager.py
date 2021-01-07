@@ -151,7 +151,7 @@ class DataBase:
 # db.insert_semEveal_2017("semeval2017.txt",2)
 # db.delete_dataset(2)
 # db.fill_claim_table("SomasundaranWiebe.csv",6)
-# print(db.get_dataset(6).shape)
+# print(db.get_dataset(6))
 # df = db.get_dataset(1)
 # print(db.get_dataset(5))
 # print(df.columns)
@@ -196,13 +196,13 @@ class DataBase:
 
 
 #writing record to csv
-db = DataBase()
-df=db.get_record_from_result('UCLMR', 'EmergentLite', 60)
-import os
-PROJECT_ROOT = os.path.abspath(__file__)
-BASE_DIR = os.path.dirname(PROJECT_ROOT)
-df.to_csv(BASE_DIR+"\\myRecord.csv", index=False)
-#
+# db = DataBase()
+# df=db.get_record_from_result('TAN', 'EmergentLite', 60)
+# import os
+# PROJECT_ROOT = os.path.abspath(__file__)
+# BASE_DIR = os.path.dirname(PROJECT_ROOT)
+# df.to_csv(BASE_DIR+"\\myRecord.csv", index=False)
+# #
 #
 # #read record from csv and write to db
 # db = DataBase()
