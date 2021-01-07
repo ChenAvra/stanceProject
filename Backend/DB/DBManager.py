@@ -141,17 +141,17 @@ class DataBase:
         return df
 
 
-
-
-
-
 # db = DataBase()
+# query = 'DELETE FROM Result WHERE Model="UCLMR" AND Dataset="EmergentLite" AND Train_percent=60;'
+# db.cursor.execute(query)
+# db.conn.commit()
+
 # db.create_Stance_Result_table()
 # print(db.get_all_result())
 # db.insert_semEveal_2017("semeval2017.txt",2)
 # db.delete_dataset(2)
 # db.fill_claim_table("SomasundaranWiebe.csv",6)
-# print(db.get_dataset(6))
+# print(db.get_dataset(6).shape)
 # df = db.get_dataset(1)
 # print(db.get_dataset(5))
 # print(df.columns)
@@ -197,7 +197,7 @@ class DataBase:
 
 #writing record to csv
 db = DataBase()
-df=db.get_record_from_result('SEN', 'semEval2016', 60)
+df=db.get_record_from_result('UCLMR', 'EmergentLite', 60)
 import os
 PROJECT_ROOT = os.path.abspath(__file__)
 BASE_DIR = os.path.dirname(PROJECT_ROOT)
