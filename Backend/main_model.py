@@ -193,6 +193,16 @@ def start_Specific_Model(models, dataset_name, train_percent):
             tan = TAN()
             y_test, y_pred = tan.run_TAN(df_train, df_test, labels, num_of_labels)
 
+        # with open('sample_' + m_name + '.csv', 'w', newline='') as csvfile:
+        #     fieldnames = ['pred', 'test']
+        #     writer = csv.DictWriter(csvfile, fieldnames=fieldnames)
+        #     writer.writeheader()
+        #     i = 0
+        #     for pred_model in y_pred:
+        #         if i< len(y_test):
+        #             writer.writerow({'pred': pred_model, 'test': y_test[i]})
+
+
         # each model returns y_test and y_predict
         # calculate accuracy, confusion matrix, classification report
 
@@ -234,7 +244,7 @@ def get_one_stance(sentence, claim):
     return stance
 
 # models = list()
-# models.append("UCLMR")
-# start_Specific_Model(models, "FNC", 66)
+# models.append("TAN")
+# start_Specific_Model(models, "EmergentLite", 60)
 
-# print(get_one_stance("I don't believe in god",'Atheism'))
+# print(get_one_stance("I think she is a nice woman",'Hillary Clinton'))

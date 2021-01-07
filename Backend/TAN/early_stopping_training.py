@@ -43,7 +43,7 @@ def f_score(table):
     return "%.2f" % (100*table[0][0]/(table[0][1]+table[0][2]) + 100*table[1][0]/(table[1][1]+table[1][2]))
 
 
-def train_bagging_tan_CV(x_train, y_train, x_test, y_test, vector_target,labels,device,embedding_matrix,claim,version="tan-",n_epochs=50,batch_size=50,l2=0,dropout = 0.5,n_folds=5):
+def train_bagging_tan_CV(stances,x_train, y_train, x_test, y_test, vector_target,labels,device,embedding_matrix,claim,version="tan-",n_epochs=50,batch_size=50,l2=0,dropout = 0.5,n_folds=5):
 
     NUM_EPOCHS = n_epochs
     loss_fn = nn.NLLLoss()
@@ -125,26 +125,33 @@ def train_bagging_tan_CV(x_train, y_train, x_test, y_test, vector_target,labels,
             corr = 0
             with torch.no_grad():
                 conf_matrix = np.zeros((2,len(labels)))
+                labels_validation=[]
+                y_labels_test=[]
                 for j in range(fold_sz*fold_no,ul):
                     x = torch.tensor(np.array(x_train[j]),dtype=torch.long).to(device)
                     y = torch.tensor([y_train[j]],dtype=torch.long).to(device)
                     model.eval()
                     preds = model(x,target,verbose=False)
                     label = np.argmax(preds.cpu().numpy(),axis=1)[0]
-                    if label == y_train[j]:
-                        corr+=1
-                        if label <=1:
-                            conf_matrix[label][0]+=1
-                    if y_train[j] <=1:
-                        conf_matrix[y_train[j]][2]+=1
-                    if label <=1:
-                        conf_matrix[label][1]+=1
+                    labels_validation.append(label)
+                    y_labels_test.append(y_train[j])
+                    # accuracy_validation=metrics.accuracy_score(labels_validation,y_labels_test)
+                    # if label == y_train[j]:
+                    #     corr+=1
+                    #     if label <=1:
+                    #         conf_matrix[label][0]+=1
+                    # if y_train[j] <=1:
+                    #     conf_matrix[y_train[j]][2]+=1
+                    # if label <=1:
+                    #     conf_matrix[label][1]+=1
                     ep_loss+=loss_fn(preds,y)
-            val_f_score = float(f_score(conf_matrix))
+            accuracy_validation = metrics.accuracy_score(labels_validation, y_labels_test)
+            # val_f_score = float(f_score(conf_matrix))
+            val_f_score=accuracy_validation
 
-            #if val_f_score > best_val_score:
-            #    best_val_score = val_f_score
-            #    best_model = copy.deepcopy(model)
+            if val_f_score > best_val_score:
+               best_val_score = val_f_score
+               best_model = copy.deepcopy(model)
 
 
             if _%10 ==0 and _ != 0:
@@ -162,7 +169,8 @@ def train_bagging_tan_CV(x_train, y_train, x_test, y_test, vector_target,labels,
 
 
             print("epoch number {} , val_f_score {}".\
-            format(_+1,f_score(conf_matrix)))
+            # format(_+1,f_score(conf_matrix)))
+            format(_+1,accuracy_validation))
 
 
         print("current last 10- score ",temp_score*1.0/10)
@@ -216,10 +224,20 @@ def train_bagging_tan_CV(x_train, y_train, x_test, y_test, vector_target,labels,
 
     PROJECT_ROOT = os.path.abspath(__file__)
     BASE_DIR = os.path.dirname(PROJECT_ROOT)
-    model_path = BASE_DIR + '\\' + name_file + '.pt'
+    model_path = BASE_DIR + '\\save' + name_file + '.pt'
 
     torch.save(models_to_save,model_path)
-    return conf_matrix,labels_pred,score,model,len(ensemble_models)
+
+    labels_pred_strings=list()
+    #change labels_pred to strings
+    for label in labels_pred:
+        for i in range(len(labels)):
+            sivug=labels[i]
+            st= stances[sivug]
+            if st == label:
+                labels_pred_strings.append(sivug)
+
+    return conf_matrix,labels_pred_strings,score,model,len(ensemble_models)
 
 
 
@@ -246,8 +264,8 @@ def train_bagging_tan_CV(x_train, y_train, x_test, y_test, vector_target,labels,
 
 # x_train=[], y_train=[], x_test=[], y_tes=[], vector_targe=[]
 def run_model(df_train, df_test, labels, num_of_labels,claim):
-
-    topic_string=''
+    version='tan'
+    topic_string=claim
 
     stances, word2emb, word_ind, ind_word, embedding_matrix, device, \
     x_train, y_train, x_test, y_test, vector_target, train_tweets, test_tweets = load_dataset(topic_string,df_train,df_test,labels,claim, dev="cpu")
@@ -258,13 +276,13 @@ def run_model(df_train, df_test, labels, num_of_labels,claim):
     x_train[:], y_train[:] = zip(*combined)
 
 
-    fin_matrix,labels_pred,score,model,len_ensemble_model= train_bagging_tan_CV(x_train, y_train, x_test, y_test, vector_target,labels,device,embedding_matrix,claim,version=version,n_epochs=1,batch_size=50,l2=0.0,dropout = 0.6,n_folds=2,)
+    fin_matrix,labels_pred,score,model,len_ensemble_model= train_bagging_tan_CV(stances,x_train, y_train, x_test, y_test, vector_target,labels,device,embedding_matrix,claim,version=version,n_epochs=20,batch_size=50,l2=1.0,dropout = 0.5,n_folds=3)
 
-    return labels_pred,y_test,len_ensemble_model,labels,embedding_matrix
+    return labels_pred,y_test,len_ensemble_model,labels,embedding_matrix,word_ind
 
 
 
-def pred_one_stance(labels,embedding_matrix,sentence,claim,stance):
+def pred_one_stance(labels,embedding_matrix,sentence,claim,stance,word_ind_load):
     models_after_load={}
     stances = {}
     topic_string=''
@@ -293,7 +311,7 @@ def pred_one_stance(labels,embedding_matrix,sentence,claim,stance):
     X_test=[sentence]
     df2 = pd.DataFrame(list(zip(Y_test, X_test)),
                    columns =['Stance', 'Sentence'])
-    x_after_proc, vector_target_after_proc  = pre_proce_one_stance(topic_string,df2,labels,claim,dev = "cpu")
+    x_after_proc, vector_target_after_proc  = pre_proce_one_stance(word_ind_load,topic_string,df2,labels,claim,dev = "cpu")
     with torch.no_grad():
         # conf_matrix = np.zeros((2, len(labels)))
         for j in range(len(x_after_proc)):

@@ -129,11 +129,11 @@ def load_dataset(topic_string,df_train,df_test,labels,dataset,dev = "cuda"):
             return [word]
         return wordninja.split(word)
 
-    assert dataset in ['Are E-Cigarettes safe?', 'Does Sunlight exposure lead to skin cancer?',
-                       'Does Vitamin C prevent common cold?', 'Should women take HRT post-menopause?',
-                       'Does MMR Vaccine lead to autism in children?', 'Atheism', 'Hillary Clinton',
-                       'Legalization of Abortion', 'Climate Change is a Real Concern',
-                       'Feminist Movement'], "unknown dataset"
+    # assert dataset in ['Are E-Cigarettes safe?', 'Does Sunlight exposure lead to skin cancer?',
+    #                    'Does Vitamin C prevent common cold?', 'Should women take HRT post-menopause?',
+    #                    'Does MMR Vaccine lead to autism in children?', 'Atheism', 'Hillary Clinton',
+    #                    'Legalization of Abortion', 'Climate Change is a Real Concern',
+    #                    'Feminist Movement'], "unknown dataset"
 
     folder = "Data_SemE_P"
 
@@ -366,21 +366,21 @@ def load_dataset(topic_string,df_train,df_test,labels,dataset,dev = "cuda"):
 
 
 
-def pre_proce_one_stance(topic_string,df,labels,dataset,dev = "cuda"):
+def pre_proce_one_stance(word_ind_load,topic_string,df,labels,dataset,dev = "cuda"):
     def split(word):
         if word in word2emb:
             # if True:
             return [word]
         return wordninja.split(word)
 
-    assert dataset in ['Are E-Cigarettes safe?', 'Does Sunlight exposure lead to skin cancer?',
-                       'Does Vitamin C prevent common cold?', 'Should women take HRT post-menopause?',
-                       'Does MMR Vaccine lead to autism in children?', 'Atheism', 'Hillary Clinton',
-                       'Legalization of Abortion', 'Climate Change is a Real Concern',
-                       'Feminist Movement'], "unknown dataset"
+    # assert dataset in ['Are E-Cigarettes safe?', 'Does Sunlight exposure lead to skin cancer?',
+    #                    'Does Vitamin C prevent common cold?', 'Should women take HRT post-menopause?',
+    #                    'Does MMR Vaccine lead to autism in children?', 'Atheism', 'Hillary Clinton',
+    #                    'Legalization of Abortion', 'Climate Change is a Real Concern',
+    #                    'Feminist Movement'], "unknown dataset"
 
     folder = "Data_SemE_P"
-
+    topic_string=''
     if dataset == 'Are E-Cigarettes safe?':
         topic = 'E-ciggarettes are safer than normal ciggarettes'
         folder = "Data_MPCHI_P"
@@ -441,37 +441,37 @@ def pre_proce_one_stance(topic_string,df,labels,dataset,dev = "cuda"):
     for i in range(len(labels)):
         stances.update({labels[i]: i})
 
-    train_x_before_split = []
-    train_y_before_split = []
+    test_x_before_split = []
+    test_y_before_split = []
     # iter train
     for index, row in df.iterrows():
         train_before_Pro = row['Sentence']
         stances_before_Pro = row['Stance']
         # data = normalise(normalization_dict, clean_str(train_before_Pro))
-        train_x_before_split.append(train_before_Pro)
-        train_y_before_split.append(stances[row['Stance']])
+        test_x_before_split.append(train_before_Pro)
+        test_y_before_split.append(stances[row['Stance']])
 
     # sentences_new_train = preProcessing(train_x_before_split,cm_path1,cm_path2)
 
 
 
-    train_x = preProcessing(train_x_before_split, cm_path1, cm_path2, word2emb)
-    train_y = train_y_before_split
+    test_x = preProcessing(test_x_before_split, cm_path1, cm_path2, word2emb)
+    train_y = test_y_before_split
     # test_x = preProcessing(test_x_before_proc, cm_path1, cm_path2, word2emb)
     # test_y = test_y_before_proc
-    word_ind = {}
+    word_ind = word_ind_load
 
 
 
-    for sent in train_x:
-        for word in sent:
-            if word not in word_ind and word in word2emb:
-                word_ind[word] = len(word_ind)
-
-    # for sent in test_x:
+    # for sent in train_x:
     #     for word in sent:
     #         if word not in word_ind and word in word2emb:
     #             word_ind[word] = len(word_ind)
+
+    for sent in test_x:
+        for word in sent:
+            if word not in word_ind and word in word2emb:
+                word_ind[word] = len(word_ind)
 
     for word in target:
         if word not in word_ind and word in word2emb:
@@ -489,21 +489,21 @@ def pre_proce_one_stance(topic_string,df,labels,dataset,dev = "cuda"):
     # In[13]:
 
     # x_train = np.full((len(train_x),MAX_LEN),PAD)
-    x_train = []
+    # x_train = []
     OOV = 0
     oovs = []
 
-    for i, sent in enumerate(train_x):
-        temp = []
-        for j, word in enumerate(sent):
-            if word in word_ind:
-                temp.append(word_ind[word])
-            else:
-                # print(word)
-                temp.append(UNK)
-                OOV += 1
-                oovs.append(word)
-        x_train.append(temp)
+    # for i, sent in enumerate(train_x):
+    #     temp = []
+    #     for j, word in enumerate(sent):
+    #         if word in word_ind:
+    #             temp.append(word_ind[word])
+    #         else:
+    #             # print(word)
+    #             temp.append(UNK)
+    #             OOV += 1
+    #             oovs.append(word)
+    #     x_train.append(temp)
 
     print("OOV words :- ", OOV)
     a = Counter(oovs)
@@ -518,23 +518,23 @@ def pre_proce_one_stance(topic_string,df,labels,dataset,dev = "cuda"):
 
     x_test = []
 
-    # for i, sent in enumerate(test_x):
-    #     temp = []
-    #     for j, word in enumerate(sent):
-    #         if word in word_ind:
-    #             temp.append(word_ind[word])
-    #         else:
-    #             temp.append(UNK)
-    #
-    #     x_test.append(temp)
+    for i, sent in enumerate(test_x):
+        temp = []
+        for j, word in enumerate(sent):
+            if word in word_ind:
+                temp.append(word_ind[word])
+            else:
+                temp.append(UNK)
+
+        x_test.append(temp)
 
     embedding_matrix = np.zeros((len(word_ind) + 2, 300))
     embedding_matrix[len(word_ind)] = np.random.randn((300))
     for word in word_ind:
         embedding_matrix[word_ind[word]] = word2emb[word]
 
-    print("Number of training examples :- ", len(x_train))
-    print("Sample vectorised sentence :- ", x_train[0])
+    # print("Number of training examples :- ", len(x_train))
+    # print("Sample vectorised sentence :- ", x_train[0])
 
     device = torch.device(dev)
     print("Using this device :- ", device)
@@ -549,7 +549,7 @@ def pre_proce_one_stance(topic_string,df,labels,dataset,dev = "cuda"):
     print("vectorised target:-")
     print(vector_target)
 
-    return  x_train, vector_target
+    return  x_test, vector_target
 
 
 def load_glove_embeddings():

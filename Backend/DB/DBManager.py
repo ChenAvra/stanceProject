@@ -150,7 +150,7 @@ class DataBase:
 # db.fill_claim_table("SomasundaranWiebe.csv",6)
 # print(db.get_dataset(6))
 # df = db.get_dataset(1)
-# print(db.get_dataset(1))
+# print(db.get_dataset(5))
 # print(df.columns)
 
 # db.fill_claim_table("semEval2016.csv",1)
