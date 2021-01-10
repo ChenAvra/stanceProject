@@ -1,5 +1,5 @@
-# stance detection project
-
+# SYSTANCE - Stance Detection Project
+## By: Iris Dreizenshtok, Chen Avraham, Adi Avinun and Gal Tadir
 
 We built a framework for comparing stance detection algorithms with 6 different datasets.
 
