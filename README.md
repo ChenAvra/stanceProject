@@ -7,7 +7,7 @@ You can select up to three algorithms for comparison and one dataset each time.
 
 The system will display the statistics of the algorithms and the dataset with the measures for each algorithm.
 
-** You need to first fill the relevent tables using the DBManager by adding all the datasets (csv files) to the DB. One of the datasets is too large to add to GitHub, so you can download the dataset and add it yourself using the following link:
+** You need to first fill the relevent tables using the DBManager by adding all the datasets (csv files) to the DB. One of the datasets (FNC) is too large to add to GitHub, so you can download the dataset and add it yourself using the following link:
 https://drive.google.com/drive/folders/19A9iQpGb2PEOL9vyqW5otIYmzG2zAm3k?usp=sharing
 
 In addition, there is another section where you can enter a sentence, 
