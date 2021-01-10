@@ -1,4 +1,4 @@
-stance detection project
+# stance detection project
 
 
 We built a framework for comparing stance detection algorithms with 6 different datasets.
