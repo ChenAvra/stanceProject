@@ -14,16 +14,13 @@
 
 
 # Import relevant packages and modules
-import collections
 from csv import DictReader
-from csv import DictWriter
 import numpy as np
 from sklearn.feature_extraction.text import CountVectorizer
 from sklearn.feature_extraction.text import TfidfTransformer
 from sklearn.feature_extraction.text import TfidfVectorizer
 from sklearn.metrics.pairwise import cosine_similarity
 import tensorflow as tf
-import pandas as pd
 
 headline = 'Claim'
 articleBody = 'Sentence'
