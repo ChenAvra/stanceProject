@@ -101,12 +101,12 @@ class DataBase:
         return df
 
     def create_result_table(self):
-        self.cursor.execute("CREATE TABLE IF NOT EXISTS Result (Model TEXT NOT NULL,Dataset TEXT NOT NULL,Train_percent INTEGER NOT NULL,Accuracy INTEGER NOT NULL,Class_report TEXT NOT NULL,roc_acc INTEGER NOT NULL,actual TEXT NOT NULL,predict TEXT NOT NULL,array_labels TEXT NOT NULL,cm TEXT NOT NULL,target TEXT NOT NULL,df_train_records TEXT NOT NULL,df_test_records TEXT NOT NULL)")
+        self.cursor.execute("CREATE TABLE IF NOT EXISTS Result (Model TEXT NOT NULL,Dataset TEXT NOT NULL,Train_percent INTEGER NOT NULL,Accuracy INTEGER NOT NULL,Class_report TEXT NOT NULL,roc_acc INTEGER NOT NULL,actual TEXT NOT NULL,predict TEXT NOT NULL,array_labels TEXT NOT NULL,cm TEXT NOT NULL,target TEXT NOT NULL,df_train_records TEXT NOT NULL,df_test_records TEXT NOT NULL,tpr_fpr TEXT NOT NULL,type TEXT NOT NULL)")
         self.conn.commit()
 
-    def insert_records_to_result(self,model, dataset,train_percent, accuracy, class_report,roc_acc,actual,predict,array_labels,cm,target,df_train_records,df_test_records):
-        query = 'INSERT INTO Result VALUES(?,?,?,?,?,?,?,?,?,?,?,?,?);'
-        self.cursor.execute(query,(model,dataset,train_percent,accuracy,class_report,roc_acc,actual,predict,array_labels,cm,target,df_train_records,df_test_records))
+    def insert_records_to_result(self,model, dataset,train_percent, accuracy, class_report,roc_acc,actual,predict,array_labels,cm,target,df_train_records,df_test_records,dict_tpr_fpr_string,type):
+        query = 'INSERT INTO Result VALUES(?,?,?,?,?,?,?,?,?,?,?,?,?,?,?);'
+        self.cursor.execute(query,(model,dataset,train_percent,accuracy,class_report,roc_acc,actual,predict,array_labels,cm,target,df_train_records,df_test_records,dict_tpr_fpr_string,type))
         self.conn.commit()
 
     def get_record_from_result(self,model, dataset,train_percent ):
@@ -255,7 +255,9 @@ db = DataBase()
 # db.drop_result()
 # db.create_result_table()
 # db.create_model_desc_table()
-# db.insert_desc_model('TAN',"this is tan")
+# db.create_dataset_desc_table()
+# db.insert_desc_dataset('MPCHI',"This dataset contains health-related online news articles. The data provided contains instances of: tweets, id, target and stance, where stance is one of  the following: favor, against, none.")
+
 # db.drop_Request()
 # db.create_Request_table()
 # print(db.insert_records_request('TRANSFORMER','10',0.6))
@@ -264,7 +266,7 @@ db = DataBase()
 # db.create_index_table()
 # print(db.get_index())
 # db.drop_Index()
-
+# db.insert_records_to_result("TRANSFORMER","semEval2016",0.6)
 # db.drop_result()
 # db.get_all_result()
 # db.create_result_table()
@@ -275,17 +277,17 @@ db = DataBase()
 # print(db.get_all_result())
 # db.insert_semEveal_2017("semeval2017.txt",2)
 # db.delete_dataset(10)
-# db.fill_claim_table("covid.csv",10)
+# db.fill_claim_table("semEval2016.csv",1   )
 # print(db.get_dataset(20))
 # df = db.get_dataset(1)
-# print(db.get_dataset(5))
+# print(db.get_dataset(1))
 # print(df.columns)
 
 # db.fill_claim_table("semEval2016.csv",1)
 # db.fill_claim_table("FNC.csv",3)
 # db.fill_claim_table("MPCHI.csv",4)
 # db.fill_claim_table("EmergentLite.csv",5)
-# print(db.get_dataset(3))
+# print(db.get_dataset(4))
 
 # db = DataBase()
 # df = db.get_dataset(6)

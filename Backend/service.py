@@ -21,10 +21,36 @@ from Backend.main_model import start_Specific_Model, get_num_of_records_controll
 
 app = Flask(__name__)
 
+# app.run(threaded=False)
+
 CORS(app, supports_credentials=True)
 # cors = CORS(app)
 # app.config['CORS_HEADERS'] = 'Content-Type'
 
+
+@app.route('/tpr_fpr',methods=['POST'])
+def tpr_fpr():
+    algo_names = get_algorithmes_names_controller()
+    params = request.values
+    model = params['model']
+
+    if (not model in algo_names):
+        # status_code = Response(status=501)
+        return jsonify("invalid model names"), 401
+
+    dataset_name = get_dataset_name_controller()
+    name = params['ds_name']
+    if not name in dataset_name:
+        return jsonify("invalid dataset"), 401
+    percent = int(params['percent'])/100
+    result=get_models_results_controller(model,name,percent)
+    result=result.iloc[0]
+
+
+    arr_to_split=result['tpr_fpr']
+    res = json.loads(arr_to_split)
+
+    return jsonify(res)
 
 
 @app.route('/train_test_records',methods=['POST'])
@@ -48,7 +74,7 @@ def train_test_records():
     test_rec=result['df_test_records']
     train_rec=result['df_train_records']
 
-    arr=[train_rec,test_rec]
+    arr=[int(train_rec),int(test_rec)]
 
     obj={
         'series': arr
@@ -100,31 +126,15 @@ def statisticsTable():
 
 
 
-@app.route('/get_positive_negative/<dataset>', methods=['get'])
+@app.route('/get_positive_negative/<dataset>', methods=['GET'])
 def get_positive_negative(dataset):
+    datasets = get_dataset_name_controller()
+
+    if not dataset in datasets:
+        return jsonify("invalid dataset name"), 401
 
 
-    dataset_name=None
-    data=None
-    data_values=request.values
-    type=data_values['type']
-    if(type=='external'):
-        csv_data = request.files["file"]
-        data = pandas.read_csv(csv_data)
-        valid, error_message = isValid_df(data)
-        if(not valid):
-            return jsonify(error_message),501
-    else:
-
-        dataset_name=data_values['ds_name']
-
-        datasets = get_dataset_name_controller()
-
-        if not dataset_name in datasets:
-            return jsonify("invalid dataset name"), 401
-
-
-    arr=get_positive_negative_controller(dataset_name,data)
+    arr=get_positive_negative_controller(dataset)
 
     obj={
 
@@ -140,26 +150,12 @@ def get_positive_negative(dataset):
 
 @app.route('/get_topics_and_number/<dataset>', methods=['get'])
 def get_topics_and_number(dataset):
-    dataset_name = None
-    data = None
-    data_values = request.values
-    type = data_values['type']
-    if (type == 'external'):
-        csv_data = request.files["file"]
-        data = pandas.read_csv(csv_data)
-        valid, error_message = isValid_df(data)
-        if (not valid):
-            return jsonify(error_message), 501
-    else:
+    datasets = get_dataset_name_controller()
 
-        dataset_name = data_values['ds_name']
+    if not dataset in datasets:
+        return jsonify("invalid dataset name"), 401
 
-        datasets = get_dataset_name_controller()
-
-        if not dataset_name in datasets:
-            return jsonify("invalid dataset name"), 401
-
-    names_topic,num_topic=get_topic_count_controller(dataset_name,data)
+    names_topic,num_topic=get_topic_count_controller(dataset)
 
     obj={
 
@@ -188,13 +184,14 @@ def dataSetInfo(dataset):
 
     obj={
 
-        'datasetName':dataset,
+        ####add type for adi
         'datasetInfo':desc,
         'numOfRecords':numOfRecord
     }
 
 
     return obj
+
 
 
 
@@ -222,15 +219,13 @@ def resultsModelDataset():
     result=result.iloc[0]
 
     roc_acc=result['roc_acc']
-    model=result['Model']
-    dataset=result['Dataset']
+
     accuracy=result['Accuracy']
 
     dict={
         'accuracy':accuracy,
-        'rocacurscore':roc_acc,
-        'datasetName': dataset,
-        'algoName':model
+        'rocaucscore':round(roc_acc,2)
+
     }
 
     return dict
@@ -241,58 +236,31 @@ def resultsModelDataset():
 
 @app.route('/labelPieChart/<dataset>',methods=['GET'])
 def labelPieChart(dataset):
+    datasets = get_dataset_name_controller()
+
+    if not dataset in datasets:
+        return jsonify("invalid dataset name"), 401
 
 
-    dataset_name=None
-    data=None
-    data_values=request.values
-    type=data_values['type']
-    if(type=='external'):
-        csv_data = request.files["file"]
-        data = pandas.read_csv(csv_data)
-        valid, error_message = isValid_df(data)
-        if(not valid):
-            return jsonify(error_message),501
-    else:
-
-        dataset_name=data_values['ds_name']
-
-        datasets = get_dataset_name_controller()
-
-        if not dataset_name in datasets:
-            return jsonify("invalid dataset name"), 401
-
-    arr_num,arr_labels_num=get_labels_count_controller(dataset_name,data)
-    dic = {'series':arr_num,'labels':arr_labels_num}
+    arr_num, arr_labels_num = get_labels_count_controller(dataset)
+    dic = {'series': arr_num, 'labels': arr_labels_num}
     return dic
 
 
 #add name of dataset or file according to type=external/internal
 
-@app.route('/five_sentences_dataset',methods=['POST'])
-def five_sentences_dataset():
-    dataset_name=None
-    data=None
-    data_values=request.values
-    type=data_values['type']
-    if(type=='external'):
-        csv_data = request.files["file"]
-        data = pandas.read_csv(csv_data)
-        valid, error_message = isValid_df(data)
-        if(not valid):
-            return jsonify(error_message),501
-    else:
+@app.route('/five_sentences_dataset/<dataset>',methods=['GET'])
+def five_sentences_dataset(dataset):
+    datasets = get_dataset_name_controller()
 
-        dataset_name=data_values['ds_name']
+    if not dataset in datasets:
+        return jsonify("invalid dataset name"), 401
 
-        datasets = get_dataset_name_controller()
 
-        if not dataset_name in datasets:
-            return jsonify("invalid dataset name"), 401
-    fd_5=get_5_sen_ds_controller(dataset_name,data)
-    arr_return=[]
+    fd_5 = get_5_sen_ds_controller(dataset)
+    arr_return = []
     for i in range(5):
-        obj={
+        obj = {
 
             'claim': fd_5.iloc[i]['Claim'],
             'sentence': fd_5.iloc[i]['Sentence'],
@@ -301,10 +269,9 @@ def five_sentences_dataset():
         }
         arr_return.append(obj)
 
-    dic = {'tableData':arr_return}
+    dic = {'tableData': arr_return}
 
-    # dic.update()
-    # dic.update({'Predict' :'Predict','data':list_predict2})
+
 
     return dic
 
@@ -444,33 +411,24 @@ def ActualVSPredict():
 
     dic={'Actual':list_actual2,'Predict':list_predict2}
 
-    # dic.update()
-    # dic.update({'Predict' :'Predict','data':list_predict2})
 
-    return dic
+    catagories = get_categories_dataset_controller(name)
+
+    dic2 = {'categories': list(catagories)}
+    return jsonify(dic,dic2)
+
+
+
 
 @app.route('/catagories/<dataset>',methods=['GET'])
 def catagories(dataset):
-    dataset_name = None
-    data = None
-    data_values = request.values
-    type = data_values['type']
-    if (type == 'external'):
-        csv_data = request.files["file"]
-        data = pandas.read_csv(csv_data)
-        valid, error_message = isValid_df(data)
-        if (not valid):
-            return jsonify(error_message), 501
-    else:
+    datasets = get_dataset_name_controller()
 
-        dataset_name = data_values['ds_name']
+    if not dataset in datasets:
+        return jsonify("invalid dataset"), 401
 
-        datasets = get_dataset_name_controller()
 
-        if not dataset_name in datasets:
-            return jsonify("invalid dataset"), 401
-
-    catagories=get_categories_dataset_controller(dataset_name,data)
+    catagories = get_categories_dataset_controller(dataset)
 
 
     dic = {'categories': list(catagories)}
@@ -562,9 +520,11 @@ def get_results_models(id):
             models.pop(len(models)-1)
             dataset=req_details.iloc[0]['Dataset']
             train_percent=req_details.iloc[0]['Train_percent']
+            # type=req_details.iloc[0]['type']
             array_details.append(models)
             array_details.append(dataset)
-            array_details.append(train_percent)
+            array_details.append(train_percent*100)
+            # array_details.append(type)
 
             # for model in range(len(models)-1):
             #     df=get_models_results_controller(models[model], dataset, train_percent)

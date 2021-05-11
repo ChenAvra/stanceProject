@@ -149,6 +149,9 @@ def plot_multiclass_roc(y_test, y_pred, path, n_classes, figsize=(17, 6)):
     tpr = dict()
     roc_auc = dict()
 
+    dict_fpr_tpr=[]
+
+
     lb = LabelBinarizer()
     lb.fit(y_test)
     y_test_dummies = lb.transform(y_test)
@@ -161,6 +164,10 @@ def plot_multiclass_roc(y_test, y_pred, path, n_classes, figsize=(17, 6)):
     for i in range(n_classes):
         fpr[i], tpr[i], _ = roc_curve(y_test_dummies[:, i], y_pred_dummies[:, i])
         roc_auc[i] = auc(fpr[i], tpr[i])
+        arr=[]
+        for j in range(len(fpr[i])):
+            arr.append([round(fpr[i][j],2),round(tpr[i][j],2)])
+        dict_fpr_tpr.append({'name':y_test_labels[i],'data':arr,'area':round(roc_auc[i],2)})
 
 
 
@@ -180,6 +187,8 @@ def plot_multiclass_roc(y_test, y_pred, path, n_classes, figsize=(17, 6)):
     #plt.show()
     plt.savefig(path)
 
+    return dict_fpr_tpr
+
 
 # the function recieve models array (strings), dataset_name, and the division percent to train and test
 def start_Specific_Model(models, dataset_name, train_percent,df_extenal,type_ds):
@@ -188,7 +197,7 @@ def start_Specific_Model(models, dataset_name, train_percent,df_extenal,type_ds)
         df_train_records=0
         df_test_records=0
 
-
+        type=""
         db = DataBase()
         # receive DF
         dataset_names_dict = {
@@ -211,7 +220,6 @@ def start_Specific_Model(models, dataset_name, train_percent,df_extenal,type_ds)
         else:
             dataset_id = dataset_names_dict[dataset_name]
 
-
             df = db.get_dataset(dataset_id)
         index_models = ''
         for name in models:
@@ -228,22 +236,27 @@ def start_Specific_Model(models, dataset_name, train_percent,df_extenal,type_ds)
 
         if dataset_name == "FNC":
             df_train, df_test = model_selection.train_test_split(df, train_size=train_percent, shuffle=False)
+            type='headline'
         elif dataset_name == "semEval2016" or dataset_name == "semEval2017" or dataset_name == "MPCHI" or dataset_name == "MPQA":
             # df_train, df_test = model_selection.train_test_split(df, train_size=train_percent, random_state=42)
             df_train, df_test = split_data_topic_based(df, train_percent)
             df_train_records=df_train.shape[0]
             df_test_records=df_test.shape[0]
+            type='topic'
         else:
 
-            if(type_ds=='headline_based'):
-                df_train, df_test = model_selection.train_test_split(df, train_size=train_percent, random_state=42)
-                df_train_records = df_train.shape[0]
-                df_test_records = df_test.shape[0]
-            else:
-                df_train, df_test = split_data_topic_based(df, train_percent)
-                df_train_records = df_train.shape[0]
-                df_test_records = df_test.shape[0]
+            if df_extenal is not None:
 
+                if(type_ds=='headline_based'):
+                    df_train, df_test = model_selection.train_test_split(df, train_size=train_percent, random_state=42)
+                    df_train_records = df_train.shape[0]
+                    df_test_records = df_test.shape[0]
+                else:
+                    df_train, df_test = split_data_topic_based(df, train_percent)
+                    df_train_records = df_train.shape[0]
+                    df_test_records = df_test.shape[0]
+            else:
+                df_train, df_test = model_selection.train_test_split(df, train_size=train_percent, random_state=42)
 
         results = {}
 
@@ -331,8 +344,9 @@ def start_Specific_Model(models, dataset_name, train_percent,df_extenal,type_ds)
             roc_acc = multiclass_roc_auc_score(y_test, y_pred)
             roc_acc = float("{:.3f}".format(roc_acc))
             roc_path = BASE_DIR + '\\DB\\ROC\\' + m_name + '_ ' + dataset_name + '_ ' + str(train_percent) + '.png'
-            plot_multiclass_roc(y_test, y_pred, roc_path, n_classes=num_of_labels, figsize=(16, 10))
+            dict_tpr_fpr=plot_multiclass_roc(y_test, y_pred, roc_path, n_classes=num_of_labels, figsize=(16, 10))
 
+            dict_tpr_fpr_string = json.dumps(dict_tpr_fpr)
 
             # save results in dictionary
             results[m_name] = {}
@@ -347,7 +361,7 @@ def start_Specific_Model(models, dataset_name, train_percent,df_extenal,type_ds)
 
             db.insert_records_to_result(m_name,dataset_name,train_percent,results[m_name]['accuracy'], results[m_name]['class_report'],
 
-            results[m_name]['roc_acc'],actual,predict,array_labels,cm_strings,target_string,df_train_records,df_test_records)
+            results[m_name]['roc_acc'],actual,predict,array_labels,cm_strings,target_string,df_train_records,df_test_records,dict_tpr_fpr_string,type)
 
         index=db.insert_records_request(index_models,dataset_name,train_percent)
         return index
@@ -403,88 +417,61 @@ def get_models_desc_controller_main(model):
     return db.get_model_desc_db(model)
 
 
-def get_categories_dataset_main(dataset,data):
+def get_categories_dataset_main(dataset):
     db = DataBase()
 
-    if (dataset is not None):
-        dataset_id = dataset_names_dict[dataset]
+    dataset_id = dataset_names_dict[dataset]
 
-        df = db.get_dataset(dataset_id)
-        labels = get_unique_labels(df)
-        return labels
-    else:
-        labels = get_unique_labels(data)
-        return labels
+    df = db.get_dataset(dataset_id)
+    labels = get_unique_labels(df)
+    return labels
 
 
-
-def get_5_sen_ds_main(dataset,data):
+def get_5_sen_ds_main(dataset):
     db = DataBase()
 
-    if(dataset is not None):
-        dataset_id = dataset_names_dict[dataset]
+    dataset_id = dataset_names_dict[dataset]
 
-        df = db.get_dataset(dataset_id)
-        df=df.head(5)
-        return df
-    else:
-        df = data.head(5)
-        return df
+    df = db.get_dataset(dataset_id)
+    df = df.head(5)
+    return df
 
 
 
-def get_labels_count_main(dataset,data):
+def get_labels_count_main(dataset):
     db = DataBase()
 
-    if(dataset is not None):
-        dataset_id = dataset_names_dict[dataset]
+    dataset_id = dataset_names_dict[dataset]
 
-        df = db.get_dataset(dataset_id)
-        labels = get_unique_labels(df)
-        num_labels = []
-        labels_arr = []
-        for label in labels:
-            num = (df[df['Stance'] == label]).shape[0]
-            num_labels.append(num)
-            labels_arr.append(label + "(" + str(num) + ")")
-    else:
-        labels = get_unique_labels(data)
-        num_labels = []
-        labels_arr = []
-        for label in labels:
-            num = (data[data['Stance'] == label]).shape[0]
-            num_labels.append(num)
-            labels_arr.append(label + "(" + str(num) + ")")
-
-
+    df = db.get_dataset(dataset_id)
+    labels = get_unique_labels(df)
+    num_labels = []
+    labels_arr = []
+    for label in labels:
+        num = (df[df['Stance'] == label]).shape[0]
+        num_labels.append(num)
+        labels_arr.append(label + "(" + str(num) + ")")
 
 
     return num_labels,labels_arr
 
 
 
-def get_topic_count_main(dataset,data):
+def get_topic_count_main(dataset):
     db = DataBase()
     name_topics=[]
     topics_arr=[]
 
-    if (dataset is not None):
-        dataset_id = dataset_names_dict[dataset]
-        df = db.get_dataset(dataset_id)
+    dataset_id = dataset_names_dict[dataset]
+    df = db.get_dataset(dataset_id)
 
-        topics = df.Claim.unique()
+    topics = df.Claim.unique()
 
-        for topic in topics:
-            num = (df[df['Claim'] == topic]).shape[0]
-            name_topics.append(topic)
-            topics_arr.append(num)
-    else:
-        topics = data.Claim.unique()
+    for topic in topics:
+        num = (df[df['Claim'] == topic]).shape[0]
+        name_topics.append(topic)
+        topics_arr.append(num)
 
-        for topic in topics:
-            num = (data[data['Claim'] == topic]).shape[0]
-            name_topics.append(topic)
-            topics_arr.append(num)
 
 
 
@@ -507,7 +494,7 @@ def get_num_of_records_controller(dataset):
 
 
 
-def get_positive_negative_main(dataset,data):
+def get_positive_negative_main(dataset):
     from afinn import Afinn
     afinn = Afinn()
     count_pos = 0
@@ -515,29 +502,19 @@ def get_positive_negative_main(dataset,data):
     count_net = 0
     # afinn.score('This is utterly excellent!')
     db = DataBase()
-    if (dataset is not None):
-        dataset_id = dataset_names_dict[dataset]
-        df = db.get_dataset(dataset_id)
 
-        for i in range(df.shape[0]):
-            sen = df.iloc[i]['Sentence']
-            score = afinn.score(sen)
-            if score > 0:
-                count_pos = count_pos + 1
-            elif score < 0:
-                count_neg = count_neg + 1
-            else:
-                count_net = count_net + 1
-    else:
-        for i in range(data.shape[0]):
-            sen = data.iloc[i]['Sentence']
-            score = afinn.score(sen)
-            if score > 0:
-                count_pos = count_pos + 1
-            elif score < 0:
-                count_neg = count_neg + 1
-            else:
-                count_net = count_net + 1
+    dataset_id = dataset_names_dict[dataset]
+    df = db.get_dataset(dataset_id)
+
+    for i in range(df.shape[0]):
+        sen = df.iloc[i]['Sentence']
+        score = afinn.score(sen)
+        if score > 0:
+            count_pos = count_pos + 1
+        elif score < 0:
+            count_neg = count_neg + 1
+        else:
+            count_net = count_net + 1
 
 
 

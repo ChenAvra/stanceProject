@@ -36,20 +36,20 @@ def get_models_desc_controller(model):
      return get_models_desc_controller_main(model)
 
 
-def get_categories_dataset_controller(dataset,data):
-     return get_categories_dataset_main(dataset,data)
+def get_categories_dataset_controller(dataset):
+     return get_categories_dataset_main(dataset)
 
 
-def get_5_sen_ds_controller(dataset,data):
-     return get_5_sen_ds_main(dataset,data)
+def get_5_sen_ds_controller(dataset):
+     return get_5_sen_ds_main(dataset)
 
 
-def get_labels_count_controller(dataset,data):
-     return get_labels_count_main(dataset,data)
+def get_labels_count_controller(dataset):
+     return get_labels_count_main(dataset)
 
 
-def get_topic_count_controller(dataset,data):
-     return get_topic_count_main(dataset,data)
+def get_topic_count_controller(dataset):
+     return get_topic_count_main(dataset)
 
 
 
@@ -59,5 +59,5 @@ def get_dataset_desc_controller(datset):
 
 
 
-def get_positive_negative_controller(dataset,data):
-     return get_positive_negative_main(dataset,data)
+def get_positive_negative_controller(dataset):
+     return get_positive_negative_main(dataset)
