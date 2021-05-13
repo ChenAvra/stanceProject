@@ -26,16 +26,13 @@ from sklearn import model_selection
 #Adapted from https://github.com/FakeNewsChallenge/fnc-1/blob/master/scorer.py
 #Original credit - @bgalbraith
 
-headline = 'Claim'
-articleBody = 'Sentence'
-Stance = 'Stance'
 
 def Pred(df_train, df_test, l):
     LABELS = l.tolist()
     combine_df_train = df_train.copy()
     combine_df_test = df_test.copy()
-    combine_df_train['Stances'] = combine_df_train['Stances'].apply(lambda x: LABELS.index(x))
-    combine_df_test['Stances'] = combine_df_test['Stances'].apply(lambda x: LABELS.index(x))
+    combine_df_train['Stance'] = combine_df_train['Stance'].apply(lambda x: LABELS.index(x))
+    combine_df_test['Stance'] = combine_df_test['Stance'].apply(lambda x: LABELS.index(x))
 
 
     # Specify the folder locations
@@ -72,10 +69,10 @@ def Pred(df_train, df_test, l):
 
     # TF-IDF
 
-    train_head = [text_cleaner(head) for head in combine_df_train['Headline']]
-    train_body = [text_cleaner(body) for body in combine_df_train['articleBody']]
-    test_head = [text_cleaner(head) for head in combine_df_test['Headline']]
-    test_body = [text_cleaner(body) for body in combine_df_test['articleBody']]
+    train_head = [text_cleaner(head) for head in combine_df_train['Claim']]
+    train_body = [text_cleaner(body) for body in combine_df_train['Sentence']]
+    test_head = [text_cleaner(head) for head in combine_df_test['Claim']]
+    test_body = [text_cleaner(body) for body in combine_df_test['Sentence']]
 
 
     vectorizer = TfidfVectorizer(max_features = 150)
@@ -91,10 +88,10 @@ def Pred(df_train, df_test, l):
 
 
     # Pre-processing involves removal of puctuations and converting text to lower case
-    word_seq_head_train = [text_to_word_sequence(text_cleaner(head)) for head in combine_df_train['Headline']]
-    word_seq_bodies_train = [text_to_word_sequence(text_cleaner(body)) for body in combine_df_train['articleBody']]
-    word_seq_head_test = [text_to_word_sequence(text_cleaner(head)) for head in combine_df_test['Headline']]
-    word_seq_bodies_test = [text_to_word_sequence(text_cleaner(body)) for body in combine_df_test['articleBody']]
+    word_seq_head_train = [text_to_word_sequence(text_cleaner(head)) for head in combine_df_train['Claim']]
+    word_seq_bodies_train = [text_to_word_sequence(text_cleaner(body)) for body in combine_df_train['Sentence']]
+    word_seq_head_test = [text_to_word_sequence(text_cleaner(head)) for head in combine_df_test['Claim']]
+    word_seq_bodies_test = [text_to_word_sequence(text_cleaner(body)) for body in combine_df_test['Sentence']]
 
 
     word_seq = []
@@ -128,7 +125,7 @@ def Pred(df_train, df_test, l):
     X_train_body = tokenizer.texts_to_sequences([' '.join(seq[:MAX_SENT_LEN]) for seq in word_seq_bodies_train])
     X_train_body = pad_sequences(X_train_body, maxlen=MAX_SENT_LEN, padding='post', truncating='post')
 
-    y_train_1 = combine_df_train['Stances']
+    y_train_1 = combine_df_train['Stance']
 
     X_test_head = tokenizer.texts_to_sequences([' '.join(seq[:MAX_SENT_LEN]) for seq in word_seq_head_test])
     X_test_head = pad_sequences(X_test_head, maxlen=MAX_SENT_LEN, padding='post', truncating='post')
@@ -136,7 +133,7 @@ def Pred(df_train, df_test, l):
     X_test_body = tokenizer.texts_to_sequences([' '.join(seq[:MAX_SENT_LEN]) for seq in word_seq_bodies_test])
     X_test_body = pad_sequences(X_test_body, maxlen=MAX_SENT_LEN, padding='post', truncating='post')
 
-    y_test_1 = combine_df_test['Stances']
+    y_test_1 = combine_df_test['Stance']
 
     y_train = np_utils.to_categorical(y_train_1)
     y_test = np_utils.to_categorical(y_test_1)
@@ -215,22 +212,22 @@ def Pred(df_train, df_test, l):
     # Load/Precompute all features now
     # Run on competition dataset
 
-    actual = df_test['Stances']
+    actual = df_test['Stance']
     #actual = [LABELS[int(a)] for a in y_competition]
     predict_11 = [LABELS[int(a)] for a in pred_old]
     os.remove(BASE_DIR + "\\fraud_1750.hdf5")
 
-
-    print(classification_report(actual, predict_11))
+    actual = actual.values.tolist()
+    return actual, predict_11
 
 
 
 def split_data_topic_based(df_before_spliting, train_percent):
     train_dataset = pd.DataFrame(columns=df_before_spliting.columns)
     test_dataset = pd.DataFrame(columns=df_before_spliting.columns)
-    for topic in df_before_spliting.Headline.unique():
+    for topic in df_before_spliting.Claim.unique():
         tmp_df=df_before_spliting.copy()
-        tmp_df=tmp_df[tmp_df['Headline']==topic]
+        tmp_df=tmp_df[tmp_df['Claim']==topic]
         tmp_train_dataset, tmp_test_dataset = model_selection.train_test_split(tmp_df, train_size=train_percent, shuffle=False)
         train_dataset=train_dataset.append(tmp_train_dataset)
         test_dataset=test_dataset.append(tmp_test_dataset)
@@ -238,15 +235,15 @@ def split_data_topic_based(df_before_spliting, train_percent):
     return train_dataset, test_dataset
 
 
-if __name__ == "__main__":
-
-    df = pd.read_csv('../Backend/DB/MPQA.csv', names=["Headline", "articleBody", "Stances"])
-    #df_train, df_test = model_selection.train_test_split(df, train_size=0.68, shuffle=False)
-    df_train, df_test = model_selection.train_test_split(df, train_size=0.7, random_state=42)
-
-    #df_train, df_test = split_data_topic_based(df, 0.7)
-
-    LABELS = df.Stances.unique()
-
-    #LABELS = ['agree', 'disagree', 'discuss', 'unrelated']
-    Pred(df_train, df_test, LABELS)
+# if __name__ == "__main__":
+#
+#     df = pd.read_csv('../Backend/DB/MPQA.csv', names=["Claim", "Sentence", "Stance"])
+#     #df_train, df_test = model_selection.train_test_split(df, train_size=0.68, shuffle=False)
+#     df_train, df_test = model_selection.train_test_split(df, train_size=0.7, random_state=42)
+#
+#     #df_train, df_test = split_data_topic_based(df, 0.7)
+#
+#     LABELS = df.Stance.unique()
+#
+#     #LABELS = ['agree', 'disagree', 'discuss', 'unrelated']
+#     Pred(df_train, df_test, LABELS)
