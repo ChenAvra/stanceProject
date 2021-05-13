@@ -211,6 +211,7 @@ def start_Specific_Model(models, dataset_name, train_percent):
         acc = float("{:.3f}".format(acc))
         # get classification report
         cr = sklearn.metrics.classification_report(y_test, y_pred)
+        print(cr)
 
         # plot confusion matrix
         PROJECT_ROOT = os.path.abspath(__file__)
@@ -243,8 +244,8 @@ def get_one_stance(sentence, claim):
     stance = tan.get_one_stance(sentence, claim,stance='AGAINST')
     return stance
 
-# models = list()
-# models.append("TAN")
-# start_Specific_Model(models, "EmergentLite", 60)
+models = list()
+models.append("UCLMR")
+start_Specific_Model(models, "EmergentLite", 60)
 
 # print(get_one_stance("I think she is a nice woman",'Hillary Clinton'))
