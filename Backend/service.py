@@ -171,8 +171,7 @@ def get_topics_and_number(dataset):
 
 @app.route('/dataSetInfo/<dataset>',methods=['GET'])
 def dataSetInfo(dataset):
-
-
+    type=""
     dataset_name = get_dataset_name_controller()
 
     if not dataset in dataset_name:
@@ -182,9 +181,14 @@ def dataSetInfo(dataset):
     desc = names.iloc[0]['desc']
     numOfRecord=get_num_of_records_controller(dataset)
 
+    if dataset_name=='covid' or dataset_name=='semEval2016' or dataset_name=='semEval2017' or dataset_name=='MPCHI' or dataset_name=='EmergentLite' or dataset_name=='IBMDebator' or dataset_name=='Procon' or  dataset_name=='VAST' or dataset_name=='MPQA':
+        type='topic'
+    else:
+        type="headline"
+
     obj={
 
-        ####add type for adi
+        'type':type,
         'datasetInfo':desc,
         'numOfRecords':numOfRecord
     }

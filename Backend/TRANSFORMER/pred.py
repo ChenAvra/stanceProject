@@ -30,5 +30,5 @@ def Pred_one_sentence(df_train, df_test, labels, num_of_labels,dataset_name):
         run_model(df_train, df_test, labels, num_of_labels,dataset_name)
     test_labels, preds = predict(df_test_copy, dataset_name,labels)
     for i in range(len(labels)):
-        if i==preds[0]:
+        if labels[i]==preds[0]:
             return labels[i]

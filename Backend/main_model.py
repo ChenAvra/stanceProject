@@ -22,7 +22,7 @@ dataset_names_dict = {
     "EmergentLite": 5,
     "MPQA": 6,
     "IBMDebator": 7,
-    "Procon20": 8,
+    "Procon": 8,
     "VAST": 9,
     "covid":10
 }
@@ -377,14 +377,19 @@ def get_one_stance(sentence, claim):
     db = DataBase()
     df = db.get_dataset(dataset_id)
 
-    # get unique labels
-    labels = get_unique_labels(df)
-    num_of_labels = len(labels)
-    ts = TRANSFORMER()
-    d = {'Claim': [claim], 'Sentence': [sentence],'Stance':['AGAINST']}
-    df = pd.DataFrame(data=d)
-    y_pred = ts.run_one_sen(None, df,labels,num_of_labels,"semEval2016")
-    return y_pred
+    if(db.get_record_from_Stance_Result(claim,sentence)).shape[0]>0:
+        pred=db.get_record_from_Stance_Result(claim,sentence).iloc[0]['Stance']
+        return pred
+    else:
+        # get unique labels
+        labels = get_unique_labels(df)
+        num_of_labels = len(labels)
+        ts = TRANSFORMER()
+        d = {'Claim': [claim], 'Sentence': [sentence],'Stance':['AGAINST']}
+        df = pd.DataFrame(data=d)
+        y_pred = ts.run_one_sen(None, df,labels,num_of_labels,"semEval2016")
+        db.insert_to_Stance_Result(claim,sentence,str(y_pred))
+        return y_pred
 
 
 

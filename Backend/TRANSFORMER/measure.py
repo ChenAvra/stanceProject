@@ -68,6 +68,7 @@ def predict(main_set,dataset_name,labels):
             num=int(label)
             if st==num:
                 test_labels_return.append(sivug)
+                break
 
 
 

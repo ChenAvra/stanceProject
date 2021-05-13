@@ -240,7 +240,7 @@ def split_data_topic_based(df_before_spliting, train_percent):
 
 if __name__ == "__main__":
 
-    df = pd.read_csv('../Backend/DB/SomasundaranWiebe.csv', names=["Headline", "articleBody", "Stances"])
+    df = pd.read_csv('../Backend/DB/MPQA.csv', names=["Headline", "articleBody", "Stances"])
     #df_train, df_test = model_selection.train_test_split(df, train_size=0.68, shuffle=False)
     df_train, df_test = model_selection.train_test_split(df, train_size=0.7, random_state=42)
 

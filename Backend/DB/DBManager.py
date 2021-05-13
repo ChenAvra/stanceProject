@@ -29,6 +29,8 @@ class DataBase:
         self.cursor.execute("CREATE TABLE IF NOT EXISTS Stance_Result(Topic TEXT NOT NULL, Sentence TEXT NOT NULL, Stance TEXT NOT NULL)")
         self.conn.commit()
 
+
+
     def create_index_table(self):
         self.cursor.execute('CREATE TABLE IF NOT EXISTS index_dataset (id text)')
         self.conn.commit()
@@ -224,6 +226,12 @@ class DataBase:
         self.cursor.execute("CREATE TABLE IF NOT EXISTS model_desc (model text NOT NULL, desc TEXT NOT NULL)")
         self.conn.commit()
 
+
+    def drop_model_desc(self):
+        query = "DROP TABLE model_desc;"
+        self.cursor.execute(query)
+        self.conn.commit()
+
     def insert_desc_model(self, model, desc):
         query = 'INSERT INTO model_desc VALUES(?,?);'
         self.cursor.execute(query, (model,desc))
@@ -238,6 +246,11 @@ class DataBase:
         self.cursor.execute("CREATE TABLE IF NOT EXISTS dataset_desc (dataset text NOT NULL, desc TEXT NOT NULL)")
         self.conn.commit()
 
+    def drop_dataset_desc(self):
+        query = "DROP TABLE dataset_desc;"
+        self.cursor.execute(query)
+        self.conn.commit()
+
     def insert_desc_dataset(self, dataset, desc):
         query = 'INSERT INTO dataset_desc VALUES(?,?);'
         self.cursor.execute(query, (dataset, desc))
@@ -250,14 +263,26 @@ class DataBase:
 
 
 db = DataBase()
+
+# db.create_Stance_Result_table()
 # db.create_dataset_desc_table()
 # db.insert_desc_dataset('semEval2016','semEval 2016 description')
 # db.drop_result()
 # db.create_result_table()
+# db.drop_dataset_desc()
+# db.drop_model_desc()
 # db.create_model_desc_table()
 # db.create_dataset_desc_table()
 # db.insert_desc_dataset('MPCHI',"This dataset contains health-related online news articles. The data provided contains instances of: tweets, id, target and stance, where stance is one of  the following: favor, against, none.")
-
+# db.insert_desc_dataset('semEval2016',"This dataset was provided at the SemEval competition in 2016. The data provided contains instances of: tweets, id, target, and stance, where stance is one of  the following: for, against, none.")
+# db.insert_desc_dataset('FNC',"This dataset was provided at the Fake News Chalenge (FNC-1) in 2017. The data provided contains instances of: headline, body and stance,where stance is one of  the following: unrelated, discuss, agree, disagree.")
+# db.insert_desc_dataset('Emergent lite',"This dataset contains claims extracted from rumour sites and Twitter, with 300 claims and 2,595 headlines.The stance is one of the following: for, against, observing.")
+# db.insert_desc_dataset("SemEval2017","This dataset was provided at the SemEval competition in 2017. The data provided contains instances of: a statement, a reply tweet and a stance, where stance is one of  the following: support, deny, query (the author of the response asks for additional evidence in relation to the veracity of the rumour they are responding to) and comment (the author of the response makes their own comment without a clear contribution to assessing the veracity of the rumour they are responding to.")
+# db.insert_desc_dataset("MPQA","This dataset contains political debates about several topics such as healthcare, gay rights, abortion and more and their stance towards that topic (for or against). It was taken from MPQA (Multi-Perspective Question Answering).")
+# db.insert_desc_dataset("IBMDebator","This claim stance dataset includes stance annotations for claims, as well as auxiliary annotations for intermediate stance classification subtasks. They are manually identified and annotated claims from Wikipedia. ")
+# db.insert_desc_dataset("VAST","VAST (VAried Stance Topics) consists of a large range of topics covering broad themes, such as politics, education, and public health. In addition, the data includes a wide range of similar expressions (e.g., ‘guns on campus’ versus ‘firearms on campus’). This variation captures how humans might realistically describe the same topic and contrasts with the lack of variation in existing datasets.")
+# db.insert_desc_dataset("Procon","Procon20 contains 419 different controversial issues with 6094 samples. Each sample is a pair of a (question, argument) that is either a pro or a con. A novel stance detection dataset covering 419 different controversial issues and their related pros and cons collected by procon.org in nonpartisan format.")
+# db.insert_desc_dataset("covid","This dataset contains 5379 tweew about the covid 19 with three stances : 0-against, 1-favor, 2-none")
 # db.drop_Request()
 # db.create_Request_table()
 # print(db.insert_records_request('TRANSFORMER','10',0.6))
@@ -266,13 +291,21 @@ db = DataBase()
 # db.create_index_table()
 # print(db.get_index())
 # db.drop_Index()
-# db.insert_records_to_result("TRANSFORMER","semEval2016",0.6)
 # db.drop_result()
 # db.get_all_result()
 # db.create_result_table()
-# query = 'DELETE FROM Result WHERE Model="UCLMR" AND Dataset="EmergentLite" AND Train_percent=60;'
 # db.cursor.execute(query)
 # db.conn.commit()
+# db.insert_desc_model("TRANSFORMER","This model is called the TRANSFORMER  contains positional encoding addition into input and encoder layer which contains multihead attention layer followed by feed forward layers.")
+# db.insert_desc_model("TAN","TAN - Target-specific Attention Neural Network. This method consists of two main components: a recurrent neural network (RNN) as the feature extractor for text and a fully-connected network  as the target-specific attention selector. It’s a special mechanism which drives the model to concentrate on salient parts in text with respect to a specific target. This algorithm is based on LSTM (similar to RNN).  ** Note that running this algorithm takes a long time due to its complexity.")
+# db.insert_desc_model("SEN","A SVM based stance detection model using three sets of features – stance vector, textual entailment and sentiment feature.The stance vector is created on a sentence level based on an assumption that the main information present in a sentence revolves around some particular parts-of-speech. Thus these parts-of-speech are the main building blocks of the stance expressed by a sentence towards a particular claim. To identify the sentiment feature a standard sentiment analyzer given in Stanford CoreNLP Toolkit is used. For the textual entailment feature, Tensor Flow4 is used, where textual entailment is estimated using word vectorization, recurrent neural networks with LSTM and dropout as a regularization method.")
+# db.insert_desc_model("UCLMR","This algorithm was created by UCL Machine  Reading (UCLMR) during Stage 1 of the Fake News Challenge (FNC-1) in 2017. It is based on a single, end-to-end system consisting of lexical  as well as similarity features passed through a multi-layer perceptron with one hidden layer. UCLMR won third place in  the FNC however out of the three best scoring teams,  UCLMR’s classifier is the simplest and easiest to understand.")
+# db.insert_desc_model()
+
+
+
+
+
 # db.create_Stance_Result_table()
 # print(db.get_all_result())
 # db.insert_semEveal_2017("semeval2017.txt",2)
@@ -282,60 +315,18 @@ db = DataBase()
 # df = db.get_dataset(1)
 # print(db.get_dataset(1))
 # print(df.columns)
+# db.fill_claim_table("MPQA.csv",6)
+# db.fill_claim_table("Procon.csv",8)
+
+# db.delete_dataset(8)
+# db.fill_claim_table("VAST.csv",9)
+# db.fill_claim_table("covid.csv",10)
+
 
 # db.fill_claim_table("semEval2016.csv",1)
 # db.fill_claim_table("FNC.csv",3)
 # db.fill_claim_table("MPCHI.csv",4)
 # db.fill_claim_table("EmergentLite.csv",5)
-# print(db.get_dataset(4))
-
-# db = DataBase()
-# df = db.get_dataset(6)
-# # print(df)
-# print(df.groupby(['Stance']).count())
-# labels = 'Against: 3160', 'Favor: 3961'
-# sizes = [3160, 3961]
-# fig1, ax1 = plt.subplots()
-# ax1.pie(sizes, labels=labels, autopct='%1.1f%%', startangle=90)
-# ax1.axis('equal')  # Equal aspect ratio ensures that pie is drawn as a circle.
-# plt.show()
-
-# db = DataBase()
-# db.drop_result()
-# db.create_result_table()
-# db.insert_records_to_result(1,1,100,30,"report","path")
-# db.delete_from_result()
-# df = db.get_record_from_result("UCLMR","MPCHI",80)
-# print(df["roc_acc"][0])
-# print(df.shape[0])
-# print(df)
-
-# accuracy = df['Accuracy'][0]
-# class_report = str(df['Class_report'][0])
-# class_report=class_report.replace('\n','')
-# arr = class_report.split(" ")
-# arr = list(filter(lambda x: len(x)>0,arr))
-# photo_path = df['Cm_path'][0]
-#
-# print(accuracy)
-# print(photo_path)
-# print(arr)
+# print(db.get_dataset(10))
 
 
-#writing record to csv
-# db = DataBase()
-# df=db.get_record_from_result('TAN', 'EmergentLite', 60)
-# import os
-# PROJECT_ROOT = os.path.abspath(__file__)
-# BASE_DIR = os.path.dirname(PROJECT_ROOT)
-# df.to_csv(BASE_DIR+"\\myRecord.csv", index=False)
-# #
-#
-# #read record from csv and write to db
-# db = DataBase()
-# import os
-# PROJECT_ROOT = os.path.abspath(__file__)
-# BASE_DIR = os.path.dirname(PROJECT_ROOT)
-# df=pd.read_csv(BASE_DIR+"\\myRecord.csv", header=0)
-# for i in range(len(df)):
-#     db.insert_records_to_result(df[i][0], )
