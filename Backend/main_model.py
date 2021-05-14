@@ -234,10 +234,10 @@ def start_Specific_Model(models, dataset_name, train_percent,df_extenal,type_ds)
         # split df to df_train and df_test
         train_percent = train_percent / 100
 
-        if dataset_name == "FNC":
+        if dataset_name == "FNC" or dataset_name=='EmergentLite':
             df_train, df_test = model_selection.train_test_split(df, train_size=train_percent, shuffle=False)
             type='headline'
-        elif dataset_name == "semEval2016" or dataset_name == "semEval2017" or dataset_name == "MPCHI" or dataset_name == "MPQA"  or dataset_name=='covid' or dataset_name=='EmergentLite' or dataset_name=='IBMDebator' or dataset_name=='Procon' or  dataset_name=='VAST' :
+        elif dataset_name == "semEval2016" or dataset_name == "semEval2017" or dataset_name == "MPCHI" or dataset_name == "MPQA"  or dataset_name=='covid'  or dataset_name=='IBMDebator' or dataset_name=='Procon' or  dataset_name=='VAST' :
             # df_train, df_test = model_selection.train_test_split(df, train_size=train_percent, random_state=42)
             df_train, df_test = split_data_topic_based(df, train_percent)
             df_train_records=df_train.shape[0]

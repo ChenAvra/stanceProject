@@ -32,13 +32,13 @@ def run_model(df_train, df_test, labels, num_of_labels,dataset_name):
 
     # print("reading datasets ... ")
     # main_set = readDataset("./dataset/")
-    main_set = preprocessDF(df_train,labels,binaryclass=BINARY_CLASSIFICATION)
+    main_set ,stances= preprocessDF(df_train,labels,binaryclass=BINARY_CLASSIFICATION)
 
 
     if(TEST_ON_COMP):
          train_set = main_set
          # test_set = readTestDataset("./dataset/")
-         test_set = preprocessDF(df_test,labels,binaryclass=BINARY_CLASSIFICATION)
+         test_set,stances = preprocessDF(df_test,labels,binaryclass=BINARY_CLASSIFICATION)
     # else:
     #     totalno = len(main_set)
     #     split_index = totalno - int(DATA_SPLIT*totalno)
@@ -51,7 +51,7 @@ def run_model(df_train, df_test, labels, num_of_labels,dataset_name):
     # #     train_set = getBalancedData(train_set,binaryclass=BINARY_CLASSIFICATION)
     # #     test_set = getBalancedData(test_set,binaryclass=BINARY_CLASSIFICATION)
 
-    print("train and test set created with shape",train_set.shape,test_set.shape)
+    # print("train and test set created with shape",train_set.shape,test_set.shape)
 
 
     if(NEW_TOKENIZER):
