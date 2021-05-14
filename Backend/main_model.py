@@ -13,6 +13,7 @@ from Backend.TRANSFORMER.runTRANSFORMER import TRANSFORMER
 from Backend.UCLMR.runUCLMR import *
 from Backend.SEN.runSEN import *
 from Backend.TAN.runTAN import *
+from Backend.Allada_Nandakumar.runAllada_Nandakumar import *
 
 dataset_names_dict = {
     "semEval2016": 1,
@@ -234,10 +235,14 @@ def start_Specific_Model(models, dataset_name, train_percent,df_extenal,type_ds)
         # split df to df_train and df_test
         train_percent = train_percent / 100
 
-        if dataset_name == "FNC" or dataset_name=='EmergentLite':
+        if dataset_name == "FNC":
             df_train, df_test = model_selection.train_test_split(df, train_size=train_percent, shuffle=False)
             type='headline'
-        elif dataset_name == "semEval2016" or dataset_name == "semEval2017" or dataset_name == "MPCHI" or dataset_name == "MPQA"  or dataset_name=='covid'  or dataset_name=='IBMDebator' or dataset_name=='Procon' or  dataset_name=='VAST' :
+        elif dataset_name == "EmergentLite" or dataset_name =='IBMDebator' or dataset_name =='Procon' or  dataset_name =='VAST':
+            df_train, df_test = model_selection.train_test_split(df, train_size=train_percent, random_state=42)
+            type='headline'
+
+        elif dataset_name == "semEval2016" or dataset_name == "semEval2017" or dataset_name == "MPCHI" or dataset_name == "MPQA"  or dataset_name=='covid':
             # df_train, df_test = model_selection.train_test_split(df, train_size=train_percent, random_state=42)
             df_train, df_test = split_data_topic_based(df, train_percent)
             df_train_records=df_train.shape[0]
@@ -266,7 +271,7 @@ def start_Specific_Model(models, dataset_name, train_percent,df_extenal,type_ds)
 
             ###check if the run is saved
 
-            isExist = db.get_record_from_result(m_name,dataset_name,train_percent)
+            isExist = db.get_record_from_result(m_name, dataset_name, train_percent)
             if(isExist.shape[0]>0):
                 continue
 
@@ -284,6 +289,9 @@ def start_Specific_Model(models, dataset_name, train_percent,df_extenal,type_ds)
             elif m_name == "TRANSFORMER":
                 transformer = TRANSFORMER()
                 y_test, y_pred = transformer.run_TRANSFORMER(df_train, df_test, labels, num_of_labels, dataset_name)
+            elif m_name == "Allada_Nandakumar":
+                allada_nandakumar = Allada_Nandakumar()
+                y_test, y_pred = allada_nandakumar.run_Allada_Nandakumar(df_train, df_test, labels)
 
             # with open('sample_' + m_name + '.csv', 'w', newline='') as csvfile:
             #     fieldnames = ['pred', 'test']
