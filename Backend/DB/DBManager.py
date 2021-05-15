@@ -84,6 +84,12 @@ class DataBase:
         index = index.iloc[0]['id']
         return int(index)
 
+
+    def delete_record_from_Request(self,id ):
+        query = 'DELETE FROM Request WHERE id="{}"'.format(id)
+        self.cursor.execute(query)
+        self.conn.commit()
+
     def get_records_from_request_by_id(self,id):
         query = 'SELECT * FROM Request WHERE id="{}"'.format(id)
         result = pd.read_sql_query(query, self.conn)
@@ -263,7 +269,10 @@ class DataBase:
 
 
 db = DataBase()
+# db.delete_record_from_Request(11)
+# db.delete_record_from_result(None,'TRANSFORMER','EmergentLite',0.6)
 
+# print(db.get_records_from_request_by_id(11))
 # db.create_Stance_Result_table()
 # db.create_dataset_desc_table()
 # db.insert_desc_dataset('semEval2016','semEval 2016 description')
@@ -277,8 +286,8 @@ db = DataBase()
 # db.insert_desc_dataset('MPCHI',"This dataset contains health-related online news articles. The data provided contains instances of: tweets, id, target and stance, where stance is one of  the following: favor, against, none.")
 # db.insert_desc_dataset('semEval2016',"This dataset was provided at the SemEval competition in 2016. The data provided contains instances of: tweets, id, target, and stance, where stance is one of  the following: for, against, none.")
 # db.insert_desc_dataset('FNC',"This dataset was provided at the Fake News Chalenge (FNC-1) in 2017. The data provided contains instances of: headline, body and stance,where stance is one of  the following: unrelated, discuss, agree, disagree.")
-# db.insert_desc_dataset('Emergent lite',"This dataset contains claims extracted from rumour sites and Twitter, with 300 claims and 2,595 headlines.The stance is one of the following: for, against, observing.")
-# db.insert_desc_dataset("SemEval2017","This dataset was provided at the SemEval competition in 2017. The data provided contains instances of: a statement, a reply tweet and a stance, where stance is one of  the following: support, deny, query (the author of the response asks for additional evidence in relation to the veracity of the rumour they are responding to) and comment (the author of the response makes their own comment without a clear contribution to assessing the veracity of the rumour they are responding to.")
+# db.insert_desc_dataset('EmergentLite',"This dataset contains claims extracted from rumour sites and Twitter, with 300 claims and 2,595 headlines.The stance is one of the following: for, against, observing.")
+# db.insert_desc_dataset("semEval2017","This dataset was provided at the SemEval competition in 2017. The data provided contains instances of: a statement, a reply tweet and a stance, where stance is one of  the following: support, deny, query (the author of the response asks for additional evidence in relation to the veracity of the rumour they are responding to) and comment (the author of the response makes their own comment without a clear contribution to assessing the veracity of the rumour they are responding to.")
 # db.insert_desc_dataset("MPQA","This dataset contains political debates about several topics such as healthcare, gay rights, abortion and more and their stance towards that topic (for or against). It was taken from MPQA (Multi-Perspective Question Answering).")
 # db.insert_desc_dataset("IBMDebator","This claim stance dataset includes stance annotations for claims, as well as auxiliary annotations for intermediate stance classification subtasks. They are manually identified and annotated claims from Wikipedia. ")
 # db.insert_desc_dataset("VAST","VAST (VAried Stance Topics) consists of a large range of topics covering broad themes, such as politics, education, and public health. In addition, the data includes a wide range of similar expressions (e.g., ‘guns on campus’ versus ‘firearms on campus’). This variation captures how humans might realistically describe the same topic and contrasts with the lack of variation in existing datasets.")
@@ -313,20 +322,20 @@ db = DataBase()
 # print(db.get_all_result())
 # db.insert_semEveal_2017("semeval2017.txt",2)
 # db.delete_dataset(10)
-# db.fill_claim_table("semEval2016.csv",1   )
+# db.fill_claim_table("semEval2016.csv",1)
 # print(db.get_dataset(20))
 # df = db.get_dataset(1)
 # print(db.get_dataset(1))
-# print(df.columns)
+# # print(df.columns)
 # db.fill_claim_table("MPQA.csv",6)
 # db.fill_claim_table("Procon.csv",8)
 
-# db.delete_dataset(8)
+# # db.delete_dataset(8)
 # db.fill_claim_table("VAST.csv",9)
 # db.fill_claim_table("covid.csv",10)
 
 
-# db.fill_claim_table("semEval2016.csv",1)
+# db.fill_claim_table("IBMDebator.csv",7)
 # db.fill_claim_table("FNC.csv",3)
 # db.fill_claim_table("MPCHI.csv",4)
 # db.fill_claim_table("EmergentLite.csv",5)

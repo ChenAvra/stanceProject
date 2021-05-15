@@ -181,7 +181,8 @@ def dataSetInfo(dataset):
     desc = names.iloc[0]['desc']
     numOfRecord=get_num_of_records_controller(dataset)
 
-    if dataset_name=='covid' or dataset_name=='semEval2016' or dataset_name=='semEval2017' or dataset_name=='MPCHI' or dataset_name=='EmergentLite' or dataset_name=='IBMDebator' or dataset_name=='Procon' or  dataset_name=='VAST' or dataset_name=='MPQA':
+
+    if dataset_name=='covid' or dataset_name=='semEval2016' or dataset_name=='semEval2017' or dataset_name=='MPCHI' or  dataset_name=='MPQA':
         type='topic'
     else:
         type="headline"

@@ -209,8 +209,9 @@ def start_Specific_Model(models, dataset_name, train_percent,df_extenal,type_ds)
             "EmergentLite" : 5,
             "MPQA" : 6,
             "IBMDebator" : 7,
-            "Procon20" :8,
-            "VAST" :9
+            "Procon" :8,
+            "VAST" :9,
+            "covid":10
         }
 
         if df_extenal is not None and dataset_name is None:
@@ -237,10 +238,14 @@ def start_Specific_Model(models, dataset_name, train_percent,df_extenal,type_ds)
 
         if dataset_name == "FNC":
             df_train, df_test = model_selection.train_test_split(df, train_size=train_percent, shuffle=False)
+            df_train_records = df_train.shape[0]
+            df_test_records = df_test.shape[0]
             type='headline'
         elif dataset_name == "EmergentLite" or dataset_name =='IBMDebator' or dataset_name =='Procon' or  dataset_name =='VAST':
             df_train, df_test = model_selection.train_test_split(df, train_size=train_percent, random_state=42)
             type='headline'
+            df_train_records = df_train.shape[0]
+            df_test_records = df_test.shape[0]
 
         elif dataset_name == "semEval2016" or dataset_name == "semEval2017" or dataset_name == "MPCHI" or dataset_name == "MPQA"  or dataset_name=='covid':
             # df_train, df_test = model_selection.train_test_split(df, train_size=train_percent, random_state=42)
@@ -262,6 +267,8 @@ def start_Specific_Model(models, dataset_name, train_percent,df_extenal,type_ds)
                     df_test_records = df_test.shape[0]
             else:
                 df_train, df_test = model_selection.train_test_split(df, train_size=train_percent, random_state=42)
+                df_train_records = df_train.shape[0]
+                df_test_records = df_test.shape[0]
 
         results = {}
 
