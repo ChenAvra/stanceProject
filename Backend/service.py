@@ -181,7 +181,6 @@ def dataSetInfo(dataset):
     desc = names.iloc[0]['desc']
     numOfRecord=get_num_of_records_controller(dataset)
 
-
     if dataset_name=='covid' or dataset_name=='semEval2016' or dataset_name=='semEval2017' or dataset_name=='MPCHI' or  dataset_name=='MPQA':
         type='topic'
     else:
