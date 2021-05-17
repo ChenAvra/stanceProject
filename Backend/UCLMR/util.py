@@ -342,19 +342,19 @@ def pipeline_test(test, bow_vectorizer, tfreq_vectorizer, tfidf_vectorizer):
     return test_set
 
 
-def load_model(sess):
-
-    """
-
-    Load TensorFlow model
-
-    Args:
-        sess: TensorFlow session
-
-    """
-
-    saver = tf.compat.v1.train.Saver()
-    saver.restore(sess, './model/model.checkpoint')
+# def load_model(sess):
+#
+#     """
+#
+#     Load TensorFlow model
+#
+#     Args:
+#         sess: TensorFlow session
+#
+#     """
+#
+#     saver = tf.compat.v1.train.Saver()
+#     saver.restore(sess, './model/model.checkpoint')
 
 
 # def save_predictions(pred, file):
@@ -377,10 +377,10 @@ def load_model(sess):
 #         for instance in pred:
 #             writer.writerow({Stance: label_ref_rev[instance]})
 
-def test_stance(df):
+# def test_stance(df):
     # data = pd.read_csv(file)
-    test_stances = df[Stance]
-    test_stances_array = test_stances.to_numpy()
+    # test_stances = df[Stance]
+    # test_stances_array = test_stances.to_numpy()
 
     # try:
     #     for i in range(len(test_stances_array)-1):

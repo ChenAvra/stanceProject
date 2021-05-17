@@ -63,7 +63,8 @@ def Pred(df_train, df_test, l, num_of_l):
     # Load data sets
     raw_train = FNCData(df_train)
     raw_test = FNCData(df_test)
-    test_stances_array = test_stance(df_test)
+    test_stances = df_test[Stance]
+    test_stances_array = test_stances.to_numpy()
     n_train = len(raw_train.instances)
 
 
