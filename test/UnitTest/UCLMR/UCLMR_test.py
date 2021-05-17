@@ -1,4 +1,4 @@
-from Backend.UCLMR.util import FNCData
+from Backend.UCLMR.util import FNCData, pipeline_train
 from Backend.main_model import dataset_names_dict, split_data_topic_based, get_unique_labels
 from Backend.DB.DBManager import DataBase
 
@@ -37,21 +37,63 @@ def test_FNCData_constructor5():
 
 def test_dfInstance1():
     raw_train = FNCData(df_train)
-    df = raw_train.dfInstance(df_train)
-    assert isinstance(df, list)
+    instances = raw_train.dfInstance(df_train)
+    assert isinstance(instances, list)
 
 def test_dfInstance2():
     raw_train = FNCData(df_train)
-    df = raw_train.dfInstance(df_train)
-    assert isinstance(df[0], dict)
+    instances = raw_train.dfInstance(df_train)
+    assert isinstance(instances[0], dict)
 
 def test_dfInstance3():
     raw_train = FNCData(df_train)
-    df = raw_train.dfInstance(df_train)
-    assert len(df[0]) == 4
+    instances = raw_train.dfInstance(df_train)
+    assert len(instances[0]) == 4
 
 def test_dfBodies1():
     raw_train = FNCData(df_train)
-    df = raw_train.dfBodies(df_train)
-    assert isinstance(df, list)
+    bodies = raw_train.dfBodies(df_train)
+    assert isinstance(bodies, list)
 
+def test_dfBodies2():
+    raw_train = FNCData(df_train)
+    bodies = raw_train.dfBodies(df_train)
+    assert isinstance(bodies[0], dict)
+
+def test_dfBodies3():
+    raw_train = FNCData(df_train)
+    bodies = raw_train.dfBodies(df_train)
+    assert len(bodies[0]) == 4
+
+def test_pipeline_train1():
+    raw_train = FNCData(df_train)
+    raw_test = FNCData(df_test)
+    lim_unigram = 5000
+
+    label_ref = {}
+    counter = 0
+    for t in labels:
+        label_ref[t] = counter
+        counter += 1
+
+    train_set, train_stances, bow_vectorizer, tfreq_vectorizer, tfidf_vectorizer = \
+        pipeline_train(raw_train, raw_test, label_ref, lim_unigram=lim_unigram)
+
+    assert len(train_set) == len(raw_train.bodies)
+
+
+def test_pipeline_train2():
+    raw_train = FNCData(df_train)
+    raw_test = FNCData(df_test)
+    lim_unigram = 5000
+
+    label_ref = {}
+    counter = 0
+    for t in labels:
+        label_ref[t] = counter
+        counter += 1
+
+    train_set, train_stances, bow_vectorizer, tfreq_vectorizer, tfidf_vectorizer = \
+        pipeline_train(raw_train, raw_test, label_ref, lim_unigram=lim_unigram)
+
+    assert len(train_stances) == len(raw_train.bodies)
