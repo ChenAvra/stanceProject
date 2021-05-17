@@ -150,8 +150,11 @@ def Pred(df_train, df_test, l, num_of_l):
         test_feed_dict = {features_pl: test_set, keep_prob_pl: 1.0}
         test_pred = sess.run(predict, feed_dict=test_feed_dict)
 
+    test_pred_categorial = list()
+    for i in range(len(test_pred)):
+         val = label_ref_rev[test_pred[i]]
+         test_pred_categorial.append(val)
 
-    test_pred_categorial = change_test_pred_to_categorial(test_pred, label_ref_rev)
     y_true = list(test_stances_array)
     y_pred = list(test_pred_categorial)
 

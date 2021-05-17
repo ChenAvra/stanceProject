@@ -1,4 +1,4 @@
-from Backend.UCLMR.util import FNCData, pipeline_train
+from Backend.UCLMR.util import FNCData, pipeline_train, pipeline_test
 from Backend.main_model import dataset_names_dict, split_data_topic_based, get_unique_labels
 from Backend.DB.DBManager import DataBase
 
@@ -97,3 +97,23 @@ def test_pipeline_train2():
         pipeline_train(raw_train, raw_test, label_ref, lim_unigram=lim_unigram)
 
     assert len(train_stances) == len(raw_train.bodies)
+
+def test_pipeline_test1():
+    raw_train = FNCData(df_train)
+    raw_test = FNCData(df_test)
+    lim_unigram = 5000
+
+    label_ref = {}
+    counter = 0
+    for t in labels:
+        label_ref[t] = counter
+        counter += 1
+
+    train_set, train_stances, bow_vectorizer, tfreq_vectorizer, tfidf_vectorizer = \
+        pipeline_train(raw_train, raw_test, label_ref, lim_unigram=lim_unigram)
+
+    test_set = pipeline_test(raw_test, bow_vectorizer, tfreq_vectorizer, tfidf_vectorizer)
+
+    assert isinstance(test_set, list)
+
+

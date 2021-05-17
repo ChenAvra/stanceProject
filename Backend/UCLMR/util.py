@@ -391,12 +391,12 @@ def pipeline_test(test, bow_vectorizer, tfreq_vectorizer, tfidf_vectorizer):
     #     print(test_stances_array[i])
     #     print(label_ref[test_stances_array[i]])
 
-    return test_stances_array
+    # return test_stances_array
 
-def change_test_pred_to_categorial(test_pred, label_ref_rev):
-    test_pred_category = list()
-    for i in range(len(test_pred)):
-         val = label_ref_rev[test_pred[i]]
-         test_pred_category.append(val)
-
-    return test_pred_category
+# def change_test_pred_to_categorial(test_pred, label_ref_rev):
+#     test_pred_category = list()
+#     for i in range(len(test_pred)):
+#          val = label_ref_rev[test_pred[i]]
+#          test_pred_category.append(val)
+#
+#     return test_pred_category
