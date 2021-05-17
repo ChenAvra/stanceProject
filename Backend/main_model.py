@@ -1,5 +1,4 @@
 import os
-
 import sklearn
 import sklearn.model_selection as model_selection
 from sklearn.metrics import confusion_matrix, accuracy_score, roc_auc_score, roc_curve, auc
@@ -162,6 +161,16 @@ def plot_multiclass_roc(y_test, y_pred, path, n_classes, figsize=(17, 6)):
     if (n_classes == 2):
         y_test_dummies = pd.get_dummies(y_test, drop_first=False).values
         y_pred_dummies = pd.get_dummies(y_pred, drop_first=False).values
+
+        if(len(y_pred_dummies[0]) == 1):
+            z = np.zeros((len(y_pred_dummies), 1), dtype=int)
+            np.append(y_pred_dummies, z, axis=1)
+            np.column_stack((y_pred_dummies, np.zeros(np.shape(y_pred_dummies)[0])))
+
+            # for i in range(len(y_pred_dummies)):
+            #     print(y_pred_dummies[i])
+            #     np.append(y_pred_dummies[i], 0)
+                #y_pred_dummies[i].append(0)
     for i in range(n_classes):
         fpr[i], tpr[i], _ = roc_curve(y_test_dummies[:, i], y_pred_dummies[:, i])
         roc_auc[i] = auc(fpr[i], tpr[i])
@@ -545,8 +554,8 @@ def get_positive_negative_main(dataset):
 
 
 
-# models = list()
-# models.append("UCLMR")
-# start_Specific_Model(models, "EmergentLite", 60)
+models = list()
+models.append("UCLMR")
+start_Specific_Model(models, "Procon", 70, None, None)
 
 # print(get_one_stance("I think she is a nice woman",'Hillary Clinton'))

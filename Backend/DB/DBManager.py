@@ -147,9 +147,16 @@ class DataBase:
         if df.shape[0]>0:
             return
         # self.cursor.execute("CREATE TABLE IF NOT EXISTS Claims(Dataset_Number INTEGER NOT NULL, Claim TEXT NOT NULL, Sentence TEXT NOT NULL, Stance TEXT NOT NULL)")
-        if dataset_number==6 or dataset_number==10:
+        if dataset_number==6  or dataset_number==10:
             with open(path, "r", encoding='utf-8') as csv_file:
                 print(type(csv_file))
+                csv_reader = csv.reader(csv_file, delimiter=',')
+                # for line in csv_reader:
+                #     print(line)
+                query = "INSERT INTO Claims VALUES({},?,?,?);".format(dataset_number)
+                self.cursor.executemany(query, csv_reader)
+        elif dataset_number==8:
+            with open(path, "r", encoding='ISO-8859-1') as csv_file:
                 csv_reader = csv.reader(csv_file, delimiter=',')
                 # for line in csv_reader:
                 #     print(line)
@@ -339,6 +346,6 @@ db = DataBase()
 # db.fill_claim_table("FNC.csv",3)
 # db.fill_claim_table("MPCHI.csv",4)
 # db.fill_claim_table("EmergentLite.csv",5)
-# print(db.get_dataset(10))
+# print(db.get_dataset(8))
 
 
