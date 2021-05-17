@@ -8,7 +8,7 @@ from sklearn.preprocessing import LabelBinarizer
 
 from Backend.DB.DBManager import *
 # from Backend.LIU.runLIU import LIU
-from Backend.LIU.runLIU import LIU
+# from Backend.LIU.runLIU import LIU
 from Backend.TRANSFORMER.runTRANSFORMER import TRANSFORMER
 from Backend.UCLMR.runUCLMR import *
 from Backend.SEN.runSEN import *

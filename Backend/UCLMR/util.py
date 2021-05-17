@@ -93,29 +93,29 @@ class FNCData:
         #self.bodies = collections.OrderedDict(sorted(self.bodies.items()))
 
 
-    def read(self, filename):
-
-        """
-        Read Fake News Challenge data from CSV file
-
-        Args:
-            filename: str, filename + extension
-
-        Returns:
-            rows: list, of dict per instance
-
-        """
-
-        # Initialise
-        rows = []
-
-        # Process file
-        with open(filename, "r", encoding='utf-8-sig') as table:
-            r = DictReader(table)
-            for line in r:
-                rows.append(line)
-
-        return rows
+    # def read(self, filename):
+    #
+    #     """
+    #     Read Fake News Challenge data from CSV file
+    #
+    #     Args:
+    #         filename: str, filename + extension
+    #
+    #     Returns:
+    #         rows: list, of dict per instance
+    #
+    #     """
+    #
+    #     # Initialise
+    #     rows = []
+    #
+    #     # Process file
+    #     with open(filename, "r", encoding='utf-8-sig') as table:
+    #         r = DictReader(table)
+    #         for line in r:
+    #             rows.append(line)
+    #
+    #     return rows
 
 
     def dfInstance(self, df):
@@ -161,27 +161,27 @@ class FNCData:
 
         return df
 
-    def readInstance(self, filename):
-        rows = []
-        with open(filename, "r", encoding='utf-8-sig') as table:
-            r = DictReader(table)
-            for line in r:
-                del line[articleBody]
-                rows.append(line)
-
-        return rows
-
-    def readBodies(self, filename):
-        rows = []
-
-        with open(filename, "r", encoding='utf-8-sig') as table:
-            r = DictReader(table)
-            for line in r:
-                del line[headline]
-                del line[Stance]
-                rows.append(line)
-
-        return rows
+    # def readInstance(self, filename):
+    #     rows = []
+    #     with open(filename, "r", encoding='utf-8-sig') as table:
+    #         r = DictReader(table)
+    #         for line in r:
+    #             del line[articleBody]
+    #             rows.append(line)
+    #
+    #     return rows
+    #
+    # def readBodies(self, filename):
+    #     rows = []
+    #
+    #     with open(filename, "r", encoding='utf-8-sig') as table:
+    #         r = DictReader(table)
+    #         for line in r:
+    #             del line[headline]
+    #             del line[Stance]
+    #             rows.append(line)
+    #
+    #     return rows
 
 
 # Define relevant functions
