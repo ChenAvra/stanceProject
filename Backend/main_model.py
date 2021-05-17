@@ -8,6 +8,7 @@ from sklearn.preprocessing import LabelBinarizer
 
 from Backend.DB.DBManager import *
 # from Backend.LIU.runLIU import LIU
+from Backend.LIU.runLIU import LIU
 from Backend.TRANSFORMER.runTRANSFORMER import TRANSFORMER
 from Backend.UCLMR.runUCLMR import *
 from Backend.SEN.runSEN import *
@@ -294,8 +295,8 @@ def start_Specific_Model(models, dataset_name, train_percent,df_extenal,type_ds)
 
 
             if m_name == "SEN":
-                # sen = LIU()
-                y_test, y_pred = sen.run_LIU(df_train, df_test, labels, num_of_labels)
+                sen = SEN()
+                y_test, y_pred = sen.run_SEN(df_train, df_test, labels, num_of_labels)
             elif m_name == "UCLMR":
                 uclmr = UCLMR()
                 y_test, y_pred = uclmr.run_UCLMR(df_train, df_test, labels, num_of_labels)
@@ -308,6 +309,9 @@ def start_Specific_Model(models, dataset_name, train_percent,df_extenal,type_ds)
             elif m_name == "Allada_Nandakumar":
                 allada_nandakumar = Allada_Nandakumar()
                 y_test, y_pred = allada_nandakumar.run_Allada_Nandakumar(df_train, df_test, labels)
+            elif m_name == "LIU":
+                liu = LIU()
+                y_test, y_pred = liu.run_LIU(df_train,df_test, labels, len(labels))
 
             # with open('sample_' + m_name + '.csv', 'w', newline='') as csvfile:
             #     fieldnames = ['pred', 'test']
@@ -554,8 +558,8 @@ def get_positive_negative_main(dataset):
 
 
 
-models = list()
-models.append("UCLMR")
-start_Specific_Model(models, "Procon", 70, None, None)
+# models = list()
+# models.append("UCLMR")
+# start_Specific_Model(models, "EmergentLite", 60)
 
 # print(get_one_stance("I think she is a nice woman",'Hillary Clinton'))

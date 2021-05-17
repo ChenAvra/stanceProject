@@ -275,7 +275,15 @@ class DataBase:
         return df
 
 
-db = DataBase()
+# db = DataBase()
+# db.create_result_table()
+# db.create_Request_table()
+# db.create_index_table()
+# db.reset_index()
+# db.create_model_desc_table()
+# db.create_dataset_desc_table()
+
+
 # db.delete_record_from_Request(11)
 # db.delete_record_from_result(None,'TRANSFORMER','EmergentLite',0.6)
 
