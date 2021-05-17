@@ -27,22 +27,6 @@ articleBody = 'Sentence'
 bodyID = 'SentenceID'
 Stance = 'Stance'
 
-# headline = 'Headline'
-# articleBody = 'articleBody'
-# bodyID = 'Body ID'
-# Stance = 'Stance'
-
-
-# Initialise global variables
-# label_ref = {'for': 0, 'against': 1, 'observing': 2}
-# label_ref_rev = {0: 'for', 1: 'against', 2: 'observing'}
-
-# label_ref = {'FAVOR': 0, 'AGAINST': 1, 'NONE': 2}
-# label_ref_rev = {0: 'FAVOR', 1: 'AGAINST', 2: 'NONE'}
-
-# label_ref = {'agree': 0, 'disagree': 1, 'discuss': 2, 'unrelated': 3}
-# label_ref_rev = {0: 'agree', 1: 'disagree', 2: 'discuss', 3: 'unrelated'}
-
 stop_words = [
         "a", "about", "above", "across", "after", "afterwards", "again", "against", "all", "almost", "alone", "along",
         "already", "also", "although", "always", "am", "among", "amongst", "amoungst", "amount", "an", "and", "another",

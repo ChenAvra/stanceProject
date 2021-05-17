@@ -33,15 +33,7 @@ def Pred(df_train, df_test, l, num_of_l):
     num_of_labels = num_of_l
 
     labels = l
-    # labels = ['for', 'against', 'observing']
-    # labels = ['FAVOR', 'AGAINST', 'NONE']
-    # labels = ['agree', 'disagree', 'discuss', 'unrelated']
 
-    # Set file names
-    # file_train = "MPCHI_Train.csv"
-    # file_test = "MPCHI_Test.csv"
-    # file_train = "url-versions-2015-06-14-clean-train.csv"
-    # file_test = "url-versions-2015-06-14-clean-test.csv"
 
     #file_predictions = 'predictions_test.
 
