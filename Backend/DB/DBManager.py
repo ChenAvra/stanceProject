@@ -147,9 +147,16 @@ class DataBase:
         if df.shape[0]>0:
             return
         # self.cursor.execute("CREATE TABLE IF NOT EXISTS Claims(Dataset_Number INTEGER NOT NULL, Claim TEXT NOT NULL, Sentence TEXT NOT NULL, Stance TEXT NOT NULL)")
-        if dataset_number==6 or dataset_number==10:
+        if dataset_number==6  or dataset_number==10:
             with open(path, "r", encoding='utf-8') as csv_file:
                 print(type(csv_file))
+                csv_reader = csv.reader(csv_file, delimiter=',')
+                # for line in csv_reader:
+                #     print(line)
+                query = "INSERT INTO Claims VALUES({},?,?,?);".format(dataset_number)
+                self.cursor.executemany(query, csv_reader)
+        elif dataset_number==8:
+            with open(path, "r", encoding='ISO-8859-1') as csv_file:
                 csv_reader = csv.reader(csv_file, delimiter=',')
                 # for line in csv_reader:
                 #     print(line)
@@ -300,7 +307,7 @@ class DataBase:
 # db.insert_desc_dataset("IBMDebator","This claim stance dataset includes stance annotations for claims, as well as auxiliary annotations for intermediate stance classification subtasks. They are manually identified and annotated claims from Wikipedia. ")
 # db.insert_desc_dataset("VAST","VAST (VAried Stance Topics) consists of a large range of topics covering broad themes, such as politics, education, and public health. In addition, the data includes a wide range of similar expressions (e.g., ‘guns on campus’ versus ‘firearms on campus’). This variation captures how humans might realistically describe the same topic and contrasts with the lack of variation in existing datasets.")
 # db.insert_desc_dataset("Procon","Procon20 contains 419 different controversial issues with 6094 samples. Each sample is a pair of a (question, argument) that is either a pro or a con. A novel stance detection dataset covering 419 different controversial issues and their related pros and cons collected by procon.org in nonpartisan format.")
-# db.insert_desc_dataset("covid","This dataset contains 5379 tweew about the covid 19 with three stances : 0-against, 1-favor, 2-none")
+# db.insert_desc_dataset("covid","This dataset contains 5379 tweets about the covid 19 with three stances : 0-against, 1-favor, 2-none.")
 # db.drop_Request()
 # db.create_Request_table()
 # print(db.insert_records_request('TRANSFORMER','10',0.6))
@@ -347,6 +354,6 @@ class DataBase:
 # db.fill_claim_table("FNC.csv",3)
 # db.fill_claim_table("MPCHI.csv",4)
 # db.fill_claim_table("EmergentLite.csv",5)
-# print(db.get_dataset(5))
+# print(db.get_dataset(8))
 
 

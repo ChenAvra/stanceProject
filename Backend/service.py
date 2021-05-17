@@ -182,7 +182,7 @@ def dataSetInfo(dataset):
     numOfRecord=get_num_of_records_controller(dataset)
 
 
-    if dataset_name=='covid' or dataset_name=='semEval2016' or dataset_name=='semEval2017' or dataset_name=='MPCHI' or  dataset_name=='MPQA':
+    if dataset=='covid' or dataset=='semEval2016' or dataset=='semEval2017' or dataset=='MPCHI' or  dataset=='MPQA':
         type='topic'
     else:
         type="headline"

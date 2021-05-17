@@ -222,17 +222,17 @@ def Pred(df_train, df_test, l):
 
 
 
-def split_data_topic_based(df_before_spliting, train_percent):
-    train_dataset = pd.DataFrame(columns=df_before_spliting.columns)
-    test_dataset = pd.DataFrame(columns=df_before_spliting.columns)
-    for topic in df_before_spliting.Claim.unique():
-        tmp_df=df_before_spliting.copy()
-        tmp_df=tmp_df[tmp_df['Claim']==topic]
-        tmp_train_dataset, tmp_test_dataset = model_selection.train_test_split(tmp_df, train_size=train_percent, shuffle=False)
-        train_dataset=train_dataset.append(tmp_train_dataset)
-        test_dataset=test_dataset.append(tmp_test_dataset)
-
-    return train_dataset, test_dataset
+# def split_data_topic_based(df_before_spliting, train_percent):
+#     train_dataset = pd.DataFrame(columns=df_before_spliting.columns)
+#     test_dataset = pd.DataFrame(columns=df_before_spliting.columns)
+#     for topic in df_before_spliting.Claim.unique():
+#         tmp_df=df_before_spliting.copy()
+#         tmp_df=tmp_df[tmp_df['Claim']==topic]
+#         tmp_train_dataset, tmp_test_dataset = model_selection.train_test_split(tmp_df, train_size=train_percent, shuffle=False)
+#         train_dataset=train_dataset.append(tmp_train_dataset)
+#         test_dataset=test_dataset.append(tmp_test_dataset)
+#
+#     return train_dataset, test_dataset
 
 
 # if __name__ == "__main__":
