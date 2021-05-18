@@ -26,6 +26,19 @@ from sklearn import model_selection
 #Adapted from https://github.com/FakeNewsChallenge/fnc-1/blob/master/scorer.py
 #Original credit - @bgalbraith
 
+def text_cleaner(text):
+    stop_words = set(stopwords.words('english'))
+    newString = text.lower()
+    newString = re.sub('<br\s?\/>|<br>', "", newString)
+    newString = newString.replace('\n', '')
+    newString = re.sub(r'\([^)]*\)', '', newString)
+    newString = re.sub('"', '', newString)
+
+    newString = re.sub(r"'s\b", "", newString)
+    newString = re.sub("[^a-zA-Z]", " ", newString)
+
+    tokens = [w for w in newString.split() if not w in stop_words]
+    return (" ".join(tokens)).strip()
 
 def Pred(df_train, df_test, l):
     LABELS = l.tolist()
@@ -52,28 +65,12 @@ def Pred(df_train, df_test, l):
 
     # PREPROCESS
 
-    stop_words = set(stopwords.words('english'))
-    def text_cleaner(text):
-        newString = text.lower()
-        newString = re.sub('<br\s?\/>|<br>', "", newString)
-        newString = newString.replace('\n','')
-        newString = re.sub(r'\([^)]*\)', '', newString)
-        newString = re.sub('"','', newString)
-
-        newString = re.sub(r"'s\b","",newString)
-        newString = re.sub("[^a-zA-Z]", " ", newString)
-
-        tokens = [w for w in newString.split() if not w in stop_words]
-        return ( " ".join(tokens)).strip()
-
-
-    # TF-IDF
-
     train_head = [text_cleaner(head) for head in combine_df_train['Claim']]
     train_body = [text_cleaner(body) for body in combine_df_train['Sentence']]
     test_head = [text_cleaner(head) for head in combine_df_test['Claim']]
     test_body = [text_cleaner(body) for body in combine_df_test['Sentence']]
 
+    # TF-IDF
 
     vectorizer = TfidfVectorizer(max_features = 150)
     X_train_head_tfidf = vectorizer.fit_transform(train_head).toarray()
@@ -174,26 +171,26 @@ def Pred(df_train, df_test, l):
     head_lstm = shared_lstm(head_embed)
     body_lstm = shared_lstm(body_embed)
 
-    dot_layer = dot([head_lstm,body_lstm],axes = 1, normalize=True)
+    dot_layer = dot([head_lstm, body_lstm], axes=1, normalize=True)
 
     head_input_tfidf = Input(shape=(MAX_SENT_LEN,))
     body_input_tfidf = Input(shape=(MAX_SENT_LEN,))
 
-    tf_dense = Dense(100,activation='relu')
+    tf_dense = Dense(100, activation='relu')
     # tf_dense = Dropout(0.4)(tf_dense)
     tf_dense_head = tf_dense(head_input_tfidf)
     tf_dense_body = tf_dense(body_input_tfidf)
 
-    dot_layer_tfidf = dot([tf_dense_head,tf_dense_body],axes = 1, normalize=True)
+    dot_layer_tfidf = dot([tf_dense_head, tf_dense_body], axes=1, normalize=True)
 
-    conc = concatenate([head_lstm,body_lstm,dot_layer,tf_dense_head,tf_dense_body,dot_layer_tfidf])
+    conc = concatenate([head_lstm, body_lstm, dot_layer, tf_dense_head, tf_dense_body, dot_layer_tfidf])
 
-    dense = Dense(100,activation='relu')(conc)
+    dense = Dense(100, activation='relu')(conc)
     dense = Dropout(0.3)(dense)
-    dense = Dense(len(LABELS),activation='softmax')(dense)
-    model = Model(inputs=[head_input,body_input,head_input_tfidf,body_input_tfidf], outputs=[dense])
+    dense = Dense(len(LABELS), activation='softmax')(dense)
+    model = Model(inputs=[head_input, body_input, head_input_tfidf, body_input_tfidf], outputs=[dense])
     opt = Adam(lr=0.001)
-    model.compile(optimizer=opt, loss='categorical_crossentropy',metrics=['accuracy'])
+    model.compile(optimizer=opt, loss='categorical_crossentropy', metrics=['accuracy'])
 
 
     # MAIN MODEL
@@ -219,7 +216,6 @@ def Pred(df_train, df_test, l):
 
     actual = actual.values.tolist()
     return actual, predict_11
-
 
 
 # def split_data_topic_based(df_before_spliting, train_percent):

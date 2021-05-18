@@ -34,9 +34,7 @@ algorithmes_names_dict = [
     "TRANSFORMER",
     "UCLMR",
     "Allada_Nandakumar"
-
 ]
-
 
 def get_dataset_name():
     keys=dataset_names_dict.keys()
@@ -58,146 +56,9 @@ def split_data_topic_based(df_before_spliting, train_percent):
 
     return train_dataset, test_dataset
 
-# https://www.kaggle.com/grfiv4/plot-a-confusion-matrix
-def plot_confusion_matrix(path, cm, target_names, title='Confusion matrix', cmap=None, normalize=True):
-    """
-    given a sklearn confusion matrix (cm), make a nice plot
-
-    Arguments
-    ---------
-    cm:           confusion matrix from sklearn.metrics.confusion_matrix
-
-    target_names: given classification classes such as [0, 1, 2]
-                  the class names, for example: ['high', 'medium', 'low']
-
-    title:        the text to display at the top of the matrix
-
-    cmap:         the gradient of the values displayed from matplotlib.pyplot.cm
-                  see http://matplotlib.org/examples/color/colormaps_reference.html
-                  plt.get_cmap('jet') or plt.cm.Blues
-
-    normalize:    If False, plot the raw numbers
-                  If True, plot the proportions
-
-    Usage
-    -----
-    plot_confusion_matrix(cm           = cm,                  # confusion matrix created by
-                                                              # sklearn.metrics.confusion_matrix
-                          normalize    = True,                # show proportions
-                          target_names = y_labels_vals,       # list of names of the classes
-                          title        = best_estimator_name) # title of graph
-
-    Citiation
-    ---------
-    http://scikit-learn.org/stable/auto_examples/model_selection/plot_confusion_matrix.html
-
-    """
-    import itertools
-
-    if cmap is None:
-        cmap = plt.get_cmap('Blues')
-
-    plt.figure(figsize=(8, 6))
-    plt.imshow(cm, interpolation='nearest', cmap=cmap)
-    plt.title(title)
-    plt.colorbar()
-
-    if target_names is not None:
-        tick_marks = np.arange(len(target_names))
-        plt.xticks(tick_marks, target_names, rotation=45)
-        plt.yticks(tick_marks, target_names)
-
-    if normalize:
-        cm = cm.astype('float') / cm.sum(axis=1)[:, np.newaxis]
-
-
-    thresh = cm.max() / 1.5 if normalize else cm.max() / 2
-    for i, j in itertools.product(range(cm.shape[0]), range(cm.shape[1])):
-        if normalize:
-            plt.text(j, i, "{:0.4f}".format(cm[i, j]),
-                     horizontalalignment="center",
-                     color="white" if cm[i, j] > thresh else "black")
-        else:
-            plt.text(j, i, "{:,}".format(cm[i, j]),
-                     horizontalalignment="center",
-                     color="white" if cm[i, j] > thresh else "black")
-
-
-    plt.ylabel('True label')
-    plt.xlabel('Predicted label')
-    plt.tight_layout()
-    plt.savefig(path)
-    # plt.show()
-    # plt.close()
-
 def get_unique_labels(df):
     return df.Stance.unique()
 
-
-def multiclass_roc_auc_score(y_test, y_pred, average="macro"):
-    lb = LabelBinarizer()
-    lb.fit(y_test)
-    y_test = lb.transform(y_test)
-    y_pred = lb.transform(y_pred)
-    return roc_auc_score(y_test, y_pred, average=average)
-
-
-def plot_multiclass_roc(y_test, y_pred, path, n_classes, figsize=(17, 6)):
-
-    # structures
-    fpr = dict()
-    tpr = dict()
-    roc_auc = dict()
-
-    dict_fpr_tpr=[]
-
-
-    lb = LabelBinarizer()
-    lb.fit(y_test)
-    y_test_dummies = lb.transform(y_test)
-    y_pred_dummies = lb.transform(y_pred)
-
-    y_test_labels = np.unique(y_test)
-    if (n_classes == 2):
-        y_test_dummies = pd.get_dummies(y_test, drop_first=False).values
-        y_pred_dummies = pd.get_dummies(y_pred, drop_first=False).values
-
-        if(len(y_pred_dummies[0]) == 1):
-            z = np.zeros((len(y_pred_dummies), 1), dtype=int)
-            np.append(y_pred_dummies, z, axis=1)
-            np.column_stack((y_pred_dummies, np.zeros(np.shape(y_pred_dummies)[0])))
-
-            # for i in range(len(y_pred_dummies)):
-            #     print(y_pred_dummies[i])
-            #     np.append(y_pred_dummies[i], 0)
-                #y_pred_dummies[i].append(0)
-    for i in range(n_classes):
-        fpr[i], tpr[i], _ = roc_curve(y_test_dummies[:, i], y_pred_dummies[:, i])
-        roc_auc[i] = auc(fpr[i], tpr[i])
-        arr=[]
-        for j in range(len(fpr[i])):
-            arr.append([round(fpr[i][j],2),round(tpr[i][j],2)])
-        dict_fpr_tpr.append({'name':y_test_labels[i],'data':arr,'area':round(roc_auc[i],2)})
-
-
-
-    # roc for each class
-    fig, ax = plt.subplots(figsize=figsize)
-    ax.plot([0, 1], [0, 1], 'k--')
-    ax.set_xlim([0.0, 1.0])
-    ax.set_ylim([0.0, 1.05])
-    ax.set_xlabel('False Positive Rate')
-    ax.set_ylabel('True Positive Rate')
-    ax.set_title('ROC Curve')
-    for i in range(n_classes):
-        ax.plot(fpr[i], tpr[i], label='ROC curve (area = %0.2f) for label %s' % (roc_auc[i], y_test_labels[i]))
-    ax.legend(loc="best")
-    ax.grid(alpha=.4)
-    #sns.despine()
-    #plt.show()
-    plt.savefig(path)
-
-    return dict_fpr_tpr
 
 
 # the function recieve models array (strings), dataset_name, and the division percent to train and test
@@ -291,8 +152,6 @@ def start_Specific_Model(models, dataset_name, train_percent,df_extenal,type_ds)
             if(isExist.shape[0]>0):
                 continue
 
-
-
             if m_name == "SEN":
                 sen = SEN()
                 y_test, y_pred = sen.run_SEN(df_train, df_test, labels, num_of_labels)
@@ -310,7 +169,7 @@ def start_Specific_Model(models, dataset_name, train_percent,df_extenal,type_ds)
                 y_test, y_pred = allada_nandakumar.run_Allada_Nandakumar(df_train, df_test, labels)
             elif m_name == "LIU":
                 liu = LIU()
-                y_test, y_pred = liu.run_LIU(df_train,df_test, labels, len(labels))
+                y_test, y_pred = liu.run_LIU(df_train,df_test, labels, num_of_labels)
 
             # with open('sample_' + m_name + '.csv', 'w', newline='') as csvfile:
             #     fieldnames = ['pred', 'test']
@@ -390,13 +249,145 @@ def start_Specific_Model(models, dataset_name, train_percent,df_extenal,type_ds)
 
             results[m_name]['roc_acc'],actual,predict,array_labels,cm_strings,target_string,df_train_records,df_test_records,dict_tpr_fpr_string,type)
 
-        index=db.insert_records_request(index_models,dataset_name,train_percent)
+        index = db.insert_records_request(index_models,dataset_name,train_percent)
         return index
     # except:
     #     return False
 
 
+# https://www.kaggle.com/grfiv4/plot-a-confusion-matrix
+# def plot_confusion_matrix(path, cm, target_names, title='Confusion matrix', cmap=None, normalize=True):
+#     """
+#     given a sklearn confusion matrix (cm), make a nice plot
+#
+#     Arguments
+#     ---------
+#     cm:           confusion matrix from sklearn.metrics.confusion_matrix
+#
+#     target_names: given classification classes such as [0, 1, 2]
+#                   the class names, for example: ['high', 'medium', 'low']
+#
+#     title:        the text to display at the top of the matrix
+#
+#     cmap:         the gradient of the values displayed from matplotlib.pyplot.cm
+#                   see http://matplotlib.org/examples/color/colormaps_reference.html
+#                   plt.get_cmap('jet') or plt.cm.Blues
+#
+#     normalize:    If False, plot the raw numbers
+#                   If True, plot the proportions
+#
+#     Usage
+#     -----
+#     plot_confusion_matrix(cm           = cm,                  # confusion matrix created by
+#                                                               # sklearn.metrics.confusion_matrix
+#                           normalize    = True,                # show proportions
+#                           target_names = y_labels_vals,       # list of names of the classes
+#                           title        = best_estimator_name) # title of graph
+#
+#     Citiation
+#     ---------
+#     http://scikit-learn.org/stable/auto_examples/model_selection/plot_confusion_matrix.html
+#
+#     """
+#     import itertools
+#
+#     if cmap is None:
+#         cmap = plt.get_cmap('Blues')
+#
+#     plt.figure(figsize=(8, 6))
+#     plt.imshow(cm, interpolation='nearest', cmap=cmap)
+#     plt.title(title)
+#     plt.colorbar()
+#
+#     if target_names is not None:
+#         tick_marks = np.arange(len(target_names))
+#         plt.xticks(tick_marks, target_names, rotation=45)
+#         plt.yticks(tick_marks, target_names)
+#
+#     if normalize:
+#         cm = cm.astype('float') / cm.sum(axis=1)[:, np.newaxis]
+#
+#
+#     thresh = cm.max() / 1.5 if normalize else cm.max() / 2
+#     for i, j in itertools.product(range(cm.shape[0]), range(cm.shape[1])):
+#         if normalize:
+#             plt.text(j, i, "{:0.4f}".format(cm[i, j]),
+#                      horizontalalignment="center",
+#                      color="white" if cm[i, j] > thresh else "black")
+#         else:
+#             plt.text(j, i, "{:,}".format(cm[i, j]),
+#                      horizontalalignment="center",
+#                      color="white" if cm[i, j] > thresh else "black")
+#
 
+    # plt.ylabel('True label')
+    # plt.xlabel('Predicted label')
+    # plt.tight_layout()
+    # plt.savefig(path)
+    # plt.show()
+    # plt.close()
+
+
+def multiclass_roc_auc_score(y_test, y_pred, average="macro"):
+    lb = LabelBinarizer()
+    lb.fit(y_test)
+    y_test = lb.transform(y_test)
+    y_pred = lb.transform(y_pred)
+    return roc_auc_score(y_test, y_pred, average=average)
+
+
+def plot_multiclass_roc(y_test, y_pred, path, n_classes, figsize=(17, 6)):
+    # structures
+    fpr = dict()
+    tpr = dict()
+    roc_auc = dict()
+
+    dict_fpr_tpr=[]
+
+    lb = LabelBinarizer()
+    lb.fit(y_test)
+    y_test_dummies = lb.transform(y_test)
+    y_pred_dummies = lb.transform(y_pred)
+
+    y_test_labels = np.unique(y_test)
+    if (n_classes == 2):
+        y_test_dummies = pd.get_dummies(y_test, drop_first=False).values
+        y_pred_dummies = pd.get_dummies(y_pred, drop_first=False).values
+
+        if(len(y_pred_dummies[0]) == 1):
+            z = np.zeros((len(y_pred_dummies), 1), dtype=int)
+            np.append(y_pred_dummies, z, axis=1)
+            np.column_stack((y_pred_dummies, np.zeros(np.shape(y_pred_dummies)[0])))
+
+            # for i in range(len(y_pred_dummies)):
+            #     print(y_pred_dummies[i])
+            #     np.append(y_pred_dummies[i], 0)
+                #y_pred_dummies[i].append(0)
+    for i in range(n_classes):
+        fpr[i], tpr[i], _ = roc_curve(y_test_dummies[:, i], y_pred_dummies[:, i])
+        roc_auc[i] = auc(fpr[i], tpr[i])
+        arr=[]
+        for j in range(len(fpr[i])):
+            arr.append([round(fpr[i][j], 2),round(tpr[i][j], 2)])
+        dict_fpr_tpr.append({'name': y_test_labels[i], 'data': arr, 'area': round(roc_auc[i], 2)})
+
+    # roc for each class
+    # fig, ax = plt.subplots(figsize=figsize)
+    # ax.plot([0, 1], [0, 1], 'k--')
+    # ax.set_xlim([0.0, 1.0])
+    # ax.set_ylim([0.0, 1.05])
+    # ax.set_xlabel('False Positive Rate')
+    # ax.set_ylabel('True Positive Rate')
+    # ax.set_title('ROC Curve')
+    # for i in range(n_classes):
+    #     ax.plot(fpr[i], tpr[i], label='ROC curve (area = %0.2f) for label %s' % (roc_auc[i], y_test_labels[i]))
+    # ax.legend(loc="best")
+    # ax.grid(alpha=.4)
+    # #sns.despine()
+    # #plt.show()
+    # plt.savefig(path)
+
+    return dict_fpr_tpr
 
 #the function recieves a sentence and claim and returns its stance
 def get_one_stance(sentence, claim):
@@ -412,153 +403,16 @@ def get_one_stance(sentence, claim):
         labels = get_unique_labels(df)
         num_of_labels = len(labels)
         ts = TRANSFORMER()
-        d = {'Claim': [claim], 'Sentence': [sentence],'Stance':['AGAINST']}
+        d = {'Claim': [claim], 'Sentence': [sentence], 'Stance': ['AGAINST']}
         df = pd.DataFrame(data=d)
         y_pred = ts.run_one_sen(None, df,labels,num_of_labels,"semEval2016")
         db.insert_to_Stance_Result(claim,sentence,str(y_pred))
         return y_pred
 
-
-
-def insert_dataset_to_db(path_dataset):
-    db=DataBase()
-    num=db.index_dataset
-    db.insert_external_dataset(path_dataset,num)
-    db.index_dataset=db.index_dataset+1
-
-def get_topics_main():
-    db=DataBase()
-
-    return db.get_topics_db()
-
-
-def get_model_result_main(model, dataset_name, train_percent):
-    db=DataBase()
-
-    return db.get_record_from_result(model, dataset_name, train_percent)
-
-def get_req_details_main(id):
-    db=DataBase()
-
-    return db.get_records_from_request_by_id(id)
-
-
-def get_models_desc_controller_main(model):
-    db = DataBase()
-
-    return db.get_model_desc_db(model)
-
-
-def get_categories_dataset_main(dataset):
-    db = DataBase()
-
-    dataset_id = dataset_names_dict[dataset]
-
-    df = db.get_dataset(dataset_id)
-    labels = get_unique_labels(df)
-    return labels
-
-
-def get_5_sen_ds_main(dataset):
-    db = DataBase()
-
-    dataset_id = dataset_names_dict[dataset]
-
-    df = db.get_dataset(dataset_id)
-    df = df.head(5)
-    return df
-
-
-
-def get_labels_count_main(dataset):
-    db = DataBase()
-
-    dataset_id = dataset_names_dict[dataset]
-
-    df = db.get_dataset(dataset_id)
-    labels = get_unique_labels(df)
-    num_labels = []
-    labels_arr = []
-    for label in labels:
-        num = (df[df['Stance'] == label]).shape[0]
-        num_labels.append(num)
-        labels_arr.append(label + "(" + str(num) + ")")
-
-
-    return num_labels,labels_arr
-
-
-
-def get_topic_count_main(dataset):
-    db = DataBase()
-    name_topics=[]
-    topics_arr=[]
-
-    dataset_id = dataset_names_dict[dataset]
-    df = db.get_dataset(dataset_id)
-
-    topics = df.Claim.unique()
-
-    for topic in topics:
-        num = (df[df['Claim'] == topic]).shape[0]
-        name_topics.append(topic)
-        topics_arr.append(num)
-
-
-
-
-
-    return name_topics,topics_arr
-
-
-def get_dataset_desc_controller_main(dataset):
-    db = DataBase()
-
-    return db.get_dataset_desc_db(dataset)
-
-
-def get_num_of_records_controller(dataset):
-    db = DataBase()
-    dataset_id = dataset_names_dict[dataset]
-
-    num = db.get_dataset(dataset_id).shape[0]
-    return num
-
-
-
-def get_positive_negative_main(dataset):
-    from afinn import Afinn
-    afinn = Afinn()
-    count_pos = 0
-    count_neg = 0
-    count_net = 0
-    # afinn.score('This is utterly excellent!')
-    db = DataBase()
-
-    dataset_id = dataset_names_dict[dataset]
-    df = db.get_dataset(dataset_id)
-
-    for i in range(df.shape[0]):
-        sen = df.iloc[i]['Sentence']
-        score = afinn.score(sen)
-        if score > 0:
-            count_pos = count_pos + 1
-        elif score < 0:
-            count_neg = count_neg + 1
-        else:
-            count_net = count_net + 1
-
-
-
-
-
-
-    return [count_pos,count_neg,count_net]
-
-
-
 # models = list()
-# models.append("UCLMR")
-# start_Specific_Model(models, "EmergentLite", 60)
+# models.append("TRANSFORMER")
+# start_Specific_Model(models, "semEval2016", 60, None, None)
 
 # print(get_one_stance("I think she is a nice woman",'Hillary Clinton'))
+
+

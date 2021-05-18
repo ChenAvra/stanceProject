@@ -14,11 +14,10 @@ from Backend.controller import get_dataset_name_controller, get_algorithmes_name
     get_5_sen_ds_controller, get_labels_count_controller, get_dataset_desc_controller, get_topic_count_controller, \
     get_positive_negative_controller
 from flask import Flask, request, Response,abort, jsonify, send_from_directory
-
 import os
 
-from Backend.main_model import start_Specific_Model, get_num_of_records_controller
-
+from Backend.main_model import start_Specific_Model
+from Backend.util import get_num_of_records_controller
 app = Flask(__name__)
 
 # app.run(threaded=False)
@@ -45,7 +44,6 @@ def tpr_fpr():
     percent = int(params['percent'])/100
     result=get_models_results_controller(model,name,percent)
     result=result.iloc[0]
-
 
     arr_to_split=result['tpr_fpr']
     res = json.loads(arr_to_split)
@@ -119,8 +117,6 @@ def statisticsTable():
             array_num=a.split()
             matrix.append(array_num)
 
-
-
     dic = {'data': matrix}
     return dic
 
@@ -133,18 +129,12 @@ def get_positive_negative(dataset):
     if not dataset in datasets:
         return jsonify("invalid dataset name"), 401
 
-
     arr=get_positive_negative_controller(dataset)
 
     obj={
-
         'series': arr,
-
-
     }
     return obj
-
-
 
 
 
@@ -158,11 +148,8 @@ def get_topics_and_number(dataset):
     names_topic,num_topic=get_topic_count_controller(dataset)
 
     obj={
-
         'data': num_topic,
         'categories':names_topic
-
-
     }
     return obj
 
@@ -188,21 +175,12 @@ def dataSetInfo(dataset):
         type="headline"
 
     obj={
-
         'type':type,
         'datasetInfo':desc,
         'numOfRecords':numOfRecord
     }
 
-
     return obj
-
-
-
-
-
-
-
 
 
 @app.route('/resultsModelDataset',methods=['POST'])
@@ -228,14 +206,11 @@ def resultsModelDataset():
     accuracy=result['Accuracy']
 
     dict={
-        'accuracy':accuracy,
-        'rocaucscore':round(roc_acc,2)
-
+        'accuracy': accuracy,
+        'rocaucscore': round(roc_acc, 2)
     }
 
     return dict
-
-
 
 
 
@@ -275,9 +250,6 @@ def five_sentences_dataset(dataset):
         arr_return.append(obj)
 
     dic = {'tableData': arr_return}
-
-
-
     return dic
 
 
@@ -291,6 +263,7 @@ def get_datasets_names():
 
     # print(jsonify(rows))
     return jsonify(names)
+
 
 @app.route('/models_desc/<model>',methods=['GET'])
 def get_models_desc(model):
@@ -350,9 +323,6 @@ def add_dataset_to_db():
         # return status_code
     else:
         return jsonify(error_message),501
-
-
-
 
 
 def isValid_df(df):
@@ -423,8 +393,6 @@ def ActualVSPredict():
     return jsonify(dic,dic2)
 
 
-
-
 @app.route('/catagories/<dataset>',methods=['GET'])
 def catagories(dataset):
     datasets = get_dataset_name_controller()
@@ -434,7 +402,6 @@ def catagories(dataset):
 
 
     catagories = get_categories_dataset_controller(dataset)
-
 
     dic = {'categories': list(catagories)}
     return dic
@@ -481,8 +448,6 @@ def confusionMatrix():
 
     len_target=len(new_target)
 
-
-
     matrix = []
     l_true_label = [''] * (len_target + 1)
     l_true_label[0] = 'TRUE LABEL'
@@ -500,7 +465,6 @@ def confusionMatrix():
 
     matrix.append(l_pred_label)
 
-
     matrix=list(matrix)
 
     dic = {'data': matrix}
@@ -509,14 +473,9 @@ def confusionMatrix():
 
 
 
-
-
-
-
 @app.route('/result/<id>',methods=['GET'])
 def get_results_models(id):
     array_details=[]
-    data_frame=pandas.DataFrame()
     req_details=get_models_request_controller(id)
     if not req_details.empty:
         try:
@@ -543,6 +502,7 @@ def get_results_models(id):
     else:
         return jsonify("invalid index")
 
+
 @app.route('/run_model',methods=['POST'])
 def run_model():
     algo_names=get_algorithmes_names_controller()
@@ -556,7 +516,6 @@ def run_model():
             # status_code = Response(status=501)
             return jsonify("invalid model names"), 401
 
-
     dataset_names=get_dataset_name_controller()
     name = params['ds_name']
     if not name in dataset_names:
@@ -565,7 +524,6 @@ def run_model():
     email=params['email']
     # based = params['based']
     if email !='':
-
         # start_result(array_algo_param, name, int(params['percent']),email)
         thread = Thread(target=start_result, kwargs={'array_algo_param':array_algo_param,'name':name , 'percent':percent,"email":email,'based':None})
         thread.start()
@@ -573,6 +531,8 @@ def run_model():
     else:
         index=start_specific_model_controller(array_algo_param, name,percent,None,None)
         return jsonify(str(index)),201
+
+
 
 def start_result(array_algo_param, name,percent,df_extenal,email,based):
     import time
@@ -589,11 +549,9 @@ def send_email(results,email):
     data = json.loads(result)
     # data=json.dumps(parsed, indent=4)
 
-
     for res in data:
         f.write(str(res['Model']))
         f.write(str(res['Accuracy']))
-
 
     f.close()
     # send email to user

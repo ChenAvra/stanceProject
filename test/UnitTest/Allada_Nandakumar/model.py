@@ -1,4 +1,4 @@
-from Backend.UCLMR.pred import *
+from Backend.Allada_Nandakumar.model import *
 from Backend.main_model import dataset_names_dict, split_data_topic_based, get_unique_labels
 from Backend.DB.DBManager import DataBase
 
@@ -15,15 +15,11 @@ num_of_labels = len(labels)
 topics = df.Claim.unique()
 num_of_topics = len(topics)
 
-def test_Pred1():
-    y_test, y_pred = Pred(df_train, df_test, labels, num_of_labels)
-    assert len(y_test) == len(y_pred)
+def test_text_cleaner1():
+    train_body = [text_cleaner(body) for body in df_train['Sentence']]
+    assert len(train_body) == len(df_train)
 
-def test_Pred2():
-    y_test, y_pred = Pred(df_train, df_test, labels, num_of_labels)
-    assert len(y_pred) == len(df_test)
-
-def test_Pred3():
-    y_test, y_pred = Pred(df_train, df_test, labels, num_of_labels)
-    y_pred_np = np.array(y_pred)
-    assert len(np.unique(y_pred_np)) == num_of_labels
+def test_text_cleaner2():
+    train_body = [text_cleaner(body) for body in df_train['Sentence']]
+    for i in range(len(train_body)):
+        assert " the " not in train_body[i]
