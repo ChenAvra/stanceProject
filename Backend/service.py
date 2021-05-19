@@ -8,7 +8,7 @@ from flask_cors import CORS
 from flask import Flask
 from flask import jsonify
 from flask import request
-from Backend.controller import get_dataset_name_controller, get_algorithmes_names_controller, add_dataset, \
+from Backend.controller import get_dataset_name_controller, get_algorithmes_names_controller, \
     get_topics_controller, get_stance_controller, start_specific_model_controller, get_models_results_controller, \
     get_models_request_controller, get_models_desc_controller, get_categories_dataset_controller, \
     get_5_sen_ds_controller, get_labels_count_controller, get_dataset_desc_controller, get_topic_count_controller, \

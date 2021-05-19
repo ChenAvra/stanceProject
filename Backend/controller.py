@@ -1,5 +1,6 @@
 from Backend.util import *
 
+
 def get_dataset_name_controller():
      return get_dataset_name()
 
@@ -8,8 +9,8 @@ def get_algorithmes_names_controller():
      return get_algorithmes_names()
 
 
-def add_dataset(csv_dataset):
-     insert_dataset_to_db(csv_dataset)
+# def add_dataset(csv_dataset):
+#      insert_dataset_to_db(csv_dataset)
 
 
 def get_topics_controller():

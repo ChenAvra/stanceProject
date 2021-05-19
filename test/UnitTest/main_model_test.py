@@ -25,6 +25,7 @@ def test_get_unique_labels():
     labels = get_unique_labels(df)
     assert len(labels) == 3
 
+# CHANGE
 def test_get_one_stance():
     stance = get_one_stance("I think she is a nice woman", 'Hillary Clinton')
     print(stance)

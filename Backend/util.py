@@ -1,11 +1,11 @@
 from Backend.main_model import *
 
 
-def insert_dataset_to_db(path_dataset):
-    db=DataBase()
-    num=db.index_dataset
-    db.insert_external_dataset(path_dataset,num)
-    db.index_dataset=db.index_dataset+1
+# def insert_dataset_to_db(path_dataset):
+#     db = DataBase()
+#     num = db.index_dataset
+#     db.insert_external_dataset(path_dataset,num)
+#     db.index_dataset = db.index_dataset+1
 
 def get_topics_main():
     db = DataBase()
@@ -13,7 +13,7 @@ def get_topics_main():
 
 
 def get_model_result_main(model, dataset_name, train_percent):
-    db=DataBase()
+    db = DataBase()
     return db.get_record_from_result(model, dataset_name, train_percent)
 
 def get_req_details_main(id):
@@ -91,7 +91,6 @@ def get_dataset_desc_controller_main(dataset):
 def get_num_of_records_controller(dataset):
     db = DataBase()
     dataset_id = dataset_names_dict[dataset]
-
     num = db.get_dataset(dataset_id).shape[0]
     return num
 
