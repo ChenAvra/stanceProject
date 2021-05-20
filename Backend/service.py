@@ -106,7 +106,7 @@ def statisticsTable():
     matrix=[]
     # cm_array=cm.split(" ")
     # cm_array.pop(len(cm_array)-1)
-    arr_0=['Label','Precision','Recall','F-score','Support']
+    arr_0=['LABEL','PRECISION','RECALL','F-SCORE','SUPPORT']
     matrix.append(arr_0)
     for arr in range(1,len(cm_arr)):
         import re
@@ -115,6 +115,7 @@ def statisticsTable():
             a=sen.strip()
 
             array_num=a.split()
+            array_num[0] = array_num[0].upper()
             matrix.append(array_num)
 
     dic = {'data': matrix}
@@ -450,20 +451,20 @@ def confusionMatrix():
 
     matrix = []
     l_true_label = [''] * (len_target + 1)
-    l_true_label[0] = 'TRUE LABEL'
-    l_pred_label = [''] * (len_target + 1)
-    l_pred_label[0] = 'PREDICTED LABEL'
+    l_true_label[0] = 'TRUE / PREDICTED'
+    #l_pred_label = [''] * (len_target + 1)
+    #l_pred_label[0] = 'PREDICTED'
     for i in range(1, len_target + 1):
-        l_pred_label[i] = new_target[i - 1]
+        l_true_label[i] = new_target[i - 1].upper()
 
     matrix.append(l_true_label)
 
     for array, ind in zip(pre_matric, new_target):
         l1 = list(array)
-        l1.insert(0, ind)
+        l1.insert(0, ind.upper())
         matrix.append(l1)
 
-    matrix.append(l_pred_label)
+    #matrix.append(l_pred_label)
 
     matrix=list(matrix)
 
