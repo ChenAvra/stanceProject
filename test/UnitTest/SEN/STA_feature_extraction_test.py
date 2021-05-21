@@ -1,6 +1,9 @@
 from Backend.DB.DBManager import DataBase
 from Backend.LIU.Feature_Extract import FeatureExtract
 from Backend.LIU.main import main, runLIU, OVER_SAMPLING
+from Backend.SEN.SEN import get_legal_directort_name, split_to_topic_folders, create_normalise_dict
+from Backend.SEN.preprocessing import clean_str, load_glove_embeddings, split
+from Backend.SEN.STA_feature_extraction import load_glove_embeddings_set, sent_process
 from Backend.main_model import dataset_names_dict, split_data_topic_based, get_unique_labels
 from Backend.LIU.DataSet import DataSet
 import numpy as np
@@ -18,16 +21,15 @@ num_of_labels = len(labels)
 ds = DataSet(preprocess=False, labelsFromDB=labels, train_df=df_train, test_df=df_test)
 train_all = ds.get_train()
 
-def test_data_to_tf():
-    tf = FeatureExtract(train_all, over_sampling=False, set='train', class_format='trinary', labels=labels).data_to_tf(train_all)
-    assert len(tf) == len(train_all)
+def test_load_glove_embeddings_set():
+    set_of_words = load_glove_embeddings_set()
+    assert isinstance(set_of_words, set)
 
+def test_create_normalise_dict():
+    dictionary = create_normalise_dict()
+    assert isinstance(dictionary, dict)
 
-def test_tfidf_lookup():
-    data = np.array(train_all)
-    lookUp = FeatureExtract(train_all, over_sampling=False, set='train', class_format='trinary', labels=labels).tfidf_lookup(np.r_[train_all[:, 1],train_all[:, 0]])
-    assert isinstance(lookUp, dict)
-
-def test_tokenize():
-    clean_text = FeatureExtract(train_all, over_sampling=False, set='train', class_format='trinary', labels=labels).tokenise('This is an apple!')
-    assert clean_text[0] == "apple"
+def test_sent_process():
+    word_dict, norm_dict = load_glove_embeddings_set(), create_normalise_dict()
+    clean_sentence = sent_process("hello world!#$%", word_dict, norm_dict)
+    assert "hello world" == clean_sentence

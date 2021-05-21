@@ -18,16 +18,6 @@ num_of_labels = len(labels)
 ds = DataSet(preprocess=False, labelsFromDB=labels, train_df=df_train, test_df=df_test)
 train_all = ds.get_train()
 
-def test_data_to_tf():
-    tf = FeatureExtract(train_all, over_sampling=False, set='train', class_format='trinary', labels=labels).data_to_tf(train_all)
-    assert len(tf) == len(train_all)
-
-
-def test_tfidf_lookup():
-    data = np.array(train_all)
-    lookUp = FeatureExtract(train_all, over_sampling=False, set='train', class_format='trinary', labels=labels).tfidf_lookup(np.r_[train_all[:, 1],train_all[:, 0]])
-    assert isinstance(lookUp, dict)
-
-def test_tokenize():
-    clean_text = FeatureExtract(train_all, over_sampling=False, set='train', class_format='trinary', labels=labels).tokenise('This is an apple!')
-    assert clean_text[0] == "apple"
+def test_getTrain():
+    test = ds.get_test()
+    assert len(test) == len(df_test)
