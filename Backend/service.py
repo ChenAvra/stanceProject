@@ -240,7 +240,7 @@ def five_sentences_dataset(dataset):
 
     fd_5 = get_5_sen_ds_controller(dataset)
     arr_return = []
-    for i in range(5):
+    for i in range(len(fd_5)):
         obj = {
 
             'claim': fd_5.iloc[i]['Claim'],
