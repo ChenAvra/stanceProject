@@ -369,7 +369,9 @@ def plot_multiclass_roc(y_test, y_pred, path, n_classes, figsize=(17, 6)):
         arr=[]
         for j in range(len(fpr[i])):
             arr.append([round(fpr[i][j], 2),round(tpr[i][j], 2)])
-        dict_fpr_tpr.append({'name': y_test_labels[i], 'data': arr, 'area': round(roc_auc[i], 2)})
+        area = str(round(roc_auc[i], 2))
+        name = y_test_labels[i].upper() + " <br> Area=" + area
+        dict_fpr_tpr.append({'name': name, 'data': arr, 'area': round(roc_auc[i], 2)})
 
     # roc for each class
     # fig, ax = plt.subplots(figsize=figsize)

@@ -275,7 +275,7 @@ class DataBase:
         return df
 
 
-# db = DataBase()
+db = DataBase()
 # db.create_result_table()
 # db.create_Request_table()
 # db.create_index_table()
@@ -304,10 +304,10 @@ class DataBase:
 # db.insert_desc_dataset('EmergentLite',"This dataset contains claims extracted from rumour sites and Twitter, with 300 claims and 2,595 headlines.The stance is one of the following: for, against, observing.")
 # db.insert_desc_dataset("semEval2017","This dataset was provided at the SemEval competition in 2017. The data provided contains instances of: a statement, a reply tweet and a stance, where stance is one of  the following: support, deny, query (the author of the response asks for additional evidence in relation to the veracity of the rumour they are responding to) and comment (the author of the response makes their own comment without a clear contribution to assessing the veracity of the rumour they are responding to.")
 # db.insert_desc_dataset("MPQA","This dataset contains political debates about several topics such as healthcare, gay rights, abortion and more and their stance towards that topic (for or against). It was taken from MPQA (Multi-Perspective Question Answering).")
-# db.insert_desc_dataset("IBMDebator","This claim stance dataset includes stance annotations for claims, as well as auxiliary annotations for intermediate stance classification subtasks. They are manually identified and annotated claims from Wikipedia. ")
+# db.insert_desc_dataset("IBMDebator","This claim stance dataset includes stance annotations for claims, as well as auxiliary annotations for intermediate stance classification subtasks. They are manually identified and annotated claims from Wikipedia.")
 # db.insert_desc_dataset("VAST","VAST (VAried Stance Topics) consists of a large range of topics covering broad themes, such as politics, education, and public health. In addition, the data includes a wide range of similar expressions (e.g., ‘guns on campus’ versus ‘firearms on campus’). This variation captures how humans might realistically describe the same topic and contrasts with the lack of variation in existing datasets.")
 # db.insert_desc_dataset("Procon","Procon20 contains 419 different controversial issues with 6094 samples. Each sample is a pair of a (question, argument) that is either a pro or a con. A novel stance detection dataset covering 419 different controversial issues and their related pros and cons collected by procon.org in nonpartisan format.")
-# db.insert_desc_dataset("covid","This dataset contains 5379 tweets about the covid 19 with three stances : 0-against, 1-favor, 2-none.")
+# db.insert_desc_dataset("covid","This dataset contains tweets from Twitter about covid 19 with three stances : 0-against, 1-favor, 2-none.")
 # db.drop_Request()
 # db.create_Request_table()
 # print(db.insert_records_request('TRANSFORMER','10',0.6))
