@@ -42,7 +42,7 @@ def get_5_sen_ds_main(dataset):
     dataset_id = dataset_names_dict[dataset]
 
     df = db.get_dataset(dataset_id)
-    df = df.head(5)
+    #df = df.head(5)
     return df
 
 

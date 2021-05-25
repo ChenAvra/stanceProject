@@ -247,7 +247,7 @@ def train_model_topic_based(df_train, df_test, labels, num_of_labels):
     run_preprocessing()
     run_STA_feature_extraction(labels)
     run_te_f_feature_extraction()
-    run_sentiment_feature_extraction()
+    # run_sentiment_feature_extraction()
     union_feature_extraction()
     y_pred,y_test = [],[]
     for dataset in topic_list:

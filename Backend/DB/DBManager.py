@@ -275,7 +275,7 @@ class DataBase:
         return df
 
 
-# db = DataBase()
+db = DataBase()
 # db.create_result_table()
 # db.create_Request_table()
 # db.create_index_table()
@@ -304,10 +304,10 @@ class DataBase:
 # db.insert_desc_dataset('EmergentLite',"This dataset contains claims extracted from rumour sites and Twitter, with 300 claims and 2,595 headlines.The stance is one of the following: for, against, observing.")
 # db.insert_desc_dataset("semEval2017","This dataset was provided at the SemEval competition in 2017. The data provided contains instances of: a statement, a reply tweet and a stance, where stance is one of  the following: support, deny, query (the author of the response asks for additional evidence in relation to the veracity of the rumour they are responding to) and comment (the author of the response makes their own comment without a clear contribution to assessing the veracity of the rumour they are responding to.")
 # db.insert_desc_dataset("MPQA","This dataset contains political debates about several topics such as healthcare, gay rights, abortion and more and their stance towards that topic (for or against). It was taken from MPQA (Multi-Perspective Question Answering).")
-# db.insert_desc_dataset("IBMDebator","This claim stance dataset includes stance annotations for claims, as well as auxiliary annotations for intermediate stance classification subtasks. They are manually identified and annotated claims from Wikipedia. ")
+# db.insert_desc_dataset("IBMDebator","This claim stance dataset includes stance annotations for claims, as well as auxiliary annotations for intermediate stance classification subtasks. They are manually identified and annotated claims from Wikipedia.")
 # db.insert_desc_dataset("VAST","VAST (VAried Stance Topics) consists of a large range of topics covering broad themes, such as politics, education, and public health. In addition, the data includes a wide range of similar expressions (e.g., ‘guns on campus’ versus ‘firearms on campus’). This variation captures how humans might realistically describe the same topic and contrasts with the lack of variation in existing datasets.")
 # db.insert_desc_dataset("Procon","Procon20 contains 419 different controversial issues with 6094 samples. Each sample is a pair of a (question, argument) that is either a pro or a con. A novel stance detection dataset covering 419 different controversial issues and their related pros and cons collected by procon.org in nonpartisan format.")
-# db.insert_desc_dataset("covid","This dataset contains 5379 tweets about the covid 19 with three stances : 0-against, 1-favor, 2-none.")
+# db.insert_desc_dataset("covid","This dataset contains tweets from Twitter about covid 19 with three stances : 0-against, 1-favor, 2-none.")
 # db.drop_Request()
 # db.create_Request_table()
 # print(db.insert_records_request('TRANSFORMER','10',0.6))
@@ -327,6 +327,8 @@ class DataBase:
 # db.insert_desc_model("TAN","TAN - Target-specific Attention Neural Network. This method consists of two main components: a recurrent neural network (RNN) as the feature extractor for text and a fully-connected network  as the target-specific attention selector. It’s a special mechanism which drives the model to concentrate on salient parts in text with respect to a specific target. This algorithm is based on LSTM (similar to RNN).  ** Note that running this algorithm takes a long time due to its complexity.")
 # db.insert_desc_model("SEN","A SVM based stance detection model using three sets of features – stance vector, textual entailment and sentiment feature.The stance vector is created on a sentence level based on an assumption that the main information present in a sentence revolves around some particular parts-of-speech. Thus these parts-of-speech are the main building blocks of the stance expressed by a sentence towards a particular claim. To identify the sentiment feature a standard sentiment analyzer given in Stanford CoreNLP Toolkit is used. For the textual entailment feature, Tensor Flow4 is used, where textual entailment is estimated using word vectorization, recurrent neural networks with LSTM and dropout as a regularization method.")
 # db.insert_desc_model("UCLMR","This algorithm was created by UCL Machine  Reading (UCLMR) during Stage 1 of the Fake News Challenge (FNC-1) in 2017. It is based on a single, end-to-end system consisting of lexical  as well as similarity features passed through a multi-layer perceptron with one hidden layer. UCLMR won third place in  the FNC however out of the three best scoring teams,  UCLMR’s classifier is the simplest and easiest to understand.")
+# db.insert_desc_model("Allada_Nandakumar", "This algorithm was developed by two students, Aishwarya Krishna Allada and Amith Nandakumar, from University of Waterloo. The architecture of the model includes word2vec, TF-IDF, LSTM and a neural network with 100 hidden units. For more information, you can read the Final Project Report here: https://github.com/AishwaryaAllada/StanceDetection_for_FakeNewsChallenge")
+# db.insert_desc_model("LIU", "This algorithm was created by UCL Machine  Reading (UCLMR) during Stage 1 of the Fake News Challenge (FNC-1) in 2017. It is based on a single, end-to-end system consisting of lexical  as well as similarity features passed through a multi-layer perceptron with one hidden layer. UCLMR won third place in  the FNC however out of the three best scoring teams,  UCLMR’s classifier is the simplest and easiest to understand.")
 # db.insert_desc_model()
 
 

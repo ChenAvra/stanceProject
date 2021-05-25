@@ -1,6 +1,7 @@
 from Backend.DB.DBManager import DataBase
 from Backend.LIU.Feature_Extract import FeatureExtract
 from Backend.LIU.main import main, runLIU, OVER_SAMPLING
+from Backend.SEN.SEN import get_legal_directort_name, split_to_topic_folders, create_normalise_dict
 from Backend.main_model import dataset_names_dict, split_data_topic_based, get_unique_labels
 from Backend.LIU.DataSet import DataSet
 import numpy as np
@@ -18,16 +19,18 @@ num_of_labels = len(labels)
 ds = DataSet(preprocess=False, labelsFromDB=labels, train_df=df_train, test_df=df_test)
 train_all = ds.get_train()
 
-def test_data_to_tf():
-    tf = FeatureExtract(train_all, over_sampling=False, set='train', class_format='trinary', labels=labels).data_to_tf(train_all)
-    assert len(tf) == len(train_all)
+def test_get_legal_directort_name():
+    new_name = get_legal_directort_name("hi*/")
+    assert new_name=='hi'
 
+def test_split_to_topic_folders():
+    topics = split_to_topic_folders(df_train, df_test)
+    assert topics == ['Atheism',
+ 'Climate Change is a Real Concern',
+ 'Feminist Movement',
+ 'Hillary Clinton',
+ 'Legalization of Abortion']
 
-def test_tfidf_lookup():
-    data = np.array(train_all)
-    lookUp = FeatureExtract(train_all, over_sampling=False, set='train', class_format='trinary', labels=labels).tfidf_lookup(np.r_[train_all[:, 1],train_all[:, 0]])
-    assert isinstance(lookUp, dict)
-
-def test_tokenize():
-    clean_text = FeatureExtract(train_all, over_sampling=False, set='train', class_format='trinary', labels=labels).tokenise('This is an apple!')
-    assert clean_text[0] == "apple"
+def test_create_normalise_dict():
+    dictionary = create_normalise_dict(no_slang_data = "\\noslang_data.json", emnlp_dict = "\\emnlp_dict.txt")
+    assert isinstance(dictionary, dict)
