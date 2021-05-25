@@ -6,7 +6,7 @@ import tensorflow as tf
 import os
 from .measure import predict
 from sklearn.metrics import accuracy_score
-### THIS FILE IS USED TO TRAIN MODELS WITH SPECIFIED CONFIGURATION. KEEP IN MIND TO USE THE SAME CONF FOR measure.py.
+### THIS FILE IS USED TO TRAIN MODELS WITH SPECIFIED CONFIGURATION. KEEP IN MIND TO USE THE SAME CONF FOR measure_test.py.
 
 
 

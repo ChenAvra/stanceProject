@@ -11,7 +11,7 @@ from nltk.corpus import stopwords
 from tqdm import tqdm
 from sklearn.metrics import accuracy_score
 import os
-from imblearn.over_sampling import SMOTE
+# from imblearn.over_sampling import SMOTE
 from .DataSet import DataSet
 from .Feature_Extract import FeatureExtract
 from .utils import utils, SUBMISSION_PATH, MODEL_PATH, DATA_PATH
