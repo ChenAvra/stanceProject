@@ -43,7 +43,7 @@ def f_score(table):
     return "%.2f" % (100*table[0][0]/(table[0][1]+table[0][2]) + 100*table[1][0]/(table[1][1]+table[1][2]))
 
 
-def train_bagging_tan_CV(stances,x_train, y_train, x_test, y_test, vector_target,labels,device,embedding_matrix,claim,version="tan-",n_epochs=50,batch_size=50,l2=0,dropout = 0.5,n_folds=5):
+def train_bagging_tan_CV(stances,x_train, y_train, x_test, y_test, vector_target,labels,device,embedding_matrix,claim,version="tan-",n_epochs=1,batch_size=50,l2=0,dropout = 0.5,n_folds=2):
 
     NUM_EPOCHS = n_epochs
     loss_fn = nn.NLLLoss()

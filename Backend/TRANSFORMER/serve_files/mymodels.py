@@ -258,7 +258,7 @@ def getModelWithType(MODEL_TYPE,BINARY_CLASSIFICATION,MAX_LENGTH_ARTICLE,MAX_LEN
         return modelret
     
     else:
-        print("MODEL TYPE NOT FOUND. PLEASE DEFINE IN mymodels.py")
+        print("MODEL TYPE NOT FOUND. PLEASE DEFINE IN mymodels_test.py")
 
 
 
