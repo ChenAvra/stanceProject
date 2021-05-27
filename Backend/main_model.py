@@ -5,6 +5,7 @@ from sklearn.metrics import confusion_matrix, accuracy_score, roc_auc_score, roc
 import numpy as np
 import matplotlib.pyplot as plt
 from sklearn.preprocessing import LabelBinarizer
+from datetime import time, datetime
 
 from Backend.DB.DBManager import *
 from Backend.LIU.runLIU import LIU
@@ -154,22 +155,40 @@ def start_Specific_Model(models, dataset_name, train_percent,df_extenal,type_ds)
 
             if m_name == "SEN":
                 sen = SEN()
+                start = datetime.now()
                 y_test, y_pred = sen.run_SEN(df_train, df_test, labels, num_of_labels)
+                end = datetime.now()
+                time=((end - start) / 60)
             elif m_name == "UCLMR":
                 uclmr = UCLMR()
+                start = datetime.now()
                 y_test, y_pred = uclmr.run_UCLMR(df_train, df_test, labels, num_of_labels)
+                end = datetime.now()
+                time = ((end - start) / 60)
             elif m_name == "TAN":
                 tan = TAN()
+                start = datetime.now()
                 y_test, y_pred = tan.run_TAN(df_train, df_test, labels, num_of_labels)
+                end = datetime.now()
+                time = ((end - start) / 60)
             elif m_name == "TRANSFORMER":
                 transformer = TRANSFORMER()
+                start = datetime.now()
                 y_test, y_pred = transformer.run_TRANSFORMER(df_train, df_test, labels, num_of_labels, dataset_name)
+                end = datetime.now()
+                time = ((end - start) / 60)
             elif m_name == "Allada_Nandakumar":
                 allada_nandakumar = Allada_Nandakumar()
+                start = datetime.now()
                 y_test, y_pred = allada_nandakumar.run_Allada_Nandakumar(df_train, df_test, labels)
+                end = datetime.now()
+                time = ((end - start) / 60)
             elif m_name == "LIU":
                 liu = LIU()
+                start = datetime.now()
                 y_test, y_pred = liu.run_LIU(df_train,df_test, labels, num_of_labels)
+                end = datetime.now()
+                time = ((end - start) / 60)
 
             # with open('sample_' + m_name + '.csv', 'w', newline='') as csvfile:
             #     fieldnames = ['pred', 'test']
@@ -247,7 +266,7 @@ def start_Specific_Model(models, dataset_name, train_percent,df_extenal,type_ds)
 
             db.insert_records_to_result(m_name,dataset_name,train_percent,results[m_name]['accuracy'], results[m_name]['class_report'],
 
-            results[m_name]['roc_acc'],actual,predict,array_labels,cm_strings,target_string,df_train_records,df_test_records,dict_tpr_fpr_string,type)
+            results[m_name]['roc_acc'],actual,predict,array_labels,cm_strings,target_string,df_train_records,df_test_records,dict_tpr_fpr_string,type,time)
 
         index = db.insert_records_request(index_models,dataset_name,train_percent)
         return index
@@ -392,29 +411,33 @@ def plot_multiclass_roc(y_test, y_pred, path, n_classes, figsize=(17, 6)):
     return dict_fpr_tpr
 
 #the function recieves a sentence and claim and returns its stance
-def get_one_stance(sentence, claim):
+def get_one_stance(sentence, claim,model_name,model_TRANSFORMER):
     dataset_id = dataset_names_dict["semEval2016"]
     db = DataBase()
-    df = db.get_dataset(dataset_id)
+    # df = db.get_dataset(dataset_id)
 
-    if(db.get_record_from_Stance_Result(claim,sentence)).shape[0]>0:
-        pred=db.get_record_from_Stance_Result(claim,sentence).iloc[0]['Stance']
+    if(db.get_record_from_Stance_Result(claim,sentence,model_name)).shape[0]>0:
+        pred=db.get_record_from_Stance_Result(claim,sentence,model_name).iloc[0]['Stance']
         return pred
     else:
         # get unique labels
-        labels = get_unique_labels(df)
+        # labels = get_unique_labels(df)
+        labels=['AGAINST','FAVOR','NONE']
         num_of_labels = len(labels)
-        ts = TRANSFORMER()
-        d = {'Claim': [claim], 'Sentence': [sentence], 'Stance': ['AGAINST']}
-        df = pd.DataFrame(data=d)
-        y_pred = ts.run_one_sen(None, df,labels,num_of_labels,"semEval2016")
-        db.insert_to_Stance_Result(claim,sentence,str(y_pred))
-        return y_pred
+        if(model_name=='TRANSFORMER'):
+            ts = TRANSFORMER()
+            d = {'Claim': [claim], 'Sentence': [sentence], 'Stance': ['AGAINST']}
+            df = pd.DataFrame(data=d)
+            y_pred = ts.run_one_sen(None, df,labels,num_of_labels,"semEval2016",model_TRANSFORMER)
+            db.insert_to_Stance_Result(claim,sentence,str(y_pred),model_name)
+            return y_pred
+        if(model_name=='TAN'):
+            tan=TAN()
+            y_pred=tan.get_one_stance(sentence,claim,None)
+            db.insert_to_Stance_Result(claim,sentence,str(y_pred),model_name)
 
-# models = list()
-# models.append("TRANSFORMER")
-# start_Specific_Model(models, "semEval2016", 60, None, None)
+            return y_pred
 
-# print(get_one_stance("I think she is a nice woman",'Hillary Clinton'))
+
 
 

@@ -307,7 +307,7 @@ def pred_one_stance(labels,embedding_matrix,sentence,claim,stance,word_ind_load)
         models_after_load.update({i:modelA})
 
     # optimizerB = TheOptimizerBClass(*args, **kwargs)
-    Y_test=[stance]
+    Y_test=['AGAINST']
     X_test=[sentence]
     df2 = pd.DataFrame(list(zip(Y_test, X_test)),
                    columns =['Stance', 'Sentence'])

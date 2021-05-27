@@ -26,9 +26,14 @@ class DataBase:
             self.cursor = self.conn.cursor()
 
     def create_Stance_Result_table(self):
-        self.cursor.execute("CREATE TABLE IF NOT EXISTS Stance_Result(Topic TEXT NOT NULL, Sentence TEXT NOT NULL, Stance TEXT NOT NULL)")
+        self.cursor.execute("CREATE TABLE IF NOT EXISTS Stance_Result(Topic TEXT NOT NULL, Sentence TEXT NOT NULL, Stance TEXT NOT NULL,MODEL_NAME TEXT NOT NULL)")
         self.conn.commit()
 
+
+    def drop_Stance_Result(self):
+        query = "DROP TABLE Stance_Result;"
+        self.cursor.execute(query)
+        self.conn.commit()
 
 
     def create_index_table(self):
@@ -97,24 +102,24 @@ class DataBase:
         return result
 
 
-    def insert_to_Stance_Result(self,topic,sentence,stance):
-        query = 'INSERT INTO Stance_Result VALUES(?,?,?);'
-        self.cursor.execute(query,(topic,sentence,stance))
+    def insert_to_Stance_Result(self,topic,sentence,stance,model_name):
+        query = 'INSERT INTO Stance_Result VALUES(?,?,?,?);'
+        self.cursor.execute(query,(topic,sentence,stance,model_name))
         self.conn.commit()
 
-    def get_record_from_Stance_Result(self,topic,sentence):
-        query = 'SELECT * FROM Stance_Result WHERE Topic="{}" AND Sentence="{}"'.format(topic,sentence)
+    def get_record_from_Stance_Result(self,topic,sentence,name_model):
+        query = 'SELECT * FROM Stance_Result WHERE Topic="{}" AND Sentence="{}" AND MODEL_NAME="{}"'.format(topic,sentence,name_model)
         # query = "SELECT * FROM Result"
         df = pd.read_sql_query(query, self.conn)
         return df
 
     def create_result_table(self):
-        self.cursor.execute("CREATE TABLE IF NOT EXISTS Result (Model TEXT NOT NULL,Dataset TEXT NOT NULL,Train_percent INTEGER NOT NULL,Accuracy INTEGER NOT NULL,Class_report TEXT NOT NULL,roc_acc INTEGER NOT NULL,actual TEXT NOT NULL,predict TEXT NOT NULL,array_labels TEXT NOT NULL,cm TEXT NOT NULL,target TEXT NOT NULL,df_train_records TEXT NOT NULL,df_test_records TEXT NOT NULL,tpr_fpr TEXT NOT NULL,type TEXT NOT NULL)")
+        self.cursor.execute("CREATE TABLE IF NOT EXISTS Result (Model TEXT NOT NULL,Dataset TEXT NOT NULL,Train_percent INTEGER NOT NULL,Accuracy INTEGER NOT NULL,Class_report TEXT NOT NULL,roc_acc INTEGER NOT NULL,actual TEXT NOT NULL,predict TEXT NOT NULL,array_labels TEXT NOT NULL,cm TEXT NOT NULL,target TEXT NOT NULL,df_train_records TEXT NOT NULL,df_test_records TEXT NOT NULL,tpr_fpr TEXT NOT NULL,type TEXT NOT NULL, time TEXT NOT NULL)")
         self.conn.commit()
 
-    def insert_records_to_result(self,model, dataset,train_percent, accuracy, class_report,roc_acc,actual,predict,array_labels,cm,target,df_train_records,df_test_records,dict_tpr_fpr_string,type):
-        query = 'INSERT INTO Result VALUES(?,?,?,?,?,?,?,?,?,?,?,?,?,?,?);'
-        self.cursor.execute(query,(model,dataset,train_percent,accuracy,class_report,roc_acc,actual,predict,array_labels,cm,target,df_train_records,df_test_records,dict_tpr_fpr_string,type))
+    def insert_records_to_result(self,model, dataset,train_percent, accuracy, class_report,roc_acc,actual,predict,array_labels,cm,target,df_train_records,df_test_records,dict_tpr_fpr_string,type,time):
+        query = 'INSERT INTO Result VALUES(?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?);'
+        self.cursor.execute(query,(model,dataset,train_percent,accuracy,class_report,roc_acc,actual,predict,array_labels,cm,target,df_train_records,df_test_records,dict_tpr_fpr_string,type,str(time)))
         self.conn.commit()
 
     def get_record_from_result(self,model, dataset,train_percent ):
@@ -276,6 +281,9 @@ class DataBase:
 
 
 db = DataBase()
+# db.drop_result()
+# db.drop_Stance_Result()
+# db.create_Stance_Result_table()
 # db.create_result_table()
 # db.create_Request_table()
 # db.create_index_table()
