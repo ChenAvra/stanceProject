@@ -444,11 +444,9 @@ def getTime():
     if not name in dataset_name:
         return jsonify("invalid dataset"), 401
     percent = int(params['percent'])/100
-    result=get_models_results_controller(model,name,percent)
-    result=result.iloc[0]
-    time=result['time']
-
-
+    result = get_models_results_controller(model,name,percent)
+    result = result.iloc[0]
+    time = result['time']
 
     return jsonify(time)
 
@@ -595,7 +593,7 @@ def run_model():
         index=start_specific_model_controller(array_algo_param, name,percent,None,None)
         return jsonify(str(index)),201
 
-from Backend.mail import send_email_to_velis
+# from Backend.mail import send_email_to_velis
 CLIENT_SECRET_FILE = 'client_secret.json'
 API_NAME = 'gmail'
 API_VERSION = 'v1'
