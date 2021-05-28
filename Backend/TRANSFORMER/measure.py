@@ -48,17 +48,17 @@ def predict(main_set,dataset_name,labels,model):
     testap,testhp,test_labels = dataPrep(main_set,tokenizer,MAX_LENGTH_ARTICLE,MAX_LENGTH_HEADLINE)
     print("Padded Inputs with Labels TEST READY.")
     #
-    # PROJECT_ROOT = os.path.abspath('__file__')
-    # BASE_DIR = os.path.dirname(PROJECT_ROOT)
-    # num_labels=len(labels)
-    # checkpoint_path = BASE_DIR+"\\TRANSFORMER\\checkpoints\\"+MODEL_TYPE+"_"+MODEL_NAME+dataset_name+"weights.hdf5"
-    # # checkpoint_path = "./checkpoints/"+MODEL_TYPE+"_"+MODEL_NAME+"/weights.hdf5"
-    # model_ = getModelWithType(MODEL_TYPE,BINARY_CLASSIFICATION,MAX_LENGTH_ARTICLE,MAX_LENGTH_HEADLINE,TRAIN_EMBED,tokenizer,num_labels)
-    # model_.load_weights(checkpoint_path)
+    PROJECT_ROOT = os.path.abspath('__file__')
+    BASE_DIR = os.path.dirname(PROJECT_ROOT)
+    num_labels=len(labels)
+    checkpoint_path = BASE_DIR+"\\TRANSFORMER\\checkpoints\\"+MODEL_TYPE+"_"+MODEL_NAME+dataset_name+"weights.hdf5"
+    # checkpoint_path = "./checkpoints/"+MODEL_TYPE+"_"+MODEL_NAME+"/weights.hdf5"
+    model = getModelWithType(MODEL_TYPE,BINARY_CLASSIFICATION,MAX_LENGTH_ARTICLE,MAX_LENGTH_HEADLINE,TRAIN_EMBED,tokenizer,num_labels)
+    model.load_weights(checkpoint_path)
     # print(model_.summary())
     # tf.keras.backend.clear_session()
     result = model.predict([testap,testhp],batch_size=100)
-
+    model.predict_proba([testap,testhp],batch_size=100)
     print(result)
     result=numpy.argmax(result, axis=1)
     test_labels=numpy.argmax(test_labels, axis=1)
