@@ -174,7 +174,7 @@ def start_Specific_Model(models, dataset_name, train_percent,df_extenal,type_ds)
             elif m_name == "TRANSFORMER":
                 transformer = TRANSFORMER()
                 start = datetime.now()
-                y_test, y_pred = transformer.run_TRANSFORMER(df_train, df_test, labels, num_of_labels, dataset_name)
+                y_test, y_pred = transformer.run_TRANSFORMER(df_train, df_test, labels, num_of_labels, dataset_name,str(train_percent))
                 end = datetime.now()
                 time = ((end - start) / 60)
             elif m_name == "Allada_Nandakumar":
@@ -220,6 +220,7 @@ def start_Specific_Model(models, dataset_name, train_percent,df_extenal,type_ds)
             for label in labels:
                 predict=predict+str(y_pred.count(label))+","
 
+# print(get_one_stance("I think she is a nice woman",'Hillary Clinton'))
 
 
             # calculate accuracy

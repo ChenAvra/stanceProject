@@ -47,19 +47,21 @@ PROJECT_ROOT = os.path.abspath('__file__')
 BASE_DIR = os.path.dirname(PROJECT_ROOT)
 num_labels = 3
 checkpoint_path = BASE_DIR + "\\TRANSFORMER\\checkpoints\\" + MODEL_TYPE + "_" + MODEL_NAME + "semEval2016weights.hdf5"
-# checkpoint_path = "./checkpoints/"+MODEL_TYPE+"_"+MODEL_NAME+"/weights.hdf5"
-model_TRANSFORMER = getModelWithType(MODEL_TYPE, False, MAX_LENGTH_ARTICLE, MAX_LENGTH_HEADLINE, False,
-                          tokenizer, num_labels)
-model_TRANSFORMER.load_weights(checkpoint_path)
 
 import tensorflow as tf
 
-sess = tf.compat.v1.keras.backend.get_session()
-graph = tf.compat.v1.get_default_graph()
-init = tf.compat.v1.global_variables_initializer()
+# sess = tf.compat.v1.keras.backend.get_session()
+# graph = tf.compat.v1.get_default_graph()
+# init = tf.compat.v1.global_variables_initializer()
+#
+# tf.compat.v1.keras.backend.set_session(sess)
+# sess.run(init)
+#
+# checkpoint_path = "./checkpoints/"+MODEL_TYPE+"_"+MODEL_NAME+"semEval2016weights.hdf5"
+# model_TRANSFORMER = getModelWithType(MODEL_TYPE, False, MAX_LENGTH_ARTICLE, MAX_LENGTH_HEADLINE, False,
+#                           tokenizer, num_labels)
+# model_TRANSFORMER.load_weights(checkpoint_path)
 
-tf.compat.v1.keras.backend.set_session(sess)
-sess.run(init)
 
 
 @app.route('/tpr_fpr',methods=['POST'])

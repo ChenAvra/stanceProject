@@ -10,7 +10,7 @@ from sklearn.metrics import accuracy_score
 
 
 
-def run_model(df_train, df_test, labels, num_of_labels,dataset_name):
+def run_model(df_train, df_test, labels, num_of_labels,dataset_name,train_percent):
     LABELS=labels
     TEST_ON_COMP = True
     ## assign False if validation set should be extracted from training set itself
@@ -76,7 +76,7 @@ def run_model(df_train, df_test, labels, num_of_labels,dataset_name):
     BASE_DIR = os.path.dirname(PROJECT_ROOT)
 
     # checkpoint_path = BASE_DIR+"\\checkpoints\\"+MODEL_TYPE+"_"+MODEL_NAME+"\\weights.hdf5"
-    checkpoint_path = BASE_DIR+"\\TRANSFORMER\\checkpoints\\"+MODEL_TYPE+"_"+MODEL_NAME+dataset_name+'weights.hdf5'
+    checkpoint_path = BASE_DIR+"\\TRANSFORMER\\checkpoints\\"+MODEL_TYPE+"_"+MODEL_NAME+dataset_name+train_percent+'weights.hdf5'
 
 
     # if(not os.path.exists(BASE_DIR+"\\TRANSFORMER\\checkpoints\\"+MODEL_TYPE+"_"+MODEL_NAME+dataset_name)):
@@ -85,7 +85,7 @@ def run_model(df_train, df_test, labels, num_of_labels,dataset_name):
     model_checkpoint_callback = tf.keras.callbacks.ModelCheckpoint(filepath=checkpoint_path,save_weights_only=True,monitor='acc',save_best_only=False)
 
 
-    history = model_.fit(x=[trainap,trainhp],y=train_labels,epochs=10,batch_size=100,callbacks=[model_checkpoint_callback],validation_data=([testap,testhp],test_labels))
+    history = model_.fit(x=[trainap,trainhp],y=train_labels,epochs=1,batch_size=100,callbacks=[model_checkpoint_callback],validation_data=([testap,testhp],test_labels))
     # history = model_.fit(x=[trainap,trainhp],y=train_labels,epochs=1,callbacks=[model_checkpoint_callback],validation_data=([testap,testhp],test_labels))
 
     # model = model_.fit(x=[trainap,trainhp],y=train_labels,epochs=1,batch_size=100,validation_data=([testap,testhp],test_labels))
