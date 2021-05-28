@@ -33,12 +33,12 @@ D = None
 random.seed(42)
 
 # if len(sys.argv) !=3:
-#     print("Usage :- python early_stopping_training.py <dataset name> <attention vairant>")
+#     print("Usage :- python early_stopping_training_test.py <dataset name> <attention vairant>")
 #     sys.exit(-1)
 
 version = "tan"
 # dataset = "EC"
-
+import torch.nn.functional as F
 def f_score(table):
     return "%.2f" % (100*table[0][0]/(table[0][1]+table[0][2]) + 100*table[1][0]/(table[1][1]+table[1][2]))
 
@@ -182,6 +182,7 @@ def train_bagging_tan_CV(stances,x_train, y_train, x_test, y_test, vector_target
         #     ensemble_models.extend(temp_ensemble)
         ensemble_models.extend(best_ensemble)
     labels_pred=[]
+    labels_prob=[]
     with torch.no_grad():
         # conf_matrix = np.zeros((2,len(labels)))
         for j in range(len(x_test)):
@@ -191,6 +192,8 @@ def train_bagging_tan_CV(stances,x_train, y_train, x_test, y_test, vector_target
             for model in ensemble_models:
                 model.eval()
                 all_preds.append(np.argmax(model(x,target).cpu().numpy(),axis=1)[0])
+                prob = F.softmax(model(x,target), dim=1)
+                labels_prob.append(prob)
             cnts = np.zeros(len(labels))
             for prediction in all_preds:
                 cnts[prediction]+=1

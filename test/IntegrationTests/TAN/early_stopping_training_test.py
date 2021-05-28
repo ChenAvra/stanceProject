@@ -1,6 +1,6 @@
 from random import random
 
-from Backend.TAN.early_stopping_training import run_model, pred_one_stance,train_bagging_tan_CV
+from Backend.TAN.early_stopping_training import run_model, pred_one_stance,train_bagging_tan_CV,load_dataset
 from Backend.main_model import dataset_names_dict, split_data_topic_based, get_unique_labels
 from Backend.DB.DBManager import DataBase
 
@@ -29,7 +29,7 @@ def test_run_model():
     is2=isinstance(y_test,list)
 
 
-def get_predict_per_stance_test():
+def test_get_predict_per_stance_test():
     claim = "Hilary Clinton"
     sentence = "I love hialry clinton"
     labels_pred,y_test,len_ensemble_model,labels,embedding_matrix,word_ind=run_model(df_train,df_test,labels_df,num_of_labels)
@@ -38,10 +38,10 @@ def get_predict_per_stance_test():
 
 def test_train_bagging_tan_CV():
 
-
+    topic_string=''
+    claim="Atheism"
     stances, word2emb, word_ind, ind_word, embedding_matrix, device, \
-    x_train, y_train, x_test, y_test, vector_target, train_tweets, test_tweets = load_dataset(topic_string, df_train,
-                                                                                              df_test, labels, claim,
+    x_train, y_train, x_test, y_test, vector_target, train_tweets, test_tweets = load_dataset(topic_string, df_train,df_test, labels_df, claim,
                                                                                               dev="cpu")
 
     combined = list(zip(x_train, y_train))

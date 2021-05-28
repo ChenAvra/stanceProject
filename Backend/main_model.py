@@ -158,37 +158,37 @@ def start_Specific_Model(models, dataset_name, train_percent,df_extenal,type_ds)
                 start = datetime.now()
                 y_test, y_pred = sen.run_SEN(df_train, df_test, labels, num_of_labels)
                 end = datetime.now()
-                time=((end - start) / 60)
+                time = (end-start).total_seconds()/60
             elif m_name == "UCLMR":
                 uclmr = UCLMR()
                 start = datetime.now()
                 y_test, y_pred = uclmr.run_UCLMR(df_train, df_test, labels, num_of_labels)
                 end = datetime.now()
-                time = ((end - start) / 60)
+                time = (end-start).total_seconds()/60
             elif m_name == "TAN":
                 tan = TAN()
                 start = datetime.now()
                 y_test, y_pred = tan.run_TAN(df_train, df_test, labels, num_of_labels)
                 end = datetime.now()
-                time = ((end - start) / 60)
+                time = (end-start).total_seconds()/60
             elif m_name == "TRANSFORMER":
                 transformer = TRANSFORMER()
                 start = datetime.now()
                 y_test, y_pred = transformer.run_TRANSFORMER(df_train, df_test, labels, num_of_labels, dataset_name,str(train_percent))
                 end = datetime.now()
-                time = ((end - start) / 60)
+                time = (end-start).total_seconds()/60
             elif m_name == "Allada_Nandakumar":
                 allada_nandakumar = Allada_Nandakumar()
                 start = datetime.now()
                 y_test, y_pred = allada_nandakumar.run_Allada_Nandakumar(df_train, df_test, labels)
                 end = datetime.now()
-                time = ((end - start) / 60)
+                time = (end-start).total_seconds()/60
             elif m_name == "LIU":
                 liu = LIU()
                 start = datetime.now()
                 y_test, y_pred = liu.run_LIU(df_train,df_test, labels, num_of_labels)
                 end = datetime.now()
-                time = ((end - start) / 60)
+                time = (end-start).total_seconds()/60
 
             # with open('sample_' + m_name + '.csv', 'w', newline='') as csvfile:
             #     fieldnames = ['pred', 'test']
