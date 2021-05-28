@@ -6,11 +6,11 @@ import tensorflow as tf
 import os
 from .measure import predict
 from sklearn.metrics import accuracy_score
-### THIS FILE IS USED TO TRAIN MODELS WITH SPECIFIED CONFIGURATION. KEEP IN MIND TO USE THE SAME CONF FOR measure.py.
+### THIS FILE IS USED TO TRAIN MODELS WITH SPECIFIED CONFIGURATION. KEEP IN MIND TO USE THE SAME CONF FOR measure_test.py.
 
 
 
-def run_model(df_train, df_test, labels, num_of_labels,dataset_name):
+def run_model(df_train, df_test, labels, num_of_labels,dataset_name,train_percent):
     LABELS=labels
     TEST_ON_COMP = True
     ## assign False if validation set should be extracted from training set itself
@@ -76,7 +76,7 @@ def run_model(df_train, df_test, labels, num_of_labels,dataset_name):
     BASE_DIR = os.path.dirname(PROJECT_ROOT)
 
     # checkpoint_path = BASE_DIR+"\\checkpoints\\"+MODEL_TYPE+"_"+MODEL_NAME+"\\weights.hdf5"
-    checkpoint_path = BASE_DIR+"\\TRANSFORMER\\checkpoints\\"+MODEL_TYPE+"_"+MODEL_NAME+dataset_name+'weights.hdf5'
+    checkpoint_path = BASE_DIR+"\\TRANSFORMER\\checkpoints\\"+MODEL_TYPE+"_"+MODEL_NAME+dataset_name+train_percent+'weights.hdf5'
 
 
     # if(not os.path.exists(BASE_DIR+"\\TRANSFORMER\\checkpoints\\"+MODEL_TYPE+"_"+MODEL_NAME+dataset_name)):

@@ -14,6 +14,9 @@ from Backend.controller import get_dataset_name_controller, get_algorithmes_name
     get_5_sen_ds_controller, get_labels_count_controller, get_dataset_desc_controller, get_topic_count_controller, \
     get_positive_negative_controller
 from flask import Flask, request, Response,abort, jsonify, send_from_directory
+
+
+
 import os
 
 from Backend.main_model import start_Specific_Model
@@ -25,6 +28,40 @@ app = Flask(__name__)
 CORS(app, supports_credentials=True)
 # cors = CORS(app)
 # app.config['CORS_HEADERS'] = 'Content-Type'
+
+
+from Backend.TRANSFORMER.mymodels import getModelWithType
+from Backend.TRANSFORMER.measure import loadTokenizer
+
+MODEL_TYPE = "TRANSFORMER"
+## TRANSFORMER or CNN
+
+MAX_LENGTH_ARTICLE = 1200
+MAX_LENGTH_HEADLINE = 40
+MODEL_NAME = "model_1"
+
+# tokenizer = loadTokenizer(MODEL_NAME)
+
+
+PROJECT_ROOT = os.path.abspath('__file__')
+BASE_DIR = os.path.dirname(PROJECT_ROOT)
+num_labels = 3
+checkpoint_path = BASE_DIR + "\\TRANSFORMER\\checkpoints\\" + MODEL_TYPE + "_" + MODEL_NAME + "semEval2016weights.hdf5"
+
+import tensorflow as tf
+
+# sess = tf.compat.v1.keras.backend.get_session()
+# graph = tf.compat.v1.get_default_graph()
+# init = tf.compat.v1.global_variables_initializer()
+#
+# tf.compat.v1.keras.backend.set_session(sess)
+# sess.run(init)
+#
+# checkpoint_path = "./checkpoints/"+MODEL_TYPE+"_"+MODEL_NAME+"semEval2016weights.hdf5"
+# model_TRANSFORMER = getModelWithType(MODEL_TYPE, False, MAX_LENGTH_ARTICLE, MAX_LENGTH_HEADLINE, False,
+#                           tokenizer, num_labels)
+# model_TRANSFORMER.load_weights(checkpoint_path)
+
 
 
 @app.route('/tpr_fpr',methods=['POST'])
@@ -395,6 +432,28 @@ def ActualVSPredict():
     return jsonify(dic,dic2)
 
 
+@app.route('/getTime',methods=['POST'])
+def getTime():
+    algo_names = get_algorithmes_names_controller()
+    params = request.values
+    model = params['model']
+
+    if (not model in algo_names):
+        # status_code = Response(status=501)
+        return jsonify("invalid model names"), 401
+
+    dataset_name = get_dataset_name_controller()
+    name = params['ds_name']
+    if not name in dataset_name:
+        return jsonify("invalid dataset"), 401
+    percent = int(params['percent'])/100
+    result = get_models_results_controller(model,name,percent)
+    result = result.iloc[0]
+    time = result['time']
+
+    return jsonify(time)
+
+
 @app.route('/catagories/<dataset>',methods=['GET'])
 def catagories(dataset):
     datasets = get_dataset_name_controller()
@@ -486,10 +545,13 @@ def get_results_models(id):
             models.pop(len(models)-1)
             dataset=req_details.iloc[0]['Dataset']
             train_percent=req_details.iloc[0]['Train_percent']
+            # time=req_details.iloc[0]['TIME']
             # type=req_details.iloc[0]['type']
             array_details.append(models)
             array_details.append(dataset)
             array_details.append(train_percent*100)
+            # array_details.append(time)
+
             # array_details.append(type)
 
             # for model in range(len(models)-1):
@@ -527,83 +589,25 @@ def run_model():
     # based = params['based']
     if email !='':
         # start_result(array_algo_param, name, int(params['percent']),email)
-        thread = Thread(target=start_result, kwargs={'array_algo_param':array_algo_param,'name':name , 'percent':percent,"email":email,'based':None})
+        thread = Thread(target=start_result, kwargs={'array_algo_param':array_algo_param,'name':name , 'percent':percent,'df_extenal':None,"email":email,'based':None})
         thread.start()
         return jsonify("ok"), 201
     else:
         index=start_specific_model_controller(array_algo_param, name,percent,None,None)
         return jsonify(str(index)),201
 
-
-
+# from Backend.mail import send_email_to_velis
+CLIENT_SECRET_FILE = 'client_secret.json'
+API_NAME = 'gmail'
+API_VERSION = 'v1'
+SCOPES = ['https://mail.google.com/']
 def start_result(array_algo_param, name,percent,df_extenal,email,based):
     import time
     time.sleep(3)
     index=start_specific_model_controller(array_algo_param, name, percent,df_extenal,based)
-    url='http://127.0.0.1:5000/'+index
+    url="Hello,\n\nThe algorithms have finished running, you can see the results with the following link:\nhttp://localhost:8080/#/resultsPreview/"+str(index)+"\n\nThank you for choosing Systance!"
 
-    send_email(url, email)
-
-
-def send_email(results,email):
-    f = open("../../../Desktop/stanceProject - Copy/Backend/result.txt", "a")
-    result = results.to_json(orient="records")
-    data = json.loads(result)
-    # data=json.dumps(parsed, indent=4)
-
-    for res in data:
-        f.write(str(res['Model']))
-        f.write(str(res['Accuracy']))
-
-    f.close()
-    # send email to user
-
-    # Import smtplib for the actual sending function
-    # Import smtplib for the actual sending function
-    import smtplib
-
-    # Import the email modules we'll need
-    # from email.message import EmailMessage
-    #
-    # # Open the plain text file whose name is in textfile for reading.
-    # with open("result.txt") as fp:
-    #     # Create a text/plain message
-    #     msg = EmailMessage()
-    #     msg.set_content(fp.read())
-    #
-    # # me == the sender's email address
-    # # you == the recipient's email address
-    # msg['Subject'] = ""
-    # msg['From'] = "chenavra@post.bgu.ac.il"
-    # msg['To'] = [email]
-    #
-    # # Send the message via our own SMTP server.
-    # s = smtplib.SMTP('localhost',)
-    # s.send_message(msg)
-    # s.quit()
-
-    import smtplib
-
-    sender = 'chen12971@gmail.com'
-    receivers = ['chen12971@gmail.com']
-
-    message = """From: From Person <from@fromdomain.com>
-    To: To Person <to@todomain.com>
-    Subject: SMTP e-mail test
-
-    This is a test e-mail message.
-    """
-
-    try:
-        smtpObj = smtplib.SMTP('localhost')
-        smtpObj.sendmail(sender, receivers, message)
-        print
-        "Successfully sent email"
-    except SMTPException:
-        print
-        "Error: unable to send email"
-
-
+    send_email_to_velis(url,email)
 
 @app.route('/get_topics', methods=['get'])
 def get_topics():
@@ -611,9 +615,11 @@ def get_topics():
     return jsonify(list_topics)
 
 
-@app.route('/get_stance/<sentence>/<topic>', methods=['get'])
-def get_stance(sentence,topic):
-    stance=get_stance_controller(sentence,topic)
+@app.route('/get_stance/<sentence>/<topic>/<model_name>', methods=['get'])
+def get_stance(sentence,topic,model_name):
+    global graph
+    with graph.as_default():
+        stance=get_stance_controller(sentence,topic,model_name,model_TRANSFORMER)
     return jsonify(stance)
 
 

@@ -23,7 +23,7 @@ def assignIntBinary(x):
         return 1
 
 
-def preprocessDF(df_merged,labels, binaryclass = False):
+def preprocessDF(df_merged, labels, binaryclass= False) :
     stances = {}
 
     for i in range(len(labels)):
