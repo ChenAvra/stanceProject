@@ -34,7 +34,7 @@ algorithmes_names_dict = [
     "TAN",
     "TRANSFORMER",
     "UCLMR",
-    "Allada_Nandakumar"
+    "ALLADA_NANDAKUMAR"
 ]
 
 def get_dataset_name():
@@ -177,7 +177,7 @@ def start_Specific_Model(models, dataset_name, train_percent,df_extenal,type_ds)
                 y_test, y_pred = transformer.run_TRANSFORMER(df_train, df_test, labels, num_of_labels, dataset_name,str(train_percent))
                 end = datetime.now()
                 time = (end-start).total_seconds()/60
-            elif m_name == "Allada_Nandakumar":
+            elif m_name == "ALLADA_NANDAKUMAR":
                 allada_nandakumar = Allada_Nandakumar()
                 start = datetime.now()
                 y_test, y_pred = allada_nandakumar.run_Allada_Nandakumar(df_train, df_test, labels)
