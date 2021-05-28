@@ -40,7 +40,7 @@ MAX_LENGTH_ARTICLE = 1200
 MAX_LENGTH_HEADLINE = 40
 MODEL_NAME = "model_1"
 
-tokenizer = loadTokenizer(MODEL_NAME)
+# tokenizer = loadTokenizer(MODEL_NAME)
 
 
 PROJECT_ROOT = os.path.abspath('__file__')
@@ -607,26 +607,6 @@ def start_result(array_algo_param, name,percent,df_extenal,email,based):
     url="Hello,\n\nThe algorithms have finished running, you can see the results with the following link:\nhttp://localhost:8080/#/resultsPreview/"+str(index)+"\n\nThank you for choosing Systance!"
 
     send_email_to_velis(url,email)
-
-
-
-
-# def send_email(messege,email):
-#     service = Create_Service(CLIENT_SECRET_FILE, API_NAME, API_VERSION, SCOPES)
-#
-#     emailMsg = messege
-#     mimeMessage = MIMEMultipart()
-#     mimeMessage['to'] = email
-#     mimeMessage['subject'] = 'result'
-#     mimeMessage.attach(MIMEText(emailMsg, 'plain'))
-#     raw_string = base64.urlsafe_b64encode(mimeMessage.as_bytes()).decode()
-#
-#     message = service.users().messages().send(userId='me', body={'raw': raw_string}).execute()
-#     print(message)
-
-
-
-
 
 @app.route('/get_topics', methods=['get'])
 def get_topics():
