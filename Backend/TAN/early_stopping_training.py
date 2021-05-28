@@ -182,7 +182,9 @@ def train_bagging_tan_CV(stances,x_train, y_train, x_test, y_test, vector_target
         #     ensemble_models.extend(temp_ensemble)
         ensemble_models.extend(best_ensemble)
     labels_pred=[]
-    labels_prob=[]
+    all_prob = []
+
+
     with torch.no_grad():
         # conf_matrix = np.zeros((2,len(labels)))
         for j in range(len(x_test)):
@@ -192,13 +194,24 @@ def train_bagging_tan_CV(stances,x_train, y_train, x_test, y_test, vector_target
             for model in ensemble_models:
                 model.eval()
                 all_preds.append(np.argmax(model(x,target).cpu().numpy(),axis=1)[0])
-                prob = F.softmax(model(x,target), dim=1)
-                labels_prob.append(prob)
+
             cnts = np.zeros(len(labels))
             for prediction in all_preds:
                 cnts[prediction]+=1
             label = np.argmax(cnts)
             labels_pred.append(label)
+            i=0
+            for model in range(len(ensemble_models)):
+                if i>0:
+                    break
+                else:
+                    x = torch.tensor(np.array(x_test[j]), dtype=torch.long).to(device)
+                    prob = F.softmax(ensemble_models[model](x, target), dim=1)
+                    prob=prob.numpy()
+                    all_prob.append(prob)
+                    i=i+1
+
+
             # if label == y_test[j]:
             #     corr+=1
             #     if label <=1:
@@ -240,7 +253,7 @@ def train_bagging_tan_CV(stances,x_train, y_train, x_test, y_test, vector_target
             if st == label:
                 labels_pred_strings.append(sivug)
 
-    return conf_matrix,labels_pred_strings,score,model,len(ensemble_models)
+    return conf_matrix,labels_pred_strings,score,model,len(ensemble_models),all_prob
 
 
 
@@ -279,9 +292,9 @@ def run_model(df_train, df_test, labels, num_of_labels,claim):
     x_train[:], y_train[:] = zip(*combined)
 
 
-    fin_matrix,labels_pred,score,model,len_ensemble_model= train_bagging_tan_CV(stances,x_train, y_train, x_test, y_test, vector_target,labels,device,embedding_matrix,claim,version=version,n_epochs=20,batch_size=50,l2=1.0,dropout = 0.5,n_folds=3)
+    fin_matrix,labels_pred,score,model,len_ensemble_model,all_prob= train_bagging_tan_CV(stances,x_train, y_train, x_test, y_test, vector_target,labels,device,embedding_matrix,claim,version=version,n_epochs=2,batch_size=50,l2=1.0,dropout = 0.5,n_folds=3)
 
-    return labels_pred,y_test,len_ensemble_model,labels,embedding_matrix,word_ind
+    return labels_pred,y_test,len_ensemble_model,labels,embedding_matrix,word_ind,all_prob
 
 
 

@@ -17,9 +17,9 @@ def Pred(df_train, df_test, labels, num_of_labels,dataset_name,train_percent):
     checkpoint_path = BASE_DIR+"\\TRANSFORMER\\checkpoints\\"+MODEL_TYPE+"_"+MODEL_NAME+dataset_name+train_percent+'weights.hdf5'
     if(not os.path.exists(checkpoint_path)):
         run_model(df_train, df_test, labels, num_of_labels,dataset_name,train_percent)
-    test_labels, preds = predict(df_test_copy, dataset_name,labels,None)
+    test_labels, preds ,probs= predict(df_test_copy, dataset_name,labels,None)
 
-    return test_labels, preds
+    return test_labels, preds,probs
 
 def Pred_one_sentence(df_train, df_test, labels, num_of_labels,dataset_name,model_TRANSFORMER):
     df_test_copy=df_test.copy(deep=True)

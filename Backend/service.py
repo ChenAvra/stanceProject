@@ -19,6 +19,7 @@ from flask import Flask, request, Response,abort, jsonify, send_from_directory
 
 import os
 
+from Backend.mail import send_email_to_velis
 from Backend.main_model import start_Specific_Model
 from Backend.util import get_num_of_records_controller
 app = Flask(__name__)
