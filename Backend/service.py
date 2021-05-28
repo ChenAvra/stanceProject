@@ -19,6 +19,7 @@ from flask import Flask, request, Response,abort, jsonify, send_from_directory
 
 import os
 
+from Backend.mail import send_email_to_velis
 from Backend.main_model import start_Specific_Model
 from Backend.util import get_num_of_records_controller
 app = Flask(__name__)
@@ -371,20 +372,21 @@ def isValid_df(df):
         error_message='the dataset has null values'
         return False,error_message
     try:
-        col=df.iloc[0]
-        col=col.index
-        claim=col[0]
-        sentence=col[1]
-        stance=col[2]
-        if not (claim=='Claim'):
+        try:
+            claim=df['Claim']
+        except:
             error_message = "the column name Claim is not correct,please fix the column name"
-            return False,error_message
-        if not (sentence=='Sentence'):
+            return False, error_message
+        try:
+            sentence=df['Sentence']
+        except:
             error_message = "the column name Sentence is not correct,please fix the column name"
-            return False,error_message
-        if not (stance=='Stance'):
+            return False, error_message
+        try:
+            stance=df['Stance']
+        except:
             error_message = "the column name Stance is not correct,please fix the column name"
-            return False,error_message
+            return False, error_message
 
     except:
         error_message='run time error'

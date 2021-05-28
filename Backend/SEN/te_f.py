@@ -60,6 +60,16 @@ def unzip_single_file(zip_file_name, output_file_name, output_file_path):
                             out_file.write(requested_file.read())
                             return
 
+def fixBadZipfile(zipFile):
+    f = open(zipFile, 'r+b')
+    data = f.read()
+    pos = data.find('\x50\x4b\x05\x06') # End of central directory signature
+    if (pos > 0):
+         print("Trancating file at location " + str(pos + 22)+ ".")
+         f.seek(pos + 22)   # size of 'ZIP end of central directory record'
+         f.truncate()
+         f.close()
+
 
 def sentence2sequence(sentence,glove_wordmap):
     """
@@ -133,7 +143,7 @@ def training_model():
     BASE_DIR = os.path.dirname(PROJECT_ROOT)
     glove_zip_file = BASE_DIR+"\\glove.6B.zip"
     glove_vectors_file = BASE_DIR+"\\glove.6B.50d.txt"
-    glove_vectors_file_name = "glove.6B.50d.txt"
+    glove_vectors_file_name = BASE_DIR+"\\glove.6B.50d.txt"
 
     snli_zip_file = BASE_DIR+"\\snli_1.0.zip"
     snli_dev_file = BASE_DIR+"\\snli_1.0_dev.txt"

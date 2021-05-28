@@ -4,7 +4,7 @@ import sklearn.model_selection as model_selection
 from sklearn.metrics import confusion_matrix, accuracy_score, roc_auc_score, roc_curve, auc
 import numpy as np
 import matplotlib.pyplot as plt
-from sklearn.preprocessing import LabelBinarizer
+from sklearn.preprocessing import LabelBinarizer, label_binarize
 from datetime import time, datetime
 
 from Backend.DB.DBManager import *
@@ -168,13 +168,13 @@ def start_Specific_Model(models, dataset_name, train_percent,df_extenal,type_ds)
             elif m_name == "TAN":
                 tan = TAN()
                 start = datetime.now()
-                y_test, y_pred = tan.run_TAN(df_train, df_test, labels, num_of_labels)
+                y_test, y_pred ,all_prob= tan.run_TAN(df_train, df_test, labels, num_of_labels)
                 end = datetime.now()
                 time = (end-start).total_seconds()/60
             elif m_name == "TRANSFORMER":
                 transformer = TRANSFORMER()
                 start = datetime.now()
-                y_test, y_pred = transformer.run_TRANSFORMER(df_train, df_test, labels, num_of_labels, dataset_name,str(train_percent))
+                y_test, y_pred, all_prob = transformer.run_TRANSFORMER(df_train, df_test, labels, num_of_labels, dataset_name,str(train_percent))
                 end = datetime.now()
                 time = (end-start).total_seconds()/60
             elif m_name == "ALLADA_NANDAKUMAR":
@@ -250,7 +250,7 @@ def start_Specific_Model(models, dataset_name, train_percent,df_extenal,type_ds)
             roc_acc = multiclass_roc_auc_score(y_test, y_pred)
             roc_acc = float("{:.3f}".format(roc_acc))
             roc_path = BASE_DIR + '\\DB\\ROC\\' + m_name + '_ ' + dataset_name + '_ ' + str(train_percent) + '.png'
-            dict_tpr_fpr=plot_multiclass_roc(y_test, y_pred, roc_path, n_classes=num_of_labels, figsize=(16, 10))
+            dict_tpr_fpr=plot_multiclass_roc(labels,y_test, all_prob, roc_path, n_classes=num_of_labels, figsize=(16, 10))
 
             dict_tpr_fpr_string = json.dumps(dict_tpr_fpr)
 
@@ -356,41 +356,57 @@ def multiclass_roc_auc_score(y_test, y_pred, average="macro"):
     return roc_auc_score(y_test, y_pred, average=average)
 
 
-def plot_multiclass_roc(y_test, y_pred, path, n_classes, figsize=(17, 6)):
-    # structures
-    fpr = dict()
-    tpr = dict()
-    roc_auc = dict()
+def plot_multiclass_roc(labels,y_test, y_pred, path, n_classes, figsize=(17, 6)):
+    # # structures
+    # fpr = dict()
+    # tpr = dict()
+    # roc_auc = dict()
 
     dict_fpr_tpr=[]
 
     lb = LabelBinarizer()
     lb.fit(y_test)
     y_test_dummies = lb.transform(y_test)
-    y_pred_dummies = lb.transform(y_pred)
+    # y_pred_dummies = lb.transform(y_pred)
 
-    y_test_labels = np.unique(y_test)
-    if (n_classes == 2):
-        y_test_dummies = pd.get_dummies(y_test, drop_first=False).values
-        y_pred_dummies = pd.get_dummies(y_pred, drop_first=False).values
+    y = label_binarize(y_test, classes=labels)
+    n_classes = y.shape[1]
 
-
-        if(len(y_pred_dummies[0]) == 1):
-            y = y_test_dummies
-
-            for i in range(len(y)):
-                y[i][0] = 1
-                y[i][1] = 0
-            y_pred_dummies = y
+    fpr = dict()
+    tpr = dict()
+    roc_auc = dict()
     for i in range(n_classes):
-        fpr[i], tpr[i], _ = roc_curve(y_test_dummies[:, i], y_pred_dummies[:, i])
+        fpr[i], tpr[i], _ = roc_curve(y_test_dummies[:, i], y_pred[:, i])
         roc_auc[i] = auc(fpr[i], tpr[i])
         arr=[]
         for j in range(len(fpr[i])):
             arr.append([round(fpr[i][j], 2),round(tpr[i][j], 2)])
         area = str(round(roc_auc[i], 2))
-        name = y_test_labels[i].upper() + " <br> Area=" + area
+        name = labels[i].upper() + " <br> Area=" + area
         dict_fpr_tpr.append({'name': name, 'data': arr, 'area': round(roc_auc[i], 2)})
+
+    # y_test_labels = np.unique(y_test)
+    # if (n_classes == 2):
+    #     y_test_dummies = pd.get_dummies(y_test, drop_first=False).values
+    #     y_pred_dummies = pd.get_dummies(y_pred, drop_first=False).values
+    #
+    #
+    #     if(len(y_pred_dummies[0]) == 1):
+    #         y = y_test_dummies
+    #
+    #         for i in range(len(y)):
+    #             y[i][0] = 1
+    #             y[i][1] = 0
+    #         y_pred_dummies = y
+    # for i in range(n_classes):
+    #     fpr[i], tpr[i], _ = roc_curve(y_test_dummies[:, i], y_pred_dummies[:, i])
+    #     roc_auc[i] = auc(fpr[i], tpr[i])
+    #     arr=[]
+    #     for j in range(len(fpr[i])):
+    #         arr.append([round(fpr[i][j], 2),round(tpr[i][j], 2)])
+    #     area = str(round(roc_auc[i], 2))
+    #     name = y_test_labels[i].upper() + " <br> Area=" + area
+    #     dict_fpr_tpr.append({'name': name, 'data': arr, 'area': round(roc_auc[i], 2)})
 
     # roc for each class
     # fig, ax = plt.subplots(figsize=figsize)

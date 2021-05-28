@@ -57,10 +57,10 @@ def predict(main_set,dataset_name,labels,model):
     model.load_weights(checkpoint_path)
     # print(model_.summary())
     # tf.keras.backend.clear_session()
-    result = model.predict([testap,testhp],batch_size=100)
-    model.predict_proba([testap,testhp],batch_size=100)
-    print(result)
-    result=numpy.argmax(result, axis=1)
+    y_proba = model.predict([testap,testhp],batch_size=100)
+    # probs=model.predict_proba(testap)
+    # print(result)
+    result=numpy.argmax(y_proba, axis=1)
     test_labels=numpy.argmax(test_labels, axis=1)
 
     test_labels_return = []
@@ -85,7 +85,7 @@ def predict(main_set,dataset_name,labels,model):
 
 
 
-    return test_labels_return,result_return
+    return test_labels_return,result_return,y_proba
 
 
 

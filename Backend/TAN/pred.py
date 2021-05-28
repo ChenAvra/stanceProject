@@ -24,7 +24,7 @@ def Pred(df_train, df_test, labels, num_of_labels):
         df_train_per_claim=df_train.loc[df_train['Claim'] == claim]
         df_test_per_claim=df_test.loc[df_test['Claim'] == claim]
 
-        labels_pred, y_test, len_ensemble_model, labels, embedding_matrix,word_ind=run_model(df_train_per_claim, df_test_per_claim, labels, num_of_labels,claim)
+        labels_pred, y_test, len_ensemble_model, labels, embedding_matrix,word_ind,all_prob=run_model(df_train_per_claim, df_test_per_claim, labels, num_of_labels,claim)
         # labels_pred, y_test, len_ensemble_model, labels, embedding_matrix, word_ind = run_model(df_train,
         #                                                                                         df_test, labels,
         #                                                                                         num_of_labels, claim)
@@ -62,7 +62,7 @@ def Pred(df_train, df_test, labels, num_of_labels):
                     test_labels.append(sivug)
 
 
-    return  test_labels,all_topic_labels
+    return  test_labels,all_topic_labels,all_prob
 
 def get_predict_per_stance(sentence,claim,stance):
     dataset=""
