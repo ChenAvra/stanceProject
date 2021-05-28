@@ -223,7 +223,7 @@ class main():
         # print('Accuracy: %f' % (accuracy * 100))
         # exit()
         predictions = np.argmax(model.predict(X_test), axis=-1)
-
+        y_proba = model.predict_proba(X_test)
         # "combine clf and NN clf's result together"
         # predictions = self.__combine(self.half_pred, predictions)
         return y_true,predictions

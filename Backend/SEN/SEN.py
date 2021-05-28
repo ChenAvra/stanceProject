@@ -89,10 +89,10 @@ def union_feature_extraction():
     for topic in arr:
         STA_path_train = BASE_DIR+"\\topics\\"+topic+"\\STA_feature_extraction_train.csv"
         ent_path_train = BASE_DIR+"\\topics\\"+topic+"\\ent_feature_extraction_train.csv"
-        senti_path_train = BASE_DIR+"\\topics\\"+topic+"\\senti_feature_extraction_train.csv"
+        # senti_path_train = BASE_DIR+"\\topics\\"+topic+"\\senti_feature_extraction_train.csv"
         STA_path_test = BASE_DIR+"\\topics\\" + topic + "\\STA_feature_extraction_test.csv"
         ent_path_test = BASE_DIR+"\\topics\\" + topic + "\\ent_feature_extraction_test.csv"
-        senti_path_test = BASE_DIR+"\\topics\\" + topic + "\\senti_feature_extraction_test.csv"
+        # senti_path_test = BASE_DIR+"\\topics\\" + topic + "\\senti_feature_extraction_test.csv"
         train_path = BASE_DIR+"\\topics\\" + topic + "\\train.csv"
         test_path = BASE_DIR+"\\topics\\" + topic + "\\test.csv"
 
@@ -102,11 +102,11 @@ def union_feature_extraction():
         del df_ent_train['Text']
         del df_ent_train['hypotheses']
         del df_ent_train['result']
-        df_senti_train = pd.read_csv(senti_path_train, header=0)
-        del df_senti_train['sentence']
-        del df_senti_train['positive']
-        del df_senti_train['negative']
-        del df_senti_train['neutral']
+        # df_senti_train = pd.read_csv(senti_path_train, header=0)
+        # del df_senti_train['sentence']
+        # del df_senti_train['positive']
+        # del df_senti_train['negative']
+        # del df_senti_train['neutral']
 
         df_STA_test = pd.read_csv(STA_path_test, header=0)
         del df_STA_test['sentence']
@@ -114,11 +114,11 @@ def union_feature_extraction():
         del df_ent_test['Text']
         del df_ent_test['hypotheses']
         del df_ent_test['result']
-        df_senti_test = pd.read_csv(senti_path_test, header=0)
-        del df_senti_test['sentence']
-        del df_senti_test['positive']
-        del df_senti_test['negative']
-        del df_senti_test['neutral']
+        # df_senti_test = pd.read_csv(senti_path_test, header=0)
+        # del df_senti_test['sentence']
+        # del df_senti_test['positive']
+        # del df_senti_test['negative']
+        # del df_senti_test['neutral']
 
         df_train = pd.read_csv(train_path, header=0)
         df_train = df_train[['Stance','Sentence']].copy()
@@ -127,10 +127,10 @@ def union_feature_extraction():
         df_test = pd.read_csv(test_path, header=0)
         df_test = df_test [['Stance','Sentence']].copy()
 
-        final_train_df = [df_STA_train,df_ent_train,df_senti_train,df_train]
+        final_train_df = [df_STA_train,df_ent_train,df_train]
         final_train_df=pd.concat(final_train_df, axis=1)
 
-        final_test_df = [df_STA_test,df_ent_test,df_senti_test,df_test]
+        final_test_df = [df_STA_test,df_ent_test,df_test]
         final_test_df=pd.concat(final_test_df,axis=1)
 
         featuresPath = BASE_DIR+"\\final_feature_set"
@@ -198,9 +198,9 @@ def train(topic):
     PROJECT_ROOT = os.path.abspath(__file__)
     BASE_DIR = os.path.dirname(PROJECT_ROOT)
     train_dataset=pd.read_csv(BASE_DIR+"\\final_feature_set\\{}_train.csv".format(topic))
-    train_dataset.sentiment[train_dataset.sentiment=='Neutral']=0
-    train_dataset.sentiment[train_dataset.sentiment == 'Positive'] = 1
-    train_dataset.sentiment[train_dataset.sentiment == 'Negative'] = 2
+    # train_dataset.sentiment[train_dataset.sentiment=='Neutral']=0
+    # train_dataset.sentiment[train_dataset.sentiment == 'Positive'] = 1
+    # train_dataset.sentiment[train_dataset.sentiment == 'Negative'] = 2
     y_train=train_dataset['Stance'].copy()
     del train_dataset['Stance']
     del train_dataset['Sentence']
@@ -210,9 +210,9 @@ def train(topic):
 
 
     test_dataset=pd.read_csv(BASE_DIR+"\\final_feature_set\\{}_test.csv".format(topic))
-    test_dataset.sentiment[test_dataset.sentiment=='Neutral']=0
-    test_dataset.sentiment[test_dataset.sentiment == 'Positive'] = 1
-    test_dataset.sentiment[test_dataset.sentiment == 'Negative'] = 2
+    # test_dataset.sentiment[test_dataset.sentiment=='Neutral']=0
+    # test_dataset.sentiment[test_dataset.sentiment == 'Positive'] = 1
+    # test_dataset.sentiment[test_dataset.sentiment == 'Negative'] = 2
     y_test=test_dataset['Stance'].copy()
     del test_dataset['Stance']
     del test_dataset['Sentence']
@@ -231,6 +231,7 @@ def train(topic):
     model.fit(train_dataset,y_train)
     
     y_pred = model.predict(test_dataset)
+    y_proba = model.predict_proba(test_dataset)
 
     return y_pred,y_test
 
