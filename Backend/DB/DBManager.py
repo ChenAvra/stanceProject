@@ -286,9 +286,9 @@ db = DataBase()
 # db.drop_result()
 # db.drop_Request()
 # db.drop_Stance_Result()
+# db.drop_Index()
 # db.drop_dataset_desc()
 # db.drop_model_desc()
-# db.drop_Index()
 
 
 # create tables
@@ -299,12 +299,6 @@ db = DataBase()
 # db.reset_index()
 # db.create_model_desc_table()
 # db.create_dataset_desc_table()
-
-
-# delete records
-# db.delete_record_from_Request(11)
-# db.delete_record_from_result(None,'TRANSFORMER','EmergentLite',0.6)
-# db.delete_dataset(10)
 
 
 # fill dataset tables
