@@ -150,6 +150,9 @@ def Pred(df_train, df_test, l, num_of_l):
         test_feed_dict = {features_pl: test_set, keep_prob_pl: 1.0}
         test_pred = sess.run(predict, feed_dict=test_feed_dict)
 
+        y_prob = softmaxed_logits.eval(session=sess, feed_dict=test_feed_dict)
+
+
     test_pred_categorial = list()
     for i in range(len(test_pred)):
          val = label_ref_rev[test_pred[i]]
@@ -178,6 +181,6 @@ def Pred(df_train, df_test, l, num_of_l):
     # print(accuracy_score(y_true, y_pred))
     # print(metrics.classification_report(y_true, y_pred))
 
-    return y_true, y_pred
+    return y_true, y_pred, y_prob
     # Save predictions
     # save_predictions(test_pred, file_predictions)

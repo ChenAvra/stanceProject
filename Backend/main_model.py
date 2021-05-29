@@ -162,7 +162,7 @@ def start_Specific_Model(models, dataset_name, train_percent,df_extenal,type_ds)
             elif m_name == "UCLMR":
                 uclmr = UCLMR()
                 start = datetime.now()
-                y_test, y_pred = uclmr.run_UCLMR(df_train, df_test, labels, num_of_labels)
+                y_test, y_pred, all_prob = uclmr.run_UCLMR(df_train, df_test, labels, num_of_labels)
                 end = datetime.now()
                 time = (end-start).total_seconds()/60
             elif m_name == "TAN":
@@ -181,7 +181,7 @@ def start_Specific_Model(models, dataset_name, train_percent,df_extenal,type_ds)
             elif m_name == "ALLADA_NANDAKUMAR":
                 allada_nandakumar = Allada_Nandakumar()
                 start = datetime.now()
-                y_test, y_pred = allada_nandakumar.run_Allada_Nandakumar(df_train, df_test, labels)
+                y_test, y_pred, all_prob = allada_nandakumar.run_Allada_Nandakumar(df_train, df_test, labels)
                 end = datetime.now()
                 time = (end-start).total_seconds()/60
             elif m_name == "LIU":

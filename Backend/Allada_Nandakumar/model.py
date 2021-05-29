@@ -209,7 +209,7 @@ def Pred(df_train, df_test, l):
 
     pred_1 = model.predict([X_test_head, X_test_body, X_test_head_tfidf, X_test_body_tfidf])
 
-
+    # y_prob = model.predict_proba(df_test['Stance'])
     pred_old = np.argmax(pred_1, axis=1)
 
     # Load/Precompute all features now
@@ -221,91 +221,91 @@ def Pred(df_train, df_test, l):
     os.remove(BASE_DIR + "\\fraud_1750.hdf5")
 
     actual = actual.values.tolist()
-    return actual, predict_11
+    return actual, predict_11, pred_1
 
 
-def predict(sentence,claim):
-    LABELS = l.tolist()
-    # combine_df_train = df_train.copy()
-    combine_df_test = df_test.copy()
-    # combine_df_train['Stance'] = combine_df_train['Stance'].apply(lambda x: LABELS.index(x))
-    combine_df_test['Stance'] = combine_df_test['Stance'].apply(lambda x: LABELS.index(x))
-
-    # Specify the folder locations
-    PROJECT_ROOT = os.path.abspath(__file__)
-    BASE_DIR = os.path.dirname(PROJECT_ROOT)
-    W2V_DIR = BASE_DIR + '\\GoogleNews-vectors-negative300.bin'  # W2v
-    # GloVe_DIR = path + '\\glove.6B.300d.txt'  # Glove
-    # FastTxt_DIR = path + '\\wiki-news-300d-1M.vec'  # fasttext
-
-    # CONFIG
-
-    # the data directory
-    MAX_SENT_LEN = 150  # 75(0.68), 150, 300 700(90% but too time comsuming)
-    MAX_VOCAB_SIZE = 40000  # vocabulary
-    EMBEDDING_DIM = 300  # 50 for GloVe 300 for w2v
-
-    # PREPROCESS
-
-    # train_head = [text_cleaner(head) for head in combine_df_train['Claim']]
-    # train_body = [text_cleaner(body) for body in combine_df_train['Sentence']]
-    test_head = [text_cleaner(head) for head in combine_df_test['Claim']]
-    test_body = [text_cleaner(body) for body in combine_df_test['Sentence']]
-
-    # TF-IDF
-
-    vectorizer = TfidfVectorizer(max_features=150)
-    # X_train_head_tfidf = vectorizer.fit_transform(train_head).toarray()
-    # X_train_body_tfidf = vectorizer.fit_transform(train_body).toarray()
-    X_test_head_tfidf = vectorizer.transform(test_head).toarray()
-    X_test_body_tfidf = vectorizer.transform(test_body).toarray()
-
-    # result = np.zeros(X_train_body_tfidf.shape)
-    # result[:X_train_head_tfidf.shape[0], :X_train_head_tfidf.shape[1]] = X_train_head_tfidf
-    # X_train_head_tfidf = result
-
-    # Pre-processing involves removal of puctuations and converting text to lower case
-    # word_seq_head_train = [text_to_word_sequence(text_cleaner(head)) for head in combine_df_train['Claim']]
-    # word_seq_bodies_train = [text_to_word_sequence(text_cleaner(body)) for body in combine_df_train['Sentence']]
-    word_seq_head_test = [text_to_word_sequence(text_cleaner(head)) for head in combine_df_test['Claim']]
-    word_seq_bodies_test = [text_to_word_sequence(text_cleaner(body)) for body in combine_df_test['Sentence']]
-
-    word_seq = []
-    # for i in range(len(word_seq_head_train)):
-    #     word_seq.append(word_seq_head_train[i])
-    # for i in range(len(word_seq_bodies_train)):
-    #     word_seq.append(word_seq_bodies_train[i])
-
-    for i in range(len(word_seq_head_test)):
-        word_seq.append(word_seq_head_test[i])
-    for i in range(len(word_seq_bodies_test)):
-        word_seq.append(word_seq_bodies_test[i])
-
-    filter_list = '!"\'#$%&()*+,-./:;<=>?@[\\]^_`{|}~\t\n'
-
-    tokenizer = Tokenizer(num_words=MAX_VOCAB_SIZE, filters=filter_list)
-    tokenizer.fit_on_texts([seq for seq in word_seq])
-    # because it only includes unique words(tokens)
-
-    print("Number of words in vocabulary:", len(tokenizer.word_index))
-
-    # TEXT with two LSTM FOR head and body
-
-    # Shorten the sentence to a fixed length
-    # Convert the sequence of words to sequnce of indices
-    # X_train_head = tokenizer.texts_to_sequences([' '.join(seq[:MAX_SENT_LEN]) for seq in word_seq_head_train])
-    # X_train_head = pad_sequences(X_train_head, maxlen=MAX_SENT_LEN, padding='post', truncating='post')
-    #
-    # X_train_body = tokenizer.texts_to_sequences([' '.join(seq[:MAX_SENT_LEN]) for seq in word_seq_bodies_train])
-    # X_train_body = pad_sequences(X_train_body, maxlen=MAX_SENT_LEN, padding='post', truncating='post')
-
-    # y_train_1 = combine_df_train['Stance']
-
-    X_test_head = tokenizer.texts_to_sequences([' '.join(seq[:MAX_SENT_LEN]) for seq in word_seq_head_test])
-    X_test_head = pad_sequences(X_test_head, maxlen=MAX_SENT_LEN, padding='post', truncating='post')
-
-    X_test_body = tokenizer.texts_to_sequences([' '.join(seq[:MAX_SENT_LEN]) for seq in word_seq_bodies_test])
-    X_test_body = pad_sequences(X_test_body, maxlen=MAX_SENT_LEN, padding='post', truncating='post')
+# def predict(sentence,claim):
+#     LABELS = l.tolist()
+#     # combine_df_train = df_train.copy()
+#     combine_df_test = df_test.copy()
+#     # combine_df_train['Stance'] = combine_df_train['Stance'].apply(lambda x: LABELS.index(x))
+#     combine_df_test['Stance'] = combine_df_test['Stance'].apply(lambda x: LABELS.index(x))
+#
+#     # Specify the folder locations
+#     PROJECT_ROOT = os.path.abspath(__file__)
+#     BASE_DIR = os.path.dirname(PROJECT_ROOT)
+#     W2V_DIR = BASE_DIR + '\\GoogleNews-vectors-negative300.bin'  # W2v
+#     # GloVe_DIR = path + '\\glove.6B.300d.txt'  # Glove
+#     # FastTxt_DIR = path + '\\wiki-news-300d-1M.vec'  # fasttext
+#
+#     # CONFIG
+#
+#     # the data directory
+#     MAX_SENT_LEN = 150  # 75(0.68), 150, 300 700(90% but too time comsuming)
+#     MAX_VOCAB_SIZE = 40000  # vocabulary
+#     EMBEDDING_DIM = 300  # 50 for GloVe 300 for w2v
+#
+#     # PREPROCESS
+#
+#     # train_head = [text_cleaner(head) for head in combine_df_train['Claim']]
+#     # train_body = [text_cleaner(body) for body in combine_df_train['Sentence']]
+#     test_head = [text_cleaner(head) for head in combine_df_test['Claim']]
+#     test_body = [text_cleaner(body) for body in combine_df_test['Sentence']]
+#
+#     # TF-IDF
+#
+#     vectorizer = TfidfVectorizer(max_features=150)
+#     # X_train_head_tfidf = vectorizer.fit_transform(train_head).toarray()
+#     # X_train_body_tfidf = vectorizer.fit_transform(train_body).toarray()
+#     X_test_head_tfidf = vectorizer.transform(test_head).toarray()
+#     X_test_body_tfidf = vectorizer.transform(test_body).toarray()
+#
+#     # result = np.zeros(X_train_body_tfidf.shape)
+#     # result[:X_train_head_tfidf.shape[0], :X_train_head_tfidf.shape[1]] = X_train_head_tfidf
+#     # X_train_head_tfidf = result
+#
+#     # Pre-processing involves removal of puctuations and converting text to lower case
+#     # word_seq_head_train = [text_to_word_sequence(text_cleaner(head)) for head in combine_df_train['Claim']]
+#     # word_seq_bodies_train = [text_to_word_sequence(text_cleaner(body)) for body in combine_df_train['Sentence']]
+#     word_seq_head_test = [text_to_word_sequence(text_cleaner(head)) for head in combine_df_test['Claim']]
+#     word_seq_bodies_test = [text_to_word_sequence(text_cleaner(body)) for body in combine_df_test['Sentence']]
+#
+#     word_seq = []
+#     # for i in range(len(word_seq_head_train)):
+#     #     word_seq.append(word_seq_head_train[i])
+#     # for i in range(len(word_seq_bodies_train)):
+#     #     word_seq.append(word_seq_bodies_train[i])
+#
+#     for i in range(len(word_seq_head_test)):
+#         word_seq.append(word_seq_head_test[i])
+#     for i in range(len(word_seq_bodies_test)):
+#         word_seq.append(word_seq_bodies_test[i])
+#
+#     filter_list = '!"\'#$%&()*+,-./:;<=>?@[\\]^_`{|}~\t\n'
+#
+#     tokenizer = Tokenizer(num_words=MAX_VOCAB_SIZE, filters=filter_list)
+#     tokenizer.fit_on_texts([seq for seq in word_seq])
+#     # because it only includes unique words(tokens)
+#
+#     print("Number of words in vocabulary:", len(tokenizer.word_index))
+#
+#     # TEXT with two LSTM FOR head and body
+#
+#     # Shorten the sentence to a fixed length
+#     # Convert the sequence of words to sequnce of indices
+#     # X_train_head = tokenizer.texts_to_sequences([' '.join(seq[:MAX_SENT_LEN]) for seq in word_seq_head_train])
+#     # X_train_head = pad_sequences(X_train_head, maxlen=MAX_SENT_LEN, padding='post', truncating='post')
+#     #
+#     # X_train_body = tokenizer.texts_to_sequences([' '.join(seq[:MAX_SENT_LEN]) for seq in word_seq_bodies_train])
+#     # X_train_body = pad_sequences(X_train_body, maxlen=MAX_SENT_LEN, padding='post', truncating='post')
+#
+#     # y_train_1 = combine_df_train['Stance']
+#
+#     X_test_head = tokenizer.texts_to_sequences([' '.join(seq[:MAX_SENT_LEN]) for seq in word_seq_head_test])
+#     X_test_head = pad_sequences(X_test_head, maxlen=MAX_SENT_LEN, padding='post', truncating='post')
+#
+#     X_test_body = tokenizer.texts_to_sequences([' '.join(seq[:MAX_SENT_LEN]) for seq in word_seq_bodies_test])
+#     X_test_body = pad_sequences(X_test_body, maxlen=MAX_SENT_LEN, padding='post', truncating='post')
 
 # def split_data_topic_based(df_before_spliting, train_percent):
 #     train_dataset = pd.DataFrame(columns=df_before_spliting.columns)
