@@ -1,7 +1,7 @@
 import os
 import sklearn
 import sklearn.model_selection as model_selection
-from sklearn.metrics import confusion_matrix, accuracy_score, roc_auc_score, roc_curve, auc, plot_confusion_matrix
+from sklearn.metrics import confusion_matrix, accuracy_score, roc_auc_score, roc_curve, auc
 import numpy as np
 import matplotlib.pyplot as plt
 from sklearn.preprocessing import LabelBinarizer, label_binarize, LabelEncoder
@@ -235,7 +235,7 @@ def start_Specific_Model(models, dataset_name, train_percent,df_extenal,type_ds)
             BASE_DIR = os.path.dirname(PROJECT_ROOT)
             cm_path = BASE_DIR + '\\DB\\ConfusionMatrix\\' + m_name + '_ ' + dataset_name + '_ ' + str(train_percent) + '.png'
             cm = confusion_matrix(y_test, y_pred)
-            plot_confusion_matrix(cm_path, cm, labels=labels, title="Confusion Matrix", normalize=False)
+            plot_confusion_matrix(cm_path, cm, target_names=labels, normalize=False)
             target =labels
             target_string=""
             for t in target:
@@ -277,7 +277,7 @@ def start_Specific_Model(models, dataset_name, train_percent,df_extenal,type_ds)
 
 
 # https://www.kaggle.com/grfiv4/plot-a-confusion-matrix
-# def plot_confusion_matrix(path, cm, target_names, title='Confusion matrix', cmap=None, normalize=True):
+def plot_confusion_matrix(path, cm, target_names, title='Confusion matrix', cmap=None, normalize=True):
 #     """
 #     given a sklearn confusion matrix (cm), make a nice plot
 #
@@ -310,43 +310,43 @@ def start_Specific_Model(models, dataset_name, train_percent,df_extenal,type_ds)
 #     http://scikit-learn.org/stable/auto_examples/model_selection/plot_confusion_matrix.html
 #
 #     """
-#     import itertools
-#
-#     if cmap is None:
-#         cmap = plt.get_cmap('Blues')
-#
-#     plt.figure(figsize=(8, 6))
-#     plt.imshow(cm, interpolation='nearest', cmap=cmap)
-#     plt.title(title)
-#     plt.colorbar()
-#
-#     if target_names is not None:
-#         tick_marks = np.arange(len(target_names))
-#         plt.xticks(tick_marks, target_names, rotation=45)
-#         plt.yticks(tick_marks, target_names)
-#
-#     if normalize:
-#         cm = cm.astype('float') / cm.sum(axis=1)[:, np.newaxis]
-#
-#
-#     thresh = cm.max() / 1.5 if normalize else cm.max() / 2
-#     for i, j in itertools.product(range(cm.shape[0]), range(cm.shape[1])):
-#         if normalize:
-#             plt.text(j, i, "{:0.4f}".format(cm[i, j]),
-#                      horizontalalignment="center",
-#                      color="white" if cm[i, j] > thresh else "black")
-#         else:
-#             plt.text(j, i, "{:,}".format(cm[i, j]),
-#                      horizontalalignment="center",
-#                      color="white" if cm[i, j] > thresh else "black")
-#
+    import itertools
 
-    # plt.ylabel('True label')
-    # plt.xlabel('Predicted label')
-    # plt.tight_layout()
-    # plt.savefig(path)
-    # plt.show()
-    # plt.close()
+    if cmap is None:
+        cmap = plt.get_cmap('Blues')
+
+    plt.figure(figsize=(8, 6))
+    plt.imshow(cm, interpolation='nearest', cmap=cmap)
+    plt.title(title)
+    plt.colorbar()
+
+    if target_names is not None:
+        tick_marks = np.arange(len(target_names))
+        plt.xticks(tick_marks, target_names, rotation=45)
+        plt.yticks(tick_marks, target_names)
+
+    if normalize:
+        cm = cm.astype('float') / cm.sum(axis=1)[:, np.newaxis]
+
+
+    thresh = cm.max() / 1.5 if normalize else cm.max() / 2
+    for i, j in itertools.product(range(cm.shape[0]), range(cm.shape[1])):
+        if normalize:
+            plt.text(j, i, "{:0.4f}".format(cm[i, j]),
+                     horizontalalignment="center",
+                     color="white" if cm[i, j] > thresh else "black")
+        else:
+            plt.text(j, i, "{:,}".format(cm[i, j]),
+                     horizontalalignment="center",
+                     color="white" if cm[i, j] > thresh else "black")
+
+
+    plt.ylabel('True label')
+    plt.xlabel('Predicted label')
+    plt.tight_layout()
+    plt.savefig(path)
+    plt.show()
+    plt.close()
 
 
 def multiclass_roc_auc_score(y_test, y_pred, average="macro"):
