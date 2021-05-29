@@ -208,6 +208,8 @@ def Pred(df_train, df_test, l):
     model.save_weights(checkpoint_path)
 
     pred_1 = model.predict([X_test_head, X_test_body, X_test_head_tfidf, X_test_body_tfidf])
+
+
     pred_old = np.argmax(pred_1, axis=1)
 
     # Load/Precompute all features now
