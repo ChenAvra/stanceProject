@@ -208,6 +208,8 @@ def train_bagging_tan_CV(stances,x_train, y_train, x_test, y_test, vector_target
                     x = torch.tensor(np.array(x_test[j]), dtype=torch.long).to(device)
                     prob = F.softmax(ensemble_models[model](x, target), dim=1)
                     prob=prob.numpy()
+                    prob=prob.ravel()
+
                     all_prob.append(prob)
                     i=i+1
 

@@ -11,6 +11,8 @@ len_ensemble_models_all={}
 def Pred(df_train, df_test, labels, num_of_labels):
     all_topic_labels=[]
     all_topic_y_test=[]
+    all_probs_test=[]
+
 
     # claim="news are important to our life"
 
@@ -52,17 +54,18 @@ def Pred(df_train, df_test, labels, num_of_labels):
         # embedding_matrix.save("word2vec."+str(claim))
         all_topic_labels.extend(labels_pred)
         all_topic_y_test.extend(y_test)
+        all_probs_test.extend(all_prob)
 
-        test_labels=[]
-        for label in all_topic_y_test:
-            for i in range(len(labels)):
-                sivug = labels[i]
-                st = stances[sivug]
-                if st == label:
-                    test_labels.append(sivug)
+    test_labels = []
+    for label in all_topic_y_test:
+        for i in range(len(labels)):
+            sivug = labels[i]
+            st = stances[sivug]
+            if st == label:
+                test_labels.append(sivug)
 
 
-    return  test_labels,all_topic_labels,all_prob
+    return  test_labels,all_topic_labels,all_probs_test
 
 def get_predict_per_stance(sentence,claim,stance):
     dataset=""

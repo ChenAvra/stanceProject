@@ -8,6 +8,8 @@ from flask_cors import CORS
 from flask import Flask
 from flask import jsonify
 from flask import request
+from tensorflow import keras
+
 from Backend.controller import get_dataset_name_controller, get_algorithmes_names_controller, \
     get_topics_controller, get_stance_controller, start_specific_model_controller, get_models_results_controller, \
     get_models_request_controller, get_models_desc_controller, get_categories_dataset_controller, \
@@ -36,32 +38,27 @@ from Backend.TRANSFORMER.measure import loadTokenizer
 
 MODEL_TYPE = "TRANSFORMER"
 ## TRANSFORMER or CNN
-
 MAX_LENGTH_ARTICLE = 1200
 MAX_LENGTH_HEADLINE = 40
 MODEL_NAME = "model_1"
-
-# tokenizer = loadTokenizer(MODEL_NAME)
-
-
+tokenizer = loadTokenizer(MODEL_NAME)
 PROJECT_ROOT = os.path.abspath('__file__')
 BASE_DIR = os.path.dirname(PROJECT_ROOT)
 num_labels = 3
 checkpoint_path = BASE_DIR + "\\TRANSFORMER\\checkpoints\\" + MODEL_TYPE + "_" + MODEL_NAME + "semEval2016weights.hdf5"
 
-import tensorflow as tf
 
-# sess = tf.compat.v1.keras.backend.get_session()
-# graph = tf.compat.v1.get_default_graph()
-# init = tf.compat.v1.global_variables_initializer()
+import tensorflow as tf
+# from tensorflow.python.framework import ops
+# ops.reset_default_graph()
+
+
+
 #
-# tf.compat.v1.keras.backend.set_session(sess)
-# sess.run(init)
 #
-# checkpoint_path = "./checkpoints/"+MODEL_TYPE+"_"+MODEL_NAME+"semEval2016weights.hdf5"
-# model_TRANSFORMER = getModelWithType(MODEL_TYPE, False, MAX_LENGTH_ARTICLE, MAX_LENGTH_HEADLINE, False,
-#                           tokenizer, num_labels)
-# model_TRANSFORMER.load_weights(checkpoint_path)
+model_TRANSFORMER = getModelWithType(MODEL_TYPE, False, MAX_LENGTH_ARTICLE, MAX_LENGTH_HEADLINE, False,
+                          tokenizer, num_labels)
+model_TRANSFORMER.load_weights(checkpoint_path)
 
 
 
@@ -618,9 +615,11 @@ def get_topics():
 
 @app.route('/get_stance/<sentence>/<topic>/<model_name>', methods=['get'])
 def get_stance(sentence,topic,model_name):
-    global graph
-    with graph.as_default():
-        stance=get_stance_controller(sentence,topic,model_name,model_TRANSFORMER)
+    # global graph
+    # with sess.as_default():
+    # keras.backend.clear_session()
+    # with graph.as_default():
+    stance=get_stance_controller(sentence,topic,model_name,model_TRANSFORMER,None)
     return jsonify(stance)
 
 
