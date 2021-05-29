@@ -234,8 +234,8 @@ def start_Specific_Model(models, dataset_name, train_percent,df_extenal,type_ds)
             PROJECT_ROOT = os.path.abspath(__file__)
             BASE_DIR = os.path.dirname(PROJECT_ROOT)
             cm_path = BASE_DIR + '\\DB\\ConfusionMatrix\\' + m_name + '_ ' + dataset_name + '_ ' + str(train_percent) + '.png'
-            cm = confusion_matrix(y_test, y_pred)
-            plot_confusion_matrix(cm_path, cm, target_names=labels, normalize=False)
+            cm = confusion_matrix(y_test, y_pred,labels=labels)
+            # plot_confusion_matrix(cm_path, cm, target_names=labels, normalize=False)
             target =labels
             target_string=""
             for t in target:
