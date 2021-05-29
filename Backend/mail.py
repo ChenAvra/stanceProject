@@ -14,7 +14,7 @@ def send_email_to_velis(messege,email):
 
     emailMsg = messege
     mimeMessage = MIMEMultipart()
-    mimeMessage['to'] = 'systanceproject@gmail.com'
+    mimeMessage['to'] = email
     mimeMessage['subject'] = 'Systance - Results'
     mimeMessage.attach(MIMEText(emailMsg, 'plain'))
     raw_string = base64.urlsafe_b64encode(mimeMessage.as_bytes()).decode()

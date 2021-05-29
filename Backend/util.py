@@ -29,6 +29,7 @@ def get_models_desc_controller_main(model):
 def get_categories_dataset_main(dataset):
     db = DataBase()
 
+
     dataset_id = dataset_names_dict[dataset]
 
     df = db.get_dataset(dataset_id)

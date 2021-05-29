@@ -1,7 +1,7 @@
 import os
 import sklearn
 import sklearn.model_selection as model_selection
-from sklearn.metrics import confusion_matrix, accuracy_score, roc_auc_score, roc_curve, auc
+from sklearn.metrics import confusion_matrix, accuracy_score, roc_auc_score, roc_curve, auc, plot_confusion_matrix
 import numpy as np
 import matplotlib.pyplot as plt
 from sklearn.preprocessing import LabelBinarizer, label_binarize, LabelEncoder
@@ -233,10 +233,10 @@ def start_Specific_Model(models, dataset_name, train_percent,df_extenal,type_ds)
             # plot confusion matrix
             PROJECT_ROOT = os.path.abspath(__file__)
             BASE_DIR = os.path.dirname(PROJECT_ROOT)
-            # cm_path = BASE_DIR + '\\DB\\ConfusionMatrix\\' + m_name + '_ ' + dataset_name + '_ ' + str(train_percent) + '.png'
+            cm_path = BASE_DIR + '\\DB\\ConfusionMatrix\\' + m_name + '_ ' + dataset_name + '_ ' + str(train_percent) + '.png'
             cm = confusion_matrix(y_test, y_pred)
-            # plot_confusion_matrix(cm_path, cm, target_names=np.unique(y_test), title="Confusion Matrix", normalize=False)
-            target =np.unique(y_test)
+            plot_confusion_matrix(cm_path, cm, labels=labels, title="Confusion Matrix", normalize=False)
+            target =labels
             target_string=""
             for t in target:
                 target_string=target_string+t+","

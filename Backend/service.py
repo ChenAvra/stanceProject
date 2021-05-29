@@ -74,8 +74,13 @@ def tpr_fpr():
 
     dataset_name = get_dataset_name_controller()
     name = params['ds_name']
-    if not name in dataset_name:
-        return jsonify("invalid dataset"), 401
+    try:
+        name = int(name)
+    except:
+        if not name in dataset_name:
+            return jsonify("invalid dataset"), 401
+    # if not name in dataset_name:
+    #     return jsonify("invalid dataset"), 401
     percent = int(params['percent'])/100
     result=get_models_results_controller(model,name,percent)
     result=result.iloc[0]
@@ -98,8 +103,13 @@ def train_test_records():
 
     dataset_name = get_dataset_name_controller()
     name = params['ds_name']
-    if not name in dataset_name:
-        return jsonify("invalid dataset"), 401
+    try:
+        name = int(name)
+    except:
+        if not name in dataset_name:
+            return jsonify("invalid dataset"), 401
+    # if not name in dataset_name:
+    #     return jsonify("invalid dataset"), 401
     percent = int(params['percent'])/100
     result=get_models_results_controller(model,name,percent)
     result=result.iloc[0]
@@ -129,8 +139,13 @@ def statisticsTable():
 
     dataset_name = get_dataset_name_controller()
     name = params['ds_name']
-    if not name in dataset_name:
-        return jsonify("invalid dataset"), 401
+    try:
+        name = int(name)
+    except:
+        if not name in dataset_name:
+            return jsonify("invalid dataset"), 401
+    # if not name in dataset_name:
+    #     return jsonify("invalid dataset"), 401
     percent = int(params['percent'])/100
     result=get_models_results_controller(model,name,percent)
     result=result.iloc[0]
@@ -231,8 +246,12 @@ def resultsModelDataset():
 
     dataset_name = get_dataset_name_controller()
     name = params['ds_name']
-    if not name in dataset_name:
-        return jsonify("invalid dataset"), 401
+    try:
+        name = int(name)
+    except:
+        if not name in dataset_name:
+            return jsonify("invalid dataset"), 401
+
     percent = int(params['percent'])/100
     result=get_models_results_controller(model,name,percent)
     result=result.iloc[0]
@@ -403,8 +422,12 @@ def ActualVSPredict():
 
     dataset_name = get_dataset_name_controller()
     name = params['ds_name']
-    if not name in dataset_name:
-        return jsonify("invalid dataset"), 401
+    try:
+        name = int(name)
+    except:
+        if not name in dataset_name:
+            return jsonify("invalid dataset"), 401
+
     percent = int(params['percent'])/100
     result=get_models_results_controller(model,name,percent)
     result=result.iloc[0]
@@ -421,12 +444,20 @@ def ActualVSPredict():
     for i in list_predict:
         list_predict2.append(int(i))
 
+    list3=[]
+    result_target=result['target']
+    result_target=result_target.split(",")
+    result_target.pop(len(result_target)-1)
+
+    for i in result_target:
+        list3.append(i)
+
     dic={'Actual':list_actual2,'Predict':list_predict2}
 
 
-    catagories = get_categories_dataset_controller(name)
+    # catagories = get_categories_dataset_controller(name)
 
-    dic2 = {'categories': list(catagories)}
+    dic2 = {'categories': list(list3)}
     return jsonify(dic,dic2)
 
 
@@ -442,8 +473,13 @@ def getTime():
 
     dataset_name = get_dataset_name_controller()
     name = params['ds_name']
-    if not name in dataset_name:
-        return jsonify("invalid dataset"), 401
+    try:
+        name = int(name)
+    except:
+        if not name in dataset_name:
+            return jsonify("invalid dataset"), 401
+    # if not name in dataset_name:
+    #     return jsonify("invalid dataset"), 401
     percent = int(params['percent'])/100
     result = get_models_results_controller(model,name,percent)
     result = result.iloc[0]
@@ -478,8 +514,11 @@ def confusionMatrix():
 
     dataset_name = get_dataset_name_controller()
     name = params['ds_name']
-    if not name in dataset_name:
-        return jsonify("invalid dataset"), 401
+    try:
+        name=int(name)
+    except:
+        if not name in dataset_name:
+            return jsonify("invalid dataset"), 401
     percent = int(params['percent'])/100
     result=get_models_results_controller(model,name,percent)
     result=result.iloc[0]
