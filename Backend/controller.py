@@ -17,8 +17,8 @@ def get_topics_controller():
      return get_topics_main()
 
 
-def get_stance_controller(sentence,topic,model_name,model_TRANSFORMER):
-     return get_one_stance(sentence,topic,model_name,model_TRANSFORMER)
+def get_stance_controller(sentence,topic,model_name,model_TRANSFORMER,train):
+     return get_one_stance(sentence,topic,model_name,model_TRANSFORMER,train)
 
 
 def start_specific_model_controller(models, dataset_name, train_percent,df_extenal,based):

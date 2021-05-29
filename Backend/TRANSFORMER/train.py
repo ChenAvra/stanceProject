@@ -76,7 +76,8 @@ def run_model(df_train, df_test, labels, num_of_labels,dataset_name,train_percen
     BASE_DIR = os.path.dirname(PROJECT_ROOT)
 
     # checkpoint_path = BASE_DIR+"\\checkpoints\\"+MODEL_TYPE+"_"+MODEL_NAME+"\\weights.hdf5"
-    checkpoint_path = BASE_DIR+"\\TRANSFORMER\\checkpoints\\"+MODEL_TYPE+"_"+MODEL_NAME+dataset_name+train_percent+'weights.hdf5'
+    checkpoint_path = BASE_DIR+"\\TRANSFORMER\\checkpoints\\"+MODEL_TYPE+"_"+MODEL_NAME+dataset_name+str(train_percent)+'weights.hdf5'
+    # checkpoint_path = BASE_DIR+"\\TRANSFORMER\\checkpoints\\"+MODEL_TYPE+"_"+MODEL_NAME+dataset_name+'weights.hdf5'
 
 
     # if(not os.path.exists(BASE_DIR+"\\TRANSFORMER\\checkpoints\\"+MODEL_TYPE+"_"+MODEL_NAME+dataset_name)):

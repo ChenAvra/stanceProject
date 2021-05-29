@@ -38,7 +38,7 @@ LOAD_PREV = False
 # tf.keras.backend.clear_session()
 
 
-def predict(main_set,dataset_name,labels,model):
+def predict(main_set,dataset_name,labels,model_t,train,one_sen=False):
     print("MAIN SET balanced.")
     main_set,stances = preprocessDF(main_set, labels, binaryclass=BINARY_CLASSIFICATION)
 
@@ -51,13 +51,21 @@ def predict(main_set,dataset_name,labels,model):
     PROJECT_ROOT = os.path.abspath('__file__')
     BASE_DIR = os.path.dirname(PROJECT_ROOT)
     num_labels=len(labels)
-    checkpoint_path = BASE_DIR+"\\TRANSFORMER\\checkpoints\\"+MODEL_TYPE+"_"+MODEL_NAME+dataset_name+"weights.hdf5"
+
+    if(one_sen):
+        checkpoint_path = BASE_DIR + "\\TRANSFORMER\\checkpoints\\" + MODEL_TYPE + "_" + MODEL_NAME + dataset_name + "weights.hdf5"
+    else:
+        checkpoint_path = BASE_DIR+"\\TRANSFORMER\\checkpoints\\"+MODEL_TYPE+"_"+MODEL_NAME+dataset_name+str(train)+"weights.hdf5"
+
     # checkpoint_path = "./checkpoints/"+MODEL_TYPE+"_"+MODEL_NAME+"/weights.hdf5"
     model = getModelWithType(MODEL_TYPE,BINARY_CLASSIFICATION,MAX_LENGTH_ARTICLE,MAX_LENGTH_HEADLINE,TRAIN_EMBED,tokenizer,num_labels)
+    #
     model.load_weights(checkpoint_path)
-    # print(model_.summary())
-    # tf.keras.backend.clear_session()
     y_proba = model.predict([testap,testhp],batch_size=100)
+
+    # res=model_t.predict([testap,testhp],batch_size=100)
+
+
     # probs=model.predict_proba(testap)
     # print(result)
     result=numpy.argmax(y_proba, axis=1)

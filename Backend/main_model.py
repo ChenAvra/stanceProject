@@ -4,7 +4,7 @@ import sklearn.model_selection as model_selection
 from sklearn.metrics import confusion_matrix, accuracy_score, roc_auc_score, roc_curve, auc
 import numpy as np
 import matplotlib.pyplot as plt
-from sklearn.preprocessing import LabelBinarizer, label_binarize
+from sklearn.preprocessing import LabelBinarizer, label_binarize, LabelEncoder
 from datetime import time, datetime
 
 from Backend.DB.DBManager import *
@@ -169,6 +169,7 @@ def start_Specific_Model(models, dataset_name, train_percent,df_extenal,type_ds)
                 tan = TAN()
                 start = datetime.now()
                 y_test, y_pred ,all_prob= tan.run_TAN(df_train, df_test, labels, num_of_labels)
+                all_prob=np.array(all_prob)
                 end = datetime.now()
                 time = (end-start).total_seconds()/60
             elif m_name == "TRANSFORMER":
@@ -364,13 +365,22 @@ def plot_multiclass_roc(labels,y_test, y_pred, path, n_classes, figsize=(17, 6))
 
     dict_fpr_tpr=[]
 
-    lb = LabelBinarizer()
-    lb.fit(y_test)
-    y_test_dummies = lb.transform(y_test)
-    # y_pred_dummies = lb.transform(y_pred)
+    if len(labels)>2:
+        lb = LabelBinarizer()
+        lb.fit(y_test)
+        y_test_dummies = lb.transform(y_test)
+        # y_pred_dummies = lb.transform(y_pred)
 
-    y = label_binarize(y_test, classes=labels)
-    n_classes = y.shape[1]
+        y = label_binarize(y_test, classes=labels)
+        n_classes = y.shape[1]
+    else:
+
+        encoder = LabelEncoder()
+        encoder.fit(y_test)
+        transfomed_label = encoder.transform(y_test)
+
+        y_test_dummies = (transfomed_label[:, None] != np.arange(2)).astype(int)
+
 
     fpr = dict()
     tpr = dict()
@@ -379,8 +389,16 @@ def plot_multiclass_roc(labels,y_test, y_pred, path, n_classes, figsize=(17, 6))
         fpr[i], tpr[i], _ = roc_curve(y_test_dummies[:, i], y_pred[:, i])
         roc_auc[i] = auc(fpr[i], tpr[i])
         arr=[]
-        for j in range(len(fpr[i])):
-            arr.append([round(fpr[i][j], 2),round(tpr[i][j], 2)])
+        length_arr=int(len(fpr[i])/5)
+        # for j in range(len(fpr[i])):
+        j=0
+        arr.append([round(fpr[i][0], 2),round(tpr[i][0], 2)])
+        arr.append([round(fpr[i][j+length_arr], 2), round(tpr[i][j+length_arr], 2)])
+        arr.append([round(fpr[i][j+2*length_arr], 2), round(tpr[i][j+2*length_arr], 2)])
+        arr.append([round(fpr[i][j+3*length_arr], 2), round(tpr[i][j+3*length_arr], 2)])
+        arr.append([round(fpr[i][len(fpr[i])-1], 2), round(tpr[i][len(fpr[i])-1], 2)])
+
+
         area = str(round(roc_auc[i], 2))
         name = labels[i].upper() + " <br> Area=" + area
         dict_fpr_tpr.append({'name': name, 'data': arr, 'area': round(roc_auc[i], 2)})
@@ -427,7 +445,7 @@ def plot_multiclass_roc(labels,y_test, y_pred, path, n_classes, figsize=(17, 6))
     return dict_fpr_tpr
 
 #the function recieves a sentence and claim and returns its stance
-def get_one_stance(sentence, claim,model_name,model_TRANSFORMER):
+def get_one_stance(sentence, claim,model_name,model_TRANSFORMER,train):
     dataset_id = dataset_names_dict["semEval2016"]
     db = DataBase()
     # df = db.get_dataset(dataset_id)
@@ -444,7 +462,7 @@ def get_one_stance(sentence, claim,model_name,model_TRANSFORMER):
             ts = TRANSFORMER()
             d = {'Claim': [claim], 'Sentence': [sentence], 'Stance': ['AGAINST']}
             df = pd.DataFrame(data=d)
-            y_pred = ts.run_one_sen(None, df,labels,num_of_labels,"semEval2016",model_TRANSFORMER)
+            y_pred = ts.run_one_sen(None, df,labels,num_of_labels,"semEval2016",model_TRANSFORMER,train)
             db.insert_to_Stance_Result(claim,sentence,str(y_pred),model_name)
             return y_pred
         if(model_name=='TAN'):
