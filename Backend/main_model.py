@@ -106,6 +106,12 @@ def start_Specific_Model(models, dataset_name, train_percent,df_extenal,type_ds)
             labels.sort()
         num_of_labels = len(labels)
 
+
+        stances = {}
+
+        for i in range(len(labels)):
+            stances.update({labels[i]: i})
+
         # split df to df_train and df_test
         train_percent = train_percent / 100
 
@@ -206,6 +212,10 @@ def start_Specific_Model(models, dataset_name, train_percent,df_extenal,type_ds)
             # each model returns y_test and y_predict
             # calculate accuracy, confusion matrix, classification report
 
+            y_test_numbers = list()
+            for i in range(len(y_test)):
+                val = stances[y_test[i]]
+                y_test_numbers.append(val)
 
             #actual vs predict
             array_labels=""
@@ -250,7 +260,10 @@ def start_Specific_Model(models, dataset_name, train_percent,df_extenal,type_ds)
                 cm_strings=cm_strings+"\n"
 
             # plot ROC Curve and find roc_auc accuracy
-            roc_acc = multiclass_roc_auc_score(y_test, y_pred)
+            if num_of_labels>2:
+                roc_acc = multiclass_roc_auc_score(y_test_numbers, all_prob)
+            else:
+                roc_acc=roc_auc_score(y_test_numbers, all_prob[:, 1])
             roc_acc = float("{:.3f}".format(roc_acc))
             roc_path = BASE_DIR + '\\DB\\ROC\\' + m_name + '_ ' + dataset_name + '_ ' + str(train_percent) + '.png'
             dict_tpr_fpr=plot_multiclass_roc(labels,y_test, all_prob, roc_path, n_classes=num_of_labels, figsize=(16, 10))
@@ -352,11 +365,12 @@ def plot_confusion_matrix(path, cm, target_names, title='Confusion matrix', cmap
 
 
 def multiclass_roc_auc_score(y_test, y_pred, average="macro"):
-    lb = LabelBinarizer()
-    lb.fit(y_test)
-    y_test = lb.transform(y_test)
-    y_pred = lb.transform(y_pred)
-    return roc_auc_score(y_test, y_pred, average=average)
+    # lb = LabelBinarizer()
+    # lb.fit(y_test)
+    # y_test = lb.transform(y_test)
+    # y_pred = lb.transform(y_pred)
+
+    return roc_auc_score(y_test, y_pred,  multi_class='ovr')
 
 
 def plot_multiclass_roc(labels,y_test, y_pred, path, n_classes, figsize=(17, 6)):
@@ -416,25 +430,25 @@ def plot_multiclass_roc(labels,y_test, y_pred, path, n_classes, figsize=(17, 6))
         area = str(round(roc_auc[i], 2))
         name = labels[i].upper() + " <br> Area=" + area
         dict_fpr_tpr.append({'name': name, 'data': arr, 'area': round(roc_auc[i], 2)})
+    #
+    # fpr["micro"], tpr["micro"], _ = roc_curve(y.ravel(), y_pred.ravel())
+    # roc_auc["micro"] = auc(fpr["micro"], tpr["micro"])
 
-    fpr["micro"], tpr["micro"], _ = roc_curve(y.ravel(), y_pred.ravel())
-    roc_auc["micro"] = auc(fpr["micro"], tpr["micro"])
-
-    arr = []
-    length_arr = int(len(fpr["micro"]) / 10)
-    # for j in range(len(fpr[i])):
-    j = 0
-    arr.append([round(fpr["micro"][0], 2),round(tpr["micro"][0], 2)])
-    arr.append([round(fpr["micro"][j+length_arr], 2), round(tpr["micro"][j+length_arr], 2)])
-    arr.append([round(fpr["micro"][j+2*length_arr], 2), round(tpr["micro"][j+2*length_arr], 2)])
-    arr.append([round(fpr["micro"][j+3*length_arr], 2), round(tpr["micro"][j+3*length_arr], 2)])
-    arr.append([round(fpr["micro"][j+4*length_arr], 2), round(tpr["micro"][j+4*length_arr], 2)])
-    arr.append([round(fpr["micro"][j+5*length_arr], 2), round(tpr["micro"][j+5*length_arr], 2)])
-    arr.append([round(fpr["micro"][len(fpr["micro"])-1], 2), round(tpr["micro"][len(fpr["micro"])-1], 2)])
-
-    area = str(round(roc_auc["micro"], 2))
-    name = "micro <br> Area=" + area
-    dict_fpr_tpr.append({'name': name, 'data': arr, 'area': area})
+    # arr = []
+    # length_arr = int(len(fpr["micro"]) / 10)
+    # # for j in range(len(fpr[i])):
+    # j = 0
+    # arr.append([round(fpr["micro"][0], 2),round(tpr["micro"][0], 2)])
+    # arr.append([round(fpr["micro"][j+length_arr], 2), round(tpr["micro"][j+length_arr], 2)])
+    # arr.append([round(fpr["micro"][j+2*length_arr], 2), round(tpr["micro"][j+2*length_arr], 2)])
+    # arr.append([round(fpr["micro"][j+3*length_arr], 2), round(tpr["micro"][j+3*length_arr], 2)])
+    # arr.append([round(fpr["micro"][j+4*length_arr], 2), round(tpr["micro"][j+4*length_arr], 2)])
+    # arr.append([round(fpr["micro"][j+5*length_arr], 2), round(tpr["micro"][j+5*length_arr], 2)])
+    # arr.append([round(fpr["micro"][len(fpr["micro"])-1], 2), round(tpr["micro"][len(fpr["micro"])-1], 2)])
+    #
+    # area = str(round(roc_auc["micro"], 2))
+    # name = "micro <br> Area=" + area
+    # dict_fpr_tpr.append({'name': name, 'data': arr, 'area': area})
     # y_test_labels = np.unique(y_test)
     # if (n_classes == 2):
     #     y_test_dummies = pd.get_dummies(y_test, drop_first=False).values
