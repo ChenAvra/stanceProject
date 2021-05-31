@@ -377,25 +377,37 @@ def plot_multiclass_roc(labels,y_test, y_pred, path, n_classes, figsize=(17, 6))
 
         encoder = LabelEncoder()
         encoder.fit(y_test)
-        transfomed_label = encoder.transform(y_test)
+        transfomed_label = encoder.transform(y_test,labels=labels)
 
-        y_test_dummies = (transfomed_label[:, None] != np.arange(2)).astype(int)
+        y = (transfomed_label[:, None] != np.arange(2)).astype(int)
 
 
     fpr = dict()
     tpr = dict()
     roc_auc = dict()
     for i in range(n_classes):
-        fpr[i], tpr[i], _ = roc_curve(y_test_dummies[:, i], y_pred[:, i])
+        fpr[i], tpr[i], _ = roc_curve(y[:, i], y_pred[:, i])
+
+
         roc_auc[i] = auc(fpr[i], tpr[i])
         arr=[]
-        length_arr=int(len(fpr[i])/5)
+        length_arr=int(len(fpr[i])/10)
         # for j in range(len(fpr[i])):
         j=0
+        # arr.append([round(fpr["micro"][0], 2),round(tpr["micro"][0], 2)])
+        # arr.append([round(fpr["micro"][j+length_arr], 2), round(tpr["micro"][j+length_arr], 2)])
+        # arr.append([round(fpr["micro"][j+2*length_arr], 2), round(tpr["micro"][j+2*length_arr], 2)])
+        # arr.append([round(fpr["micro"][j+3*length_arr], 2), round(tpr["micro"][j+3*length_arr], 2)])
+        # arr.append([round(fpr["micro"][j+4*length_arr], 2), round(tpr["micro"][j+4*length_arr], 2)])
+        # arr.append([round(fpr["micro"][j+5*length_arr], 2), round(tpr["micro"][j+5*length_arr], 2)])
+        # arr.append([round(fpr["micro"][len(fpr[i])-1], 2), round(tpr["micro"][len(fpr[i])-1], 2)])
+
         arr.append([round(fpr[i][0], 2),round(tpr[i][0], 2)])
         arr.append([round(fpr[i][j+length_arr], 2), round(tpr[i][j+length_arr], 2)])
         arr.append([round(fpr[i][j+2*length_arr], 2), round(tpr[i][j+2*length_arr], 2)])
         arr.append([round(fpr[i][j+3*length_arr], 2), round(tpr[i][j+3*length_arr], 2)])
+        arr.append([round(fpr[i][j+4*length_arr], 2), round(tpr[i][j+4*length_arr], 2)])
+        arr.append([round(fpr[i][j+5*length_arr], 2), round(tpr[i][j+5*length_arr], 2)])
         arr.append([round(fpr[i][len(fpr[i])-1], 2), round(tpr[i][len(fpr[i])-1], 2)])
 
 
@@ -403,6 +415,24 @@ def plot_multiclass_roc(labels,y_test, y_pred, path, n_classes, figsize=(17, 6))
         name = labels[i].upper() + " <br> Area=" + area
         dict_fpr_tpr.append({'name': name, 'data': arr, 'area': round(roc_auc[i], 2)})
 
+    fpr["micro"], tpr["micro"], _ = roc_curve(y.ravel(), y_pred.ravel())
+    roc_auc["micro"] = auc(fpr["micro"], tpr["micro"])
+
+    arr = []
+    length_arr = int(len(fpr["micro"]) / 10)
+    # for j in range(len(fpr[i])):
+    j = 0
+    arr.append([round(fpr["micro"][0], 2),round(tpr["micro"][0], 2)])
+    arr.append([round(fpr["micro"][j+length_arr], 2), round(tpr["micro"][j+length_arr], 2)])
+    arr.append([round(fpr["micro"][j+2*length_arr], 2), round(tpr["micro"][j+2*length_arr], 2)])
+    arr.append([round(fpr["micro"][j+3*length_arr], 2), round(tpr["micro"][j+3*length_arr], 2)])
+    arr.append([round(fpr["micro"][j+4*length_arr], 2), round(tpr["micro"][j+4*length_arr], 2)])
+    arr.append([round(fpr["micro"][j+5*length_arr], 2), round(tpr["micro"][j+5*length_arr], 2)])
+    arr.append([round(fpr["micro"][len(fpr["micro"])-1], 2), round(tpr["micro"][len(fpr["micro"])-1], 2)])
+
+    area = str(round(roc_auc["micro"], 2))
+    name = "micro <br> Area=" + area
+    dict_fpr_tpr.append({'name': name, 'data': arr, 'area': area})
     # y_test_labels = np.unique(y_test)
     # if (n_classes == 2):
     #     y_test_dummies = pd.get_dummies(y_test, drop_first=False).values

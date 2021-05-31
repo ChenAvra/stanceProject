@@ -61,12 +61,10 @@ def predict(main_set,dataset_name,labels,model_t,train,one_sen=False):
     model = getModelWithType(MODEL_TYPE,BINARY_CLASSIFICATION,MAX_LENGTH_ARTICLE,MAX_LENGTH_HEADLINE,TRAIN_EMBED,tokenizer,num_labels)
     #
     model.load_weights(checkpoint_path)
+
     y_proba = model.predict([testap,testhp],batch_size=100)
+    # keras.np_utils.probas_to_classes(y_proba)
 
-    # res=model_t.predict([testap,testhp],batch_size=100)
-
-
-    # probs=model.predict_proba(testap)
     # print(result)
     result=numpy.argmax(y_proba, axis=1)
     test_labels=numpy.argmax(test_labels, axis=1)

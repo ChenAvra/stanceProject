@@ -15,7 +15,7 @@ from Backend.controller import get_dataset_name_controller, get_algorithmes_name
     get_models_request_controller, get_models_desc_controller, get_categories_dataset_controller, \
     get_5_sen_ds_controller, get_labels_count_controller, get_dataset_desc_controller, get_topic_count_controller, \
     get_positive_negative_controller
-from flask import Flask, request, Response,abort, jsonify, send_from_directory
+from flask import Flask, request, Response,abort, jsonify, send_from_directory,session
 
 
 
@@ -56,9 +56,13 @@ import tensorflow as tf
 
 #
 #
-model_TRANSFORMER = getModelWithType(MODEL_TYPE, False, MAX_LENGTH_ARTICLE, MAX_LENGTH_HEADLINE, False,
-                          tokenizer, num_labels)
-model_TRANSFORMER.load_weights(checkpoint_path)
+# model_TRANSFORMER = getModelWithType(MODEL_TYPE, False, MAX_LENGTH_ARTICLE, MAX_LENGTH_HEADLINE, False,
+#                           tokenizer, num_labels)
+# model_TRANSFORMER.load_weights(checkpoint_path)
+
+
+# session['model']=model_TRANSFORMER
+
 
 
 
@@ -659,6 +663,7 @@ def get_stance(sentence,topic,model_name):
     # keras.backend.clear_session()
     # with graph.as_default():
     stance=get_stance_controller(sentence,topic,model_name,model_TRANSFORMER,None)
+
     return jsonify(stance)
 
 
