@@ -102,6 +102,8 @@ def start_Specific_Model(models, dataset_name, train_percent,df_extenal,type_ds)
             return isExistInRequest
         # get unique labels
         labels = get_unique_labels(df)
+        if len(labels)==2:
+            labels.sort()
         num_of_labels = len(labels)
 
         # split df to df_train and df_test
@@ -377,7 +379,7 @@ def plot_multiclass_roc(labels,y_test, y_pred, path, n_classes, figsize=(17, 6))
 
         encoder = LabelEncoder()
         encoder.fit(y_test)
-        transfomed_label = encoder.transform(y_test,labels=labels)
+        transfomed_label = encoder.transform(y_test)
 
         y = (transfomed_label[:, None] != np.arange(2)).astype(int)
 

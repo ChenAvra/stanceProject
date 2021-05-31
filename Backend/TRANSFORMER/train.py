@@ -87,7 +87,7 @@ def run_model(df_train, df_test, labels, num_of_labels,dataset_name,train_percen
 
     model_checkpoint_callback = tf.keras.callbacks.ModelCheckpoint(filepath=checkpoint_path,save_weights_only=True,monitor='acc',save_best_only=False)
 
-    history = model_.fit(x=[trainap,trainhp],y=train_labels,epochs=10,batch_size=100,callbacks=[model_checkpoint_callback],validation_data=([testap,testhp],test_labels))
+    history = model_.fit(x=[trainap,trainhp],y=train_labels,epochs=1,batch_size=100,callbacks=[model_checkpoint_callback],validation_data=([testap,testhp],test_labels))
     # history = model_.fit(x=[trainap,trainhp],y=train_labels,epochs=1,callbacks=[model_checkpoint_callback],validation_data=([testap,testhp],test_labels))
 
     # model = model_.fit(x=[trainap,trainhp],y=train_labels,epochs=1,batch_size=100,validation_data=([testap,testhp],test_labels))
