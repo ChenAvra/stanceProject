@@ -662,7 +662,7 @@ def get_stance(sentence,topic,model_name):
     # with sess.as_default():
     # keras.backend.clear_session()
     # with graph.as_default():
-    stance=get_stance_controller(sentence,topic,model_name,model_TRANSFORMER,None)
+    stance=get_stance_controller(sentence,topic,model_name,None,None)
 
     return jsonify(stance)
 
