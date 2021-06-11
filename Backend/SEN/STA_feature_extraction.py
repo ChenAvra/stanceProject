@@ -185,13 +185,8 @@ def build_lexicon(labels_array,topic_Path,word_dict, norm_dict):
 
     len_seed = len(seed)
     len_uni_seed = len(uni_seed)
-    len_non_seed = len(non_seed)
-    len_uni_non_seed = len(uni_non_seed)
 
     len_seed_label=[0]*len(labels_array)#this array counts len seed for each label. every i place represent len seed of label
-    # len_seed_sup = 0
-    # len_seed_opp = 0
-    # len_seed_nut = 0
     for i in range(len(seed_stance)):
         for t in range(len(labels_array)):
             if(seed_stance[i] == labels_array[t]):

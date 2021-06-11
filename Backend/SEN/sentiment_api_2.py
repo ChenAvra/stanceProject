@@ -20,9 +20,6 @@ def sentiment_feature_extraction(pathToRead, pathToWrite):
     # reading Input file
     data = pd.read_csv(pathToRead, header=0)
     error_count=0
-    # data = pd.read_csv(
-    #     'C:\\Users\\iris dreizenshtok\\Desktop\\programming\\Stance-Detection-in-Web-and-Social-Media-master\\SEN-SEN\\Data_MPCHI\\HRT\\test.txt',
-    #     sep="\t", header=0)
     # Extracting Sentences
     sentence = data['Sentence']
     length = len(sentence)
@@ -40,8 +37,6 @@ def sentiment_feature_extraction(pathToRead, pathToWrite):
                                'timeout': 100000,
                            })
         count_ = count_ + 1
-        # print(count_)
-        # print("sentence is:"+sentence[i])
         count = 0  # counting number of sentences in input
         count_1 = 0  # counting Negative Sentiment
         count_2 = 0  # counting Neutral Sentiment
@@ -76,7 +71,6 @@ def sentiment_feature_extraction(pathToRead, pathToWrite):
         else:
             result.append('Neutral')
             error_count=error_count+1
-    # print("error count is:", error_count)
     # Storing Output to file    Oytput is binary for each class individually
     file = open(pathToWrite, 'w', encoding='utf-8')
     fields = ('sentence', 'positive', 'negative', 'neutral', 'sentiment')

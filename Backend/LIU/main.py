@@ -53,7 +53,7 @@ TF_MAX_FEATURE = 5000
 
 class main():
 
-    def __init__(self, path=None, LABELS = ['agree', 'disagree', 'discuss', 'unrelated']):
+    def __init__(self, path=None, LABELS = []):
         self.path = path
         self.__classifiers = self.classifiers()
         self.__model_score = {}
@@ -218,7 +218,7 @@ class main():
         model.add(Dense(units=num_of_classes, kernel_initializer=init, activation='softmax'))
         model.compile(loss='categorical_crossentropy', optimizer="adam", metrics=['accuracy'])
         model.summary()
-        model.fit(X, y, batch_size=5, epochs=120, verbose=2)
+        model.fit(X, y, batch_size=5, epochs=1, verbose=2)
         # loss, accuracy = model.evaluate(X_test, y_test)
         # print('Accuracy: %f' % (accuracy * 100))
         # exit()
@@ -226,7 +226,7 @@ class main():
         y_proba = model.predict_proba(X_test)
         # "combine clf and NN clf's result together"
         # predictions = self.__combine(self.half_pred, predictions)
-        return y_true,predictions
+        return y_true,predictions,y_proba
         # print(accuracy_score(y_true, predictions))
         #
         # "save the model"
@@ -271,10 +271,10 @@ class main():
 
 def runLIU(df_train, df_test, labels, num_of_labels):
     LABELS = labels.tolist()
-    y_test, y_pred = main().classify(df_train, df_test, labels, num_of_labels)
+    y_test, y_pred, y_proba = main(LABELS=labels).classify(df_train, df_test, labels, num_of_labels)
     predict = [LABELS[int(a)] for a in y_pred]
     test = [LABELS[int(a)] for a in y_test]
-    return test,predict
+    return test, predict, y_proba
 
 
 

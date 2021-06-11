@@ -164,7 +164,7 @@ def start_Specific_Model(models, dataset_name, train_percent,df_extenal,type_ds)
             if m_name == "SEN":
                 sen = SEN()
                 start = datetime.now()
-                y_test, y_pred = sen.run_SEN(df_train, df_test, labels, num_of_labels)
+                y_test, y_pred, all_prob = sen.run_SEN(df_train, df_test, labels, num_of_labels)
                 end = datetime.now()
                 time = (end-start).total_seconds()/60
             elif m_name == "UCLMR":
@@ -195,7 +195,7 @@ def start_Specific_Model(models, dataset_name, train_percent,df_extenal,type_ds)
             elif m_name == "LIU":
                 liu = LIU()
                 start = datetime.now()
-                y_test, y_pred = liu.run_LIU(df_train,df_test, labels, num_of_labels)
+                y_test, y_pred, all_prob = liu.run_LIU(df_train,df_test, labels, num_of_labels)
                 end = datetime.now()
                 time = (end-start).total_seconds()/60
 
