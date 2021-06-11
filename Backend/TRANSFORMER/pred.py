@@ -29,7 +29,7 @@ def Pred_one_sentence(df_train, df_test, labels, num_of_labels,dataset_name,mode
     BASE_DIR = os.path.dirname(PROJECT_ROOT)
     checkpoint_path = BASE_DIR+"\\TRANSFORMER\\checkpoints\\"+MODEL_TYPE+"_"+MODEL_NAME+dataset_name+'weights.hdf5'
     if(not os.path.exists(checkpoint_path)):
-        run_model(df_train, df_test, labels, num_of_labels,dataset_name)
+        run_model(df_train, df_test, labels, num_of_labels,dataset_name,train)
     test_labels, preds,all_probs = predict(df_test_copy, dataset_name,labels,model_TRANSFORMER,train,True)
     for i in range(len(labels)):
         if labels[i]==preds[0]:
