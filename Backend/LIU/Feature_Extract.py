@@ -36,8 +36,6 @@ class FeatureExtract(object):
         self.__class_format = class_format
         self.__set = set
         self.label = new_labels
-        # maybe i will change it later!
-        # self.__data, self.label = self.change_data_format(data, class_format, set, new_labels)
         self.__data, self.label = np.array(data), new_labels
         self.__over_sam = over_sampling
         self.__embedding = os.path.join(os.getcwd(), 'data', "glove.6B.50d.txt")
@@ -96,9 +94,6 @@ class FeatureExtract(object):
         :return: (ndarray) [[head,body,stance]],
         '''
         new_data = pd.DataFrame(data, columns=['Claim','Sentence','Stance'])
-        # new_data.loc[new_data['stance']=='discuss', 'stance'] = 'related'
-        # new_data.loc[new_data['stance'] == 'agree', 'stance'] = 'related'
-        # new_data.loc[new_data['stance'] == 'disagree', 'stance'] = 'related'
         # # shuffle set
         new_data = new_data.sample(frac=1)
         # keep the order of index after shuffle
@@ -143,9 +138,6 @@ class FeatureExtract(object):
                 vec[i] = ftrs[i](doc)
             x_train.append(vec)
         x_train = np.array(x_train)
-        # df_temp=self.__data[2];
-        # df_temp2=self.__data[:,2]
-        # label_temp=self.label['agree']
         y_train = np.array([self.label[i] for i in self.__data[:,2]])
 
         if(self.__over_sam):
@@ -177,7 +169,6 @@ class FeatureExtract(object):
         :return: Tf-idf-weighted document-term matrix
         '''
 
-        # row[0] is head, row[1] is body
         data = [row[0]+" "+row[1] for row in tqdm(doc, desc="[Building tf vectors: ]")]
         tf_vectorizer = TfidfVectorizer(use_idf=False, token_pattern=r"(?u)\b\w+\b", max_features=5000)
         tf = tf_vectorizer.fit_transform(data).toarray()

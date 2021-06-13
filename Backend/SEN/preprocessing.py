@@ -128,9 +128,6 @@ def preprocessing(dataPath, toRemveStopWords=True):
         old_lines = []
         new_data_path=dataPath+"\\"+k+".csv"
         data = pd.read_csv(new_data_path, header=0)
-        # lines=data['Claim']
-        # with open(new_data_path, "r", encoding="utf8") as fp:
-        # lines = fp.readlines()
         i=0
         for i in range(len(data['Sentence'])):
             # x = line.split("\t")
@@ -172,27 +169,10 @@ def preprocessing(dataPath, toRemveStopWords=True):
                 final_tokens = stemmed_tokens
 
             new_sent = ' '.join(final_tokens)
-            # x[1] = new_sent
-            # if (len(x) == 3):
-            #     if correct == 0:
-            #         x.append('NONE\n')
-            #         correct += 1
-            #     else:
-            #         x.append('FAVOR\n')
             data['Sentence'][i]=new_sent
-            # new_line = '\t'.join(x)
-            # new_lines.append(new_line)
-
-
 
         # Write to a txt file
         data.to_csv(dataPath+"//"+k + "_clean.csv", index=False)
-        # with open(dataPath+"//"+k + "_clean.csv", "w") as wf:
-        #     lines_to_add=[]
-        #     lines_to_add.append("Claim\tSentence\tStance\n")
-        #     for line in new_lines:
-        #         lines_to_add.append(line)
-        #     wf.writelines(lines_to_add)
 
 def run_preprocessing():
     import os

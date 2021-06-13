@@ -327,9 +327,6 @@ def training_model():
 
 def ent_feature_extraction(sess, glove_wordmap, classification_scores, hyp, evi, N, y, csvFilePath, target, outputFile):
     Features_pmh = pd.read_csv(csvFilePath, header=0)
-    # Features_pmh = pd.read_csv(
-    #     'C:\\Users\\iris dreizenshtok\\Desktop\\programming\\Stance-Detection-in-Web-and-Social-Media-master\\SEN-SEN\\Data_SemE_P\\FM\\test.txt',
-    #     sep="\t", header=0)
 
     length_features = len(Features_pmh)
     result = []
@@ -394,4 +391,3 @@ def run_te_f_feature_extraction():
             outputFileToWrite = BASE_DIR+"\\topics\\"+topic+"\\ent_feature_extraction_"+k+".csv"
             sess=ent_feature_extraction(sess, glove_wordmap, classification_scores, hyp, evi, N, y, csvFileToRead, topic, outputFileToWrite)
     sess.close()
-    # produce_features(labels_array,".\\topics\\"+topic, build_lexicon(labels_array,".\\topics\\"+topic))

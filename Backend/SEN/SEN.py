@@ -233,7 +233,7 @@ def train(topic):
     y_pred = model.predict(test_dataset)
     y_proba = model.predict_proba(test_dataset)
 
-    return y_pred,y_test
+    return y_pred, y_test, y_proba
 
 
 
@@ -250,11 +250,12 @@ def train_model_topic_based(df_train, df_test, labels, num_of_labels):
     run_te_f_feature_extraction()
     # run_sentiment_feature_extraction()
     union_feature_extraction()
-    y_pred,y_test = [],[]
+    y_pred,y_test, y_proba = [],[], []
     for dataset in topic_list:
-        a,b = train(dataset)
+        a, b, c = train(dataset)
         y_pred.extend(a)
         y_test.extend(b)
+        y_proba.extend(c.tolist())
         # print(len(a),len(b))
         print("accuracy for topic ", dataset)
         print(accuracy_score(a,b))
@@ -265,7 +266,7 @@ def train_model_topic_based(df_train, df_test, labels, num_of_labels):
     shutil.rmtree(BASE_DIR+'\\topics')
     shutil.rmtree(BASE_DIR +'\\final_feature_set')
 
-    return y_test,y_pred
+    return y_test, y_pred, np.array(y_proba)
 
 def train_model_headline_based(df_train, df_test, labels, num_of_labels):
     split_to_folders_headline_based(df_train,df_test)

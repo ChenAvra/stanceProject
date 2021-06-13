@@ -36,24 +36,24 @@ CORS(app, supports_credentials=True)
 from Backend.TRANSFORMER.mymodels import getModelWithType
 from Backend.TRANSFORMER.measure import loadTokenizer
 
-MODEL_TYPE = "TRANSFORMER"
-## TRANSFORMER or CNN
-MAX_LENGTH_ARTICLE = 1200
-MAX_LENGTH_HEADLINE = 40
-MODEL_NAME = "model_1"
-tokenizer = loadTokenizer(MODEL_NAME)
-PROJECT_ROOT = os.path.abspath('__file__')
-BASE_DIR = os.path.dirname(PROJECT_ROOT)
-num_labels = 3
-checkpoint_path = BASE_DIR + "\\TRANSFORMER\\checkpoints\\" + MODEL_TYPE + "_" + MODEL_NAME + "semEval2016weights.hdf5"
-
-
-import tensorflow as tf
+# MODEL_TYPE = "TRANSFORMER"
+# ## TRANSFORMER or CNN
+# MAX_LENGTH_ARTICLE = 1200
+# MAX_LENGTH_HEADLINE = 40
+# MODEL_NAME = "model_1"
+# tokenizer = loadTokenizer(MODEL_NAME)
+# PROJECT_ROOT = os.path.abspath('__file__')
+# BASE_DIR = os.path.dirname(PROJECT_ROOT)
+# num_labels = 3
+# checkpoint_path = BASE_DIR + "\\TRANSFORMER\\checkpoints\\" + MODEL_TYPE + "_" + MODEL_NAME + "semEval2016weights.hdf5"
+#
+#
+# import tensorflow as tf
 # from tensorflow.python.framework import ops
 # ops.reset_default_graph()
-
-
-
+#
+#
+#
 #
 #
 # model_TRANSFORMER = getModelWithType(MODEL_TYPE, False, MAX_LENGTH_ARTICLE, MAX_LENGTH_HEADLINE, False,

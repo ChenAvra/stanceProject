@@ -102,7 +102,7 @@ def start_Specific_Model(models, dataset_name, train_percent,df_extenal,type_ds)
             return isExistInRequest
         # get unique labels
         labels = get_unique_labels(df)
-        if len(labels)==2:
+        if len(labels) == 2:
             labels.sort()
         num_of_labels = len(labels)
 
@@ -164,7 +164,7 @@ def start_Specific_Model(models, dataset_name, train_percent,df_extenal,type_ds)
             if m_name == "SEN":
                 sen = SEN()
                 start = datetime.now()
-                y_test, y_pred = sen.run_SEN(df_train, df_test, labels, num_of_labels)
+                y_test, y_pred, all_prob = sen.run_SEN(df_train, df_test, labels, num_of_labels)
                 end = datetime.now()
                 time = (end-start).total_seconds()/60
             elif m_name == "UCLMR":
@@ -195,7 +195,7 @@ def start_Specific_Model(models, dataset_name, train_percent,df_extenal,type_ds)
             elif m_name == "LIU":
                 liu = LIU()
                 start = datetime.now()
-                y_test, y_pred = liu.run_LIU(df_train,df_test, labels, num_of_labels)
+                y_test, y_pred, all_prob = liu.run_LIU(df_train,df_test, labels, num_of_labels)
                 end = datetime.now()
                 time = (end-start).total_seconds()/60
 
@@ -262,9 +262,12 @@ def start_Specific_Model(models, dataset_name, train_percent,df_extenal,type_ds)
             results[m_name] = {}
             results[m_name]['accuracy'] = acc
             results[m_name]['class_report'] = cr
+            # results[m_name]['cm_path'] = cm_path
             results[m_name]['roc_acc'] = roc_acc
+            # results[m_name]['roc_path'] = roc_path
 
             #insert to result table the details
+            # for name in models:
 
             db.insert_records_to_result(m_name,dataset_name,train_percent,results[m_name]['accuracy'], results[m_name]['class_report'],
 

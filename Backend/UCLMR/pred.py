@@ -18,9 +18,6 @@ from .util import *
 import random
 import tensorflow as tf
 import tf_slim as slim
-from sklearn.metrics import accuracy_score
-from sklearn import metrics
-from sklearn.metrics import confusion_matrix
 
 tf.compat.v1.disable_eager_execution()
 
@@ -162,25 +159,7 @@ def Pred(df_train, df_test, l, num_of_l):
     y_pred = list(test_pred_categorial)
 
 
-    # cm = confusion_matrix(y_true, y_pred)
-
-    # plot_confusion_matrix(cm, target_names=labels, title="Confusion Matrix", normalize=False)
-
-
-    # cmd = ConfusionMatrixDisplay(cm, display_labels=['agree', 'disagree', 'discuss', 'unrelated'])
-    # cmd.show()
-    # print(cmd)
-    # ax= plt.subplot()
-    # sns.heatmap(cm, annot=True, ax = ax) #annot=True to annotate cells
-    #
-    # # labels, title and ticks
-    # ax.set_xlabel('Predicted labels');ax.set_ylabel('True labels')
-    # ax.set_title('Confusion Matrix')
-    # ax.xaxis.set_ticklabels(['agree', 'disagree', 'discuss', 'unrelated']); ax.yaxis.set_ticklabels(['unrelated', 'discuss', 'disagree', 'agree'], )
-
-    # print(accuracy_score(y_true, y_pred))
-    # print(metrics.classification_report(y_true, y_pred))
-
     return y_true, y_pred, y_prob
+
     # Save predictions
     # save_predictions(test_pred, file_predictions)
