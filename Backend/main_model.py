@@ -102,7 +102,7 @@ def start_Specific_Model(models, dataset_name, train_percent,df_extenal,type_ds)
             return isExistInRequest
         # get unique labels
         labels = get_unique_labels(df)
-        if len(labels)==2:
+        if len(labels) == 2:
             labels.sort()
         num_of_labels = len(labels)
 
@@ -199,18 +199,6 @@ def start_Specific_Model(models, dataset_name, train_percent,df_extenal,type_ds)
                 end = datetime.now()
                 time = (end-start).total_seconds()/60
 
-            # with open('sample_' + m_name + '.csv', 'w', newline='') as csvfile:
-            #     fieldnames = ['pred', 'test']
-            #     writer = csv.DictWriter(csvfile, fieldnames=fieldnames)
-            #     writer.writeheader()
-            #     i = 0
-            #     for pred_model in y_pred:
-            #         if i< len(y_test):
-            #             writer.writerow({'pred': pred_model, 'test': y_test[i]})
-
-
-            # each model returns y_test and y_predict
-            # calculate accuracy, confusion matrix, classification report
 
             y_test_numbers = list()
             for i in range(len(y_test)):
@@ -232,9 +220,6 @@ def start_Specific_Model(models, dataset_name, train_percent,df_extenal,type_ds)
 
             for label in labels:
                 predict=predict+str(y_pred.count(label))+","
-
-# print(get_one_stance("I think she is a nice woman",'Hillary Clinton'))
-
 
             # calculate accuracy
             acc = accuracy_score(y_test, y_pred)
@@ -293,38 +278,6 @@ def start_Specific_Model(models, dataset_name, train_percent,df_extenal,type_ds)
 
 # https://www.kaggle.com/grfiv4/plot-a-confusion-matrix
 def plot_confusion_matrix(path, cm, target_names, title='Confusion matrix', cmap=None, normalize=True):
-#     """
-#     given a sklearn confusion matrix (cm), make a nice plot
-#
-#     Arguments
-#     ---------
-#     cm:           confusion matrix from sklearn.metrics.confusion_matrix
-#
-#     target_names: given classification classes such as [0, 1, 2]
-#                   the class names, for example: ['high', 'medium', 'low']
-#
-#     title:        the text to display at the top of the matrix
-#
-#     cmap:         the gradient of the values displayed from matplotlib.pyplot.cm
-#                   see http://matplotlib.org/examples/color/colormaps_reference.html
-#                   plt.get_cmap('jet') or plt.cm.Blues
-#
-#     normalize:    If False, plot the raw numbers
-#                   If True, plot the proportions
-#
-#     Usage
-#     -----
-#     plot_confusion_matrix(cm           = cm,                  # confusion matrix created by
-#                                                               # sklearn.metrics.confusion_matrix
-#                           normalize    = True,                # show proportions
-#                           target_names = y_labels_vals,       # list of names of the classes
-#                           title        = best_estimator_name) # title of graph
-#
-#     Citiation
-#     ---------
-#     http://scikit-learn.org/stable/auto_examples/model_selection/plot_confusion_matrix.html
-#
-#     """
     import itertools
 
     if cmap is None:
