@@ -29,13 +29,7 @@ MAX_LENGTH_HEADLINE = 40
 TRAIN_EMBED = False
 LOAD_PREV = False
 
-# print("reading datasets ... ")
-# main_set = readTestDataset("./dataset/")
-# main_set = preprocessDF(main_set,binaryclass=BINARY_CLASSIFICATION)
 
-# if(OVERSAMPLING_STANCEWISE):
-#     main_set = getBalancedData(main_set,binaryclass=BINARY_CLASSIFICATION)
-# tf.keras.backend.clear_session()
 
 
 def predict(main_set,dataset_name,labels,model_t,train,one_sen=False):

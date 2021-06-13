@@ -13,9 +13,6 @@ def Pred(df_train, df_test, labels, num_of_labels):
     all_topic_y_test=[]
     all_probs_test=[]
 
-
-    # claim="news are important to our life"
-
     stances = {}
 
     for i in range(len(labels)):
