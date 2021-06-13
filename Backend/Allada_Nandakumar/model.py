@@ -203,10 +203,6 @@ def Pred(df_train, df_test, l):
     callbacks_list1 = [checkpoint]
     his = model.fit([X_train_head,X_train_body,X_train_head_tfidf,X_train_body_tfidf],[y_train],epochs=1, validation_data=([X_test_head,X_test_body,X_test_head_tfidf,X_test_body_tfidf],[y_test]), batch_size=64,verbose = True,callbacks = callbacks_list1)
 
-    checkpoint_path=BASE_DIR+"\\SAVE_weights.hdf5"
-
-    model.save_weights(checkpoint_path)
-
     pred_1 = model.predict([X_test_head, X_test_body, X_test_head_tfidf, X_test_body_tfidf])
 
     # y_prob = model.predict_proba(df_test['Stance'])

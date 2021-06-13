@@ -282,7 +282,7 @@ class DataBase:
 
 db = DataBase()
 
-# drop tables
+## drop tables
 # db.drop_result()
 # db.drop_Request()
 # db.drop_Stance_Result()
@@ -291,7 +291,7 @@ db = DataBase()
 # db.drop_model_desc()
 
 
-# create tables
+## create tables
 # db.create_Stance_Result_table()
 # db.create_result_table()
 # db.create_Request_table()
@@ -301,7 +301,7 @@ db = DataBase()
 # db.create_dataset_desc_table()
 
 
-# fill dataset tables
+## fill dataset tables
 # db.fill_claim_table("semEval2016.csv",1)
 # db.fill_claim_table("semEval2017.txt",2)
 # db.fill_claim_table("FNC.csv",3)
@@ -315,7 +315,7 @@ db = DataBase()
 
 
 
-# insert dataset descriptions
+## insert dataset descriptions
 # db.insert_desc_dataset('MPCHI',"This dataset contains health-related online news articles. The data provided contains instances of: tweets, id, target and stance, where stance is one of  the following: favor, against, none.")
 # db.insert_desc_dataset('semEval2016',"This dataset was provided at the SemEval competition in 2016. The data provided contains instances of: tweets, id, target, and stance, where stance is one of  the following: for, against, none.")
 # db.insert_desc_dataset('FNC',"This dataset was provided at the Fake News Chalenge (FNC-1) in 2017. The data provided contains instances of: headline, body and stance,where stance is one of  the following: unrelated, discuss, agree, disagree.")
@@ -328,7 +328,7 @@ db = DataBase()
 # db.insert_desc_dataset("covid","This dataset contains tweets from Twitter about covid 19 with three stances : 0-against, 1-favor, 2-none.")
 
 
-# insert models description
+## insert models description
 # db.insert_desc_model("TRANSFORMER","This model is called the TRANSFORMER  contains positional encoding addition into input and encoder layer which contains multihead attention layer followed by feed forward layers.")
 # db.insert_desc_model("TAN","TAN - Target-specific Attention Neural Network. This method consists of two main components: a recurrent neural network (RNN) as the feature extractor for text and a fully-connected network  as the target-specific attention selector. It’s a special mechanism which drives the model to concentrate on salient parts in text with respect to a specific target. This algorithm is based on LSTM (similar to RNN).  ** Note that running this algorithm takes a long time due to its complexity.")
 # db.insert_desc_model("SEN","A SVM based stance detection model using three sets of features – stance vector, textual entailment and sentiment feature.The stance vector is created on a sentence level based on an assumption that the main information present in a sentence revolves around some particular parts-of-speech. Thus these parts-of-speech are the main building blocks of the stance expressed by a sentence towards a particular claim. To identify the sentiment feature a standard sentiment analyzer given in Stanford CoreNLP Toolkit is used. For the textual entailment feature, Tensor Flow4 is used, where textual entailment is estimated using word vectorization, recurrent neural networks with LSTM and dropout as a regularization method.")
@@ -338,18 +338,7 @@ db = DataBase()
 
 
 
-# prints
-# print(db.insert_records_request('TRANSFORMER','10',0.6))
-# print(db.get_index())
-# print(db.get_records_from_request_by_id(11))
-# print(db.get_all_result())
-# print(db.get_dataset(1))
-# print(df.columns)
 
-
-
-# db.cursor.execute(query)
-# db.conn.commit()
 
 
 
