@@ -255,7 +255,7 @@ def train_model_topic_based(df_train, df_test, labels, num_of_labels):
         a, b, c = train(dataset)
         y_pred.extend(a)
         y_test.extend(b)
-        y_proba.extend(c)
+        y_proba.extend(c.tolist())
         # print(len(a),len(b))
         print("accuracy for topic ", dataset)
         print(accuracy_score(a,b))
@@ -266,7 +266,7 @@ def train_model_topic_based(df_train, df_test, labels, num_of_labels):
     shutil.rmtree(BASE_DIR+'\\topics')
     shutil.rmtree(BASE_DIR +'\\final_feature_set')
 
-    return y_test,y_pred, y_proba
+    return y_test, y_pred, np.array(y_proba)
 
 def train_model_headline_based(df_train, df_test, labels, num_of_labels):
     split_to_folders_headline_based(df_train,df_test)
