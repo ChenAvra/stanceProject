@@ -93,31 +93,6 @@ class FNCData:
         #self.bodies = collections.OrderedDict(sorted(self.bodies.items()))
 
 
-    # def read(self, filename):
-    #
-    #     """
-    #     Read Fake News Challenge data from CSV file
-    #
-    #     Args:
-    #         filename: str, filename + extension
-    #
-    #     Returns:
-    #         rows: list, of dict per instance
-    #
-    #     """
-    #
-    #     # Initialise
-    #     rows = []
-    #
-    #     # Process file
-    #     with open(filename, "r", encoding='utf-8-sig') as table:
-    #         r = DictReader(table)
-    #         for line in r:
-    #             rows.append(line)
-    #
-    #     return rows
-
-
     def dfInstance(self, df):
         # df = pd.read_csv(filename)
 
@@ -160,28 +135,6 @@ class FNCData:
         df = df.to_dict('records')
 
         return df
-
-    # def readInstance(self, filename):
-    #     rows = []
-    #     with open(filename, "r", encoding='utf-8-sig') as table:
-    #         r = DictReader(table)
-    #         for line in r:
-    #             del line[articleBody]
-    #             rows.append(line)
-    #
-    #     return rows
-    #
-    # def readBodies(self, filename):
-    #     rows = []
-    #
-    #     with open(filename, "r", encoding='utf-8-sig') as table:
-    #         r = DictReader(table)
-    #         for line in r:
-    #             del line[headline]
-    #             del line[Stance]
-    #             rows.append(line)
-    #
-    #     return rows
 
 
 # Define relevant functions
@@ -377,26 +330,3 @@ def pipeline_test(test, bow_vectorizer, tfreq_vectorizer, tfidf_vectorizer):
 #         for instance in pred:
 #             writer.writerow({Stance: label_ref_rev[instance]})
 
-# def test_stance(df):
-    # data = pd.read_csv(file)
-    # test_stances = df[Stance]
-    # test_stances_array = test_stances.to_numpy()
-
-    # try:
-    #     for i in range(len(test_stances_array)-1):
-    #         val = label_ref[test_stances_array[i]]
-    #         test_stances_array[i] = np.int64(val)
-    # except:
-    #     print(i)
-    #     print(test_stances_array[i])
-    #     print(label_ref[test_stances_array[i]])
-
-    # return test_stances_array
-
-# def change_test_pred_to_categorial(test_pred, label_ref_rev):
-#     test_pred_category = list()
-#     for i in range(len(test_pred)):
-#          val = label_ref_rev[test_pred[i]]
-#          test_pred_category.append(val)
-#
-#     return test_pred_category

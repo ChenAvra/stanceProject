@@ -26,42 +26,8 @@ from Backend.main_model import start_Specific_Model
 from Backend.util import get_num_of_records_controller
 app = Flask(__name__)
 
-# app.run(threaded=False)
 
 CORS(app, supports_credentials=True)
-# cors = CORS(app)
-# app.config['CORS_HEADERS'] = 'Content-Type'
-
-
-from Backend.TRANSFORMER.mymodels import getModelWithType
-from Backend.TRANSFORMER.measure import loadTokenizer
-
-# MODEL_TYPE = "TRANSFORMER"
-# ## TRANSFORMER or CNN
-# MAX_LENGTH_ARTICLE = 1200
-# MAX_LENGTH_HEADLINE = 40
-# MODEL_NAME = "model_1"
-# tokenizer = loadTokenizer(MODEL_NAME)
-# PROJECT_ROOT = os.path.abspath('__file__')
-# BASE_DIR = os.path.dirname(PROJECT_ROOT)
-# num_labels = 3
-# checkpoint_path = BASE_DIR + "\\TRANSFORMER\\checkpoints\\" + MODEL_TYPE + "_" + MODEL_NAME + "semEval2016weights.hdf5"
-#
-#
-# import tensorflow as tf
-# from tensorflow.python.framework import ops
-# ops.reset_default_graph()
-#
-#
-#
-#
-#
-# model_TRANSFORMER = getModelWithType(MODEL_TYPE, False, MAX_LENGTH_ARTICLE, MAX_LENGTH_HEADLINE, False,
-#                           tokenizer, num_labels)
-# model_TRANSFORMER.load_weights(checkpoint_path)
-
-
-# session['model']=model_TRANSFORMER
 
 
 
@@ -73,7 +39,6 @@ def tpr_fpr():
     model = params['model']
 
     if (not model in algo_names):
-        # status_code = Response(status=501)
         return jsonify("invalid model names"), 401
 
     dataset_name = get_dataset_name_controller()
@@ -83,8 +48,7 @@ def tpr_fpr():
     except:
         if not name in dataset_name:
             return jsonify("invalid dataset"), 401
-    # if not name in dataset_name:
-    #     return jsonify("invalid dataset"), 401
+
     percent = int(params['percent'])/100
     result=get_models_results_controller(model,name,percent)
     result=result.iloc[0]
@@ -112,8 +76,7 @@ def train_test_records():
     except:
         if not name in dataset_name:
             return jsonify("invalid dataset"), 401
-    # if not name in dataset_name:
-    #     return jsonify("invalid dataset"), 401
+
     percent = int(params['percent'])/100
     result=get_models_results_controller(model,name,percent)
     result=result.iloc[0]
@@ -314,13 +277,11 @@ def five_sentences_dataset(dataset):
 
 @app.route('/dataset_names',methods=['GET'])
 def get_datasets_names():
-    # startlocation = request.args.get('startlocation')
-    # timeduration = int(request.args.get('timeduration'))
-    # k = int(request.args.get('k'))
+
 
     names =list( get_dataset_name_controller())
 
-    # print(jsonify(rows))
+
     return jsonify(names)
 
 
@@ -329,20 +290,17 @@ def get_models_desc(model):
 
     names = get_models_desc_controller(model)
     desc = names.iloc[0]['desc']
-    # print(jsonify(rows))
     return jsonify(desc)
 
 
 @app.route('/algo_names',methods=['GET'])
 def get_algorithmes_names():
     names =get_algorithmes_names_controller()
-    # print(jsonify(rows))
     return jsonify(names)
 
 
 @app.route('/add_dataset_run_model',methods=['post'])
 def add_dataset_to_db():
-    # print(jsonify(rows))
 
     csv_data=request.files["file"]
     data=pandas.read_csv(csv_data)
@@ -359,16 +317,11 @@ def add_dataset_to_db():
                 status_code = Response(status=501)
                 return jsonify("algorithmes names arn't valid"), 501
 
-        # dataset_names = get_dataset_name_controller()
-        # name = params['ds_name']
-        # if not name in dataset_names:
-        #     return jsonify("dataset isn't  valid"), 501
         percent = int(params['percent'])
         email = params['email']
         based=params['fileType']
         if email != '':
 
-            # start_result(array_algo_param, name, int(params['percent']),email)
             thread = Thread(target=start_result,
                             kwargs={'array_algo_param': array_algo_param, 'name': None, 'percent': percent,'df_extenal':data,
                                     "email": email,'based':based})
@@ -377,9 +330,7 @@ def add_dataset_to_db():
         else:
             index=start_specific_model_controller(array_algo_param, None, int(percent),data,based)
             return jsonify(index), 201
-        # add_dataset(data)
-        # status_code = Response(status=201)
-        # return status_code
+
     else:
         return jsonify(error_message),501
 
@@ -459,7 +410,6 @@ def ActualVSPredict():
     dic={'Actual':list_actual2,'Predict':list_predict2}
 
 
-    # catagories = get_categories_dataset_controller(name)
 
     dic2 = {'categories': list(list3)}
     return jsonify(dic,dic2)
@@ -472,7 +422,6 @@ def getTime():
     model = params['model']
 
     if (not model in algo_names):
-        # status_code = Response(status=501)
         return jsonify("invalid model names"), 401
 
     dataset_name = get_dataset_name_controller()
@@ -482,8 +431,7 @@ def getTime():
     except:
         if not name in dataset_name:
             return jsonify("invalid dataset"), 401
-    # if not name in dataset_name:
-    #     return jsonify("invalid dataset"), 401
+
     percent = int(params['percent'])/100
     result = get_models_results_controller(model,name,percent)
     result = result.iloc[0]
@@ -513,7 +461,6 @@ def confusionMatrix():
     model = params['model']
 
     if (not model in algo_names):
-        # status_code = Response(status=501)
         return jsonify("invalid model names"), 401
 
     dataset_name = get_dataset_name_controller()
@@ -553,8 +500,7 @@ def confusionMatrix():
     matrix = []
     l_true_label = [''] * (len_target + 1)
     l_true_label[0] = 'TRUE / PREDICTED'
-    #l_pred_label = [''] * (len_target + 1)
-    #l_pred_label[0] = 'PREDICTED'
+
     for i in range(1, len_target + 1):
         l_true_label[i] = new_target[i - 1].upper()
 
@@ -565,7 +511,6 @@ def confusionMatrix():
         l1.insert(0, ind.upper())
         matrix.append(l1)
 
-    #matrix.append(l_pred_label)
 
     matrix=list(matrix)
 
@@ -586,20 +531,11 @@ def get_results_models(id):
             models.pop(len(models)-1)
             dataset=req_details.iloc[0]['Dataset']
             train_percent=req_details.iloc[0]['Train_percent']
-            # time=req_details.iloc[0]['TIME']
-            # type=req_details.iloc[0]['type']
+
             array_details.append(models)
             array_details.append(dataset)
             array_details.append(train_percent*100)
-            # array_details.append(time)
 
-            # array_details.append(type)
-
-            # for model in range(len(models)-1):
-            #     df=get_models_results_controller(models[model], dataset, train_percent)
-            #     data_frame=data_frame.append(df)
-
-            # return data_frame.to_json(orient="split"),200
 
             return jsonify(array_details)
         except:
@@ -618,7 +554,6 @@ def run_model():
         array_algo_param.pop(len(array_algo_param)-1)
     for i in array_algo_param:
         if(not i in algo_names):
-            # status_code = Response(status=501)
             return jsonify("invalid model names"), 401
 
     dataset_names=get_dataset_name_controller()
@@ -627,9 +562,7 @@ def run_model():
         return jsonify("invalid dataset"), 401
     percent=int(params['percent'])
     email=params['email']
-    # based = params['based']
     if email !='':
-        # start_result(array_algo_param, name, int(params['percent']),email)
         thread = Thread(target=start_result, kwargs={'array_algo_param':array_algo_param,'name':name , 'percent':percent,'df_extenal':None,"email":email,'based':None})
         thread.start()
         return jsonify("ok"), 201
@@ -658,10 +591,7 @@ def get_topics():
 
 @app.route('/get_stance/<sentence>/<topic>/<model_name>', methods=['get'])
 def get_stance(sentence,topic,model_name):
-    # global graph
-    # with sess.as_default():
-    # keras.backend.clear_session()
-    # with graph.as_default():
+
     stance=get_stance_controller(sentence,topic,model_name,None,None)
 
     return jsonify(stance)
