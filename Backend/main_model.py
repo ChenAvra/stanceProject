@@ -348,7 +348,9 @@ def plot_multiclass_roc(labels,y_test, y_pred, path, n_classes, figsize=(17, 6))
         encoder.fit(y_test)
         transfomed_label = encoder.transform(y_test)
 
-        y = (transfomed_label[:, None] != np.arange(2)).astype(int)
+        y = np.array([[1,0] if val ==0 else [0,1]for val in transfomed_label])
+
+#        y = (transfomed_label[:, None] != np.arange(2)).astype(int)
 
 
     fpr = dict()

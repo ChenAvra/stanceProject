@@ -5,7 +5,6 @@ import re
 import tensorflow as tf
 tf.compat.v1.disable_eager_execution()
 
-
 from gensim.models import KeyedVectors
 from keras import callbacks
 from keras.models import Model
