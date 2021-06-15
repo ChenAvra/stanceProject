@@ -12,7 +12,6 @@ from gensim.models import KeyedVectors
 def getEmbeddingWeightsGlove(word_index):
     '''loads embedding and returns numpy weight matrix of shape totalwords+1, embedding dimensions'''
 
-    # embeddings_index = KeyedVectors.load_word2vec_format('./embeddings/glove.6B.50d.txt')
     embeddings_index = {}
     f = open(os.path.join(GLOVE_DIR,GLOVE_FILE),encoding='utf-8')
     for line in f:

@@ -224,37 +224,11 @@ def load_dataset(topic_string,df_train,df_test,labels,dataset,dev = "cuda"):
     train_y=train_y_before_split
     test_x=preProcessing(test_x_before_proc,cm_path1,cm_path2,word2emb)
     test_y=test_y_before_proc
-    #pre procesing
-    # from Preprocessing.preprocessing import *
-    # sentences_new=preProcessing(train_x_before_split)
-
-    # train_x, test_x, train_y, test_y = train_test_split(sentences_new, train_y_before_split, test_size = 0.25,random_state=1)
-
-
-
-
-
-    # word2emb = load_glove_embeddings()
 
 
     word_ind = {}
 
-    # for i,sent in enumerate(train_x):
-    #     final_sent = []
-    #     j = 0
-    #     while j < len(sent):
-    #         final_sent += split(sent[j])
-    #         j+=1
-    #     train_x[i] = final_sent
-    #
-    # for i,sent in enumerate(test_x):
-    #     final_sent = []
-    #     j = 0
-    #     while j < len(sent):
-    #         final_sent += split(sent[j])
-    #         j+=1
-    #     test_x[i] = final_sent
-    #
+
 
     for sent in train_x:
         for word in sent:
@@ -286,9 +260,8 @@ def load_dataset(topic_string,df_train,df_test,labels,dataset,dev = "cuda"):
 
 
 
-    # In[13]:
 
-    #x_train = np.full((len(train_x),MAX_LEN),PAD)
+
     x_train = []
     OOV = 0
     oovs = []
@@ -309,13 +282,13 @@ def load_dataset(topic_string,df_train,df_test,labels,dataset,dev = "cuda"):
     a = Counter(oovs)
     print(a)
 
-    # In[14]:
+
 
     y_train = np.array(train_y)
     y_test = np.array(test_y)
 
 
-    # In[15]:
+
 
     x_test = []
 
@@ -373,11 +346,7 @@ def pre_proce_one_stance(word_ind_load,topic_string,df,labels,dataset,dev = "cud
             return [word]
         return wordninja.split(word)
 
-    # assert dataset in ['Are E-Cigarettes safe?', 'Does Sunlight exposure lead to skin cancer?',
-    #                    'Does Vitamin C prevent common cold?', 'Should women take HRT post-menopause?',
-    #                    'Does MMR Vaccine lead to autism in children?', 'Atheism', 'Hillary Clinton',
-    #                    'Legalization of Abortion', 'Climate Change is a Real Concern',
-    #                    'Feminist Movement'], "unknown dataset"
+
 
     folder = "Data_SemE_P"
     topic_string=''
@@ -435,7 +404,6 @@ def pre_proce_one_stance(word_ind_load,topic_string,df,labels,dataset,dev = "cud
         word2emb[word] = embedding
     fglove.close()
 
-    # stances = {'FAVOR' : 0, 'AGAINST' : 1, 'NONE' : 2}
     stances = {}
 
     for i in range(len(labels)):
@@ -451,22 +419,17 @@ def pre_proce_one_stance(word_ind_load,topic_string,df,labels,dataset,dev = "cud
         test_x_before_split.append(train_before_Pro)
         test_y_before_split.append(stances[row['Stance']])
 
-    # sentences_new_train = preProcessing(train_x_before_split,cm_path1,cm_path2)
 
 
 
     test_x = preProcessing(test_x_before_split, cm_path1, cm_path2, word2emb)
     train_y = test_y_before_split
-    # test_x = preProcessing(test_x_before_proc, cm_path1, cm_path2, word2emb)
-    # test_y = test_y_before_proc
+
     word_ind = word_ind_load
 
 
 
-    # for sent in train_x:
-    #     for word in sent:
-    #         if word not in word_ind and word in word2emb:
-    #             word_ind[word] = len(word_ind)
+
 
     for sent in test_x:
         for word in sent:
@@ -484,37 +447,16 @@ def pre_proce_one_stance(word_ind_load,topic_string,df,labels,dataset,dev = "cud
 
     print("Number of words - {}".format(len(ind_word)))
 
-    # In[12]:
-
-    # In[13]:
-
-    # x_train = np.full((len(train_x),MAX_LEN),PAD)
-    # x_train = []
     OOV = 0
     oovs = []
 
-    # for i, sent in enumerate(train_x):
-    #     temp = []
-    #     for j, word in enumerate(sent):
-    #         if word in word_ind:
-    #             temp.append(word_ind[word])
-    #         else:
-    #             # print(word)
-    #             temp.append(UNK)
-    #             OOV += 1
-    #             oovs.append(word)
-    #     x_train.append(temp)
+
 
     print("OOV words :- ", OOV)
     a = Counter(oovs)
     print(a)
 
-    # In[14]:
-    #
-    # y_train = np.array(train_y)
-    # y_test = np.array(test_y)
 
-    # In[15]:
 
     x_test = []
 
@@ -533,8 +475,7 @@ def pre_proce_one_stance(word_ind_load,topic_string,df,labels,dataset,dev = "cud
     for word in word_ind:
         embedding_matrix[word_ind[word]] = word2emb[word]
 
-    # print("Number of training examples :- ", len(x_train))
-    # print("Sample vectorised sentence :- ", x_train[0])
+
 
     device = torch.device(dev)
     print("Using this device :- ", device)

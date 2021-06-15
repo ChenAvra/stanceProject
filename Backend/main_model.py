@@ -64,7 +64,7 @@ def get_unique_labels(df):
 
 # the function recieve models array (strings), dataset_name, and the division percent to train and test
 def start_Specific_Model(models, dataset_name, train_percent,df_extenal,type_ds):
-    # try:
+
 
         df_train_records=0
         df_test_records=0
@@ -200,6 +200,7 @@ def start_Specific_Model(models, dataset_name, train_percent,df_extenal,type_ds)
                 time = (end-start).total_seconds()/60
 
 
+
             y_test_numbers = list()
             for i in range(len(y_test)):
                 val = stances[y_test[i]]
@@ -221,6 +222,8 @@ def start_Specific_Model(models, dataset_name, train_percent,df_extenal,type_ds)
             for label in labels:
                 predict=predict+str(y_pred.count(label))+","
 
+
+
             # calculate accuracy
             acc = accuracy_score(y_test, y_pred)
             acc = float("{:.3f}".format(acc))
@@ -230,9 +233,7 @@ def start_Specific_Model(models, dataset_name, train_percent,df_extenal,type_ds)
             # plot confusion matrix
             PROJECT_ROOT = os.path.abspath(__file__)
             BASE_DIR = os.path.dirname(PROJECT_ROOT)
-            cm_path = BASE_DIR + '\\DB\\ConfusionMatrix\\' + m_name + '_ ' + dataset_name + '_ ' + str(train_percent) + '.png'
             cm = confusion_matrix(y_test, y_pred,labels=labels)
-            # plot_confusion_matrix(cm_path, cm, target_names=labels, normalize=False)
             target =labels
             target_string=""
             for t in target:
@@ -259,12 +260,9 @@ def start_Specific_Model(models, dataset_name, train_percent,df_extenal,type_ds)
             results[m_name] = {}
             results[m_name]['accuracy'] = acc
             results[m_name]['class_report'] = cr
-            # results[m_name]['cm_path'] = cm_path
             results[m_name]['roc_acc'] = roc_acc
-            # results[m_name]['roc_path'] = roc_path
 
             #insert to result table the details
-            # for name in models:
 
             db.insert_records_to_result(m_name,dataset_name,train_percent,results[m_name]['accuracy'], results[m_name]['class_report'],
 
@@ -272,65 +270,17 @@ def start_Specific_Model(models, dataset_name, train_percent,df_extenal,type_ds)
 
         index = db.insert_records_request(index_models,dataset_name,train_percent)
         return index
-    # except:
-    #     return False
 
 
-# https://www.kaggle.com/grfiv4/plot-a-confusion-matrix
-def plot_confusion_matrix(path, cm, target_names, title='Confusion matrix', cmap=None, normalize=True):
-    import itertools
 
-    if cmap is None:
-        cmap = plt.get_cmap('Blues')
-
-    plt.figure(figsize=(8, 6))
-    plt.imshow(cm, interpolation='nearest', cmap=cmap)
-    plt.title(title)
-    plt.colorbar()
-
-    if target_names is not None:
-        tick_marks = np.arange(len(target_names))
-        plt.xticks(tick_marks, target_names, rotation=45)
-        plt.yticks(tick_marks, target_names)
-
-    if normalize:
-        cm = cm.astype('float') / cm.sum(axis=1)[:, np.newaxis]
-
-
-    thresh = cm.max() / 1.5 if normalize else cm.max() / 2
-    for i, j in itertools.product(range(cm.shape[0]), range(cm.shape[1])):
-        if normalize:
-            plt.text(j, i, "{:0.4f}".format(cm[i, j]),
-                     horizontalalignment="center",
-                     color="white" if cm[i, j] > thresh else "black")
-        else:
-            plt.text(j, i, "{:,}".format(cm[i, j]),
-                     horizontalalignment="center",
-                     color="white" if cm[i, j] > thresh else "black")
-
-
-    plt.ylabel('True label')
-    plt.xlabel('Predicted label')
-    plt.tight_layout()
-    plt.savefig(path)
-    plt.show()
-    plt.close()
 
 
 def multiclass_roc_auc_score(y_test, y_pred, average="macro"):
-    # lb = LabelBinarizer()
-    # lb.fit(y_test)
-    # y_test = lb.transform(y_test)
-    # y_pred = lb.transform(y_pred)
-
     return roc_auc_score(y_test, y_pred,  multi_class='ovr')
 
 
 def plot_multiclass_roc(labels,y_test, y_pred, path, n_classes, figsize=(17, 6)):
-    # # structures
-    # fpr = dict()
-    # tpr = dict()
-    # roc_auc = dict()
+
 
     dict_fpr_tpr=[]
 
@@ -363,15 +313,8 @@ def plot_multiclass_roc(labels,y_test, y_pred, path, n_classes, figsize=(17, 6))
         roc_auc[i] = auc(fpr[i], tpr[i])
         arr=[]
         length_arr=int(len(fpr[i])/10)
-        # for j in range(len(fpr[i])):
         j=0
-        # arr.append([round(fpr["micro"][0], 2),round(tpr["micro"][0], 2)])
-        # arr.append([round(fpr["micro"][j+length_arr], 2), round(tpr["micro"][j+length_arr], 2)])
-        # arr.append([round(fpr["micro"][j+2*length_arr], 2), round(tpr["micro"][j+2*length_arr], 2)])
-        # arr.append([round(fpr["micro"][j+3*length_arr], 2), round(tpr["micro"][j+3*length_arr], 2)])
-        # arr.append([round(fpr["micro"][j+4*length_arr], 2), round(tpr["micro"][j+4*length_arr], 2)])
-        # arr.append([round(fpr["micro"][j+5*length_arr], 2), round(tpr["micro"][j+5*length_arr], 2)])
-        # arr.append([round(fpr["micro"][len(fpr[i])-1], 2), round(tpr["micro"][len(fpr[i])-1], 2)])
+
 
         arr.append([round(fpr[i][0], 2),round(tpr[i][0], 2)])
         arr.append([round(fpr[i][j+length_arr], 2), round(tpr[i][j+length_arr], 2)])
@@ -385,78 +328,18 @@ def plot_multiclass_roc(labels,y_test, y_pred, path, n_classes, figsize=(17, 6))
         area = str(round(roc_auc[i], 2))
         name = labels[i].upper() + " <br> Area=" + area
         dict_fpr_tpr.append({'name': name, 'data': arr, 'area': round(roc_auc[i], 2)})
-    #
-    # fpr["micro"], tpr["micro"], _ = roc_curve(y.ravel(), y_pred.ravel())
-    # roc_auc["micro"] = auc(fpr["micro"], tpr["micro"])
-
-    # arr = []
-    # length_arr = int(len(fpr["micro"]) / 10)
-    # # for j in range(len(fpr[i])):
-    # j = 0
-    # arr.append([round(fpr["micro"][0], 2),round(tpr["micro"][0], 2)])
-    # arr.append([round(fpr["micro"][j+length_arr], 2), round(tpr["micro"][j+length_arr], 2)])
-    # arr.append([round(fpr["micro"][j+2*length_arr], 2), round(tpr["micro"][j+2*length_arr], 2)])
-    # arr.append([round(fpr["micro"][j+3*length_arr], 2), round(tpr["micro"][j+3*length_arr], 2)])
-    # arr.append([round(fpr["micro"][j+4*length_arr], 2), round(tpr["micro"][j+4*length_arr], 2)])
-    # arr.append([round(fpr["micro"][j+5*length_arr], 2), round(tpr["micro"][j+5*length_arr], 2)])
-    # arr.append([round(fpr["micro"][len(fpr["micro"])-1], 2), round(tpr["micro"][len(fpr["micro"])-1], 2)])
-    #
-    # area = str(round(roc_auc["micro"], 2))
-    # name = "micro <br> Area=" + area
-    # dict_fpr_tpr.append({'name': name, 'data': arr, 'area': area})
-    # y_test_labels = np.unique(y_test)
-    # if (n_classes == 2):
-    #     y_test_dummies = pd.get_dummies(y_test, drop_first=False).values
-    #     y_pred_dummies = pd.get_dummies(y_pred, drop_first=False).values
-    #
-    #
-    #     if(len(y_pred_dummies[0]) == 1):
-    #         y = y_test_dummies
-    #
-    #         for i in range(len(y)):
-    #             y[i][0] = 1
-    #             y[i][1] = 0
-    #         y_pred_dummies = y
-    # for i in range(n_classes):
-    #     fpr[i], tpr[i], _ = roc_curve(y_test_dummies[:, i], y_pred_dummies[:, i])
-    #     roc_auc[i] = auc(fpr[i], tpr[i])
-    #     arr=[]
-    #     for j in range(len(fpr[i])):
-    #         arr.append([round(fpr[i][j], 2),round(tpr[i][j], 2)])
-    #     area = str(round(roc_auc[i], 2))
-    #     name = y_test_labels[i].upper() + " <br> Area=" + area
-    #     dict_fpr_tpr.append({'name': name, 'data': arr, 'area': round(roc_auc[i], 2)})
-
-    # roc for each class
-    # fig, ax = plt.subplots(figsize=figsize)
-    # ax.plot([0, 1], [0, 1], 'k--')
-    # ax.set_xlim([0.0, 1.0])
-    # ax.set_ylim([0.0, 1.05])
-    # ax.set_xlabel('False Positive Rate')
-    # ax.set_ylabel('True Positive Rate')
-    # ax.set_title('ROC Curve')
-    # for i in range(n_classes):
-    #     ax.plot(fpr[i], tpr[i], label='ROC curve (area = %0.2f) for label %s' % (roc_auc[i], y_test_labels[i]))
-    # ax.legend(loc="best")
-    # ax.grid(alpha=.4)
-    # #sns.despine()
-    # #plt.show()
-    # plt.savefig(path)
 
     return dict_fpr_tpr
 
 #the function recieves a sentence and claim and returns its stance
 def get_one_stance(sentence, claim,model_name,model_TRANSFORMER,train):
-    dataset_id = dataset_names_dict["semEval2016"]
     db = DataBase()
-    # df = db.get_dataset(dataset_id)
 
     if(db.get_record_from_Stance_Result(claim,sentence,model_name)).shape[0]>0:
         pred=db.get_record_from_Stance_Result(claim,sentence,model_name).iloc[0]['Stance']
         return pred
     else:
-        # get unique labels
-        # labels = get_unique_labels(df)
+
         labels=['AGAINST','FAVOR','NONE']
         num_of_labels = len(labels)
         if(model_name=='TRANSFORMER'):
@@ -473,10 +356,6 @@ def get_one_stance(sentence, claim,model_name,model_TRANSFORMER,train):
 
             return y_pred
 
-# models = list()
-# models.append("TRANSFORMER")
-# start_Specific_Model(models, "Procon", 60, None, None)
 
-# print(get_one_stance("I think she is a nice woman",'Hillary Clinton'))
 
 

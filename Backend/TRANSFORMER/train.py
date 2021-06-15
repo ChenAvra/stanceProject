@@ -41,19 +41,7 @@ def run_model(df_train, df_test, labels, num_of_labels,dataset_name,train_percen
          train_set = main_set
          # test_set = readTestDataset("./dataset/")
          test_set,stances = preprocessDF(df_test,labels,binaryclass=BINARY_CLASSIFICATION)
-    # else:
-    #     totalno = len(main_set)
-    #     split_index = totalno - int(DATA_SPLIT*totalno)
-    #
-    #     randomsamp = main_set.sample(frac=1)
-    #     train_set = randomsamp[:split_index]
-    #     test_set = randomsamp[split_index:]
-    #
-    # # if(OVERSAMPLING_STANCEWISE):
-    # #     train_set = getBalancedData(train_set,binaryclass=BINARY_CLASSIFICATION)
-    # #     test_set = getBalancedData(test_set,binaryclass=BINARY_CLASSIFICATION)
 
-    # print("train and test set created with shape",train_set.shape,test_set.shape)
 
 
     if(NEW_TOKENIZER):
@@ -98,14 +86,7 @@ def run_model(df_train, df_test, labels, num_of_labels,dataset_name,train_percen
     model_.save_weights(checkpoint_path)
 
 
-    # model_.save_weights(file_path)
 
-    # model_.save(BASE_DIR+"\\saved\\"+MODEL_TYPE+"_"+MODEL_NAME)
-    # pred = model.evaluate(x=[testap,testhp],epochs=1,batch_size=100)
-    # pred = model_F_.predict(x=[testap,testhp])
-    # print(pred)
-    #
-    # print(accuracy_score(pred,test_labels))
 
 
 

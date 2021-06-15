@@ -32,9 +32,7 @@ D = None
 
 random.seed(42)
 
-# if len(sys.argv) !=3:
-#     print("Usage :- python early_stopping_training_test.py <dataset name> <attention vairant>")
-#     sys.exit(-1)
+
 
 version = "tan"
 # dataset = "EC"
@@ -135,15 +133,7 @@ def train_bagging_tan_CV(stances,x_train, y_train, x_test, y_test, vector_target
                     label = np.argmax(preds.cpu().numpy(),axis=1)[0]
                     labels_validation.append(label)
                     y_labels_test.append(y_train[j])
-                    # accuracy_validation=metrics.accuracy_score(labels_validation,y_labels_test)
-                    # if label == y_train[j]:
-                    #     corr+=1
-                    #     if label <=1:
-                    #         conf_matrix[label][0]+=1
-                    # if y_train[j] <=1:
-                    #     conf_matrix[y_train[j]][2]+=1
-                    # if label <=1:
-                    #     conf_matrix[label][1]+=1
+
                     ep_loss+=loss_fn(preds,y)
             accuracy_validation = metrics.accuracy_score(labels_validation, y_labels_test)
             # val_f_score = float(f_score(conf_matrix))
@@ -214,15 +204,6 @@ def train_bagging_tan_CV(stances,x_train, y_train, x_test, y_test, vector_target
                     i=i+1
 
 
-            # if label == y_test[j]:
-            #     corr+=1
-            #     if label <=1:
-            #         conf_matrix[label][0]+=1
-            # if y_test[j] <=1:
-            #     conf_matrix[y_test[j]][2]+=1
-            # if label <=1:
-            #     conf_matrix[label][1]+=1
-            # ep_loss+=loss_fn(preds,y)
 
     conf_matrix = confusion_matrix(labels_pred, y_test)
     print(conf_matrix)
@@ -259,28 +240,7 @@ def train_bagging_tan_CV(stances,x_train, y_train, x_test, y_test, vector_target
 
 
 
-# dataset ="EC"
-# #add parameter
-# dataset ="HRT"
 
-
-
-# labels=[]
-# df=pd.read_csv('C:\\Users\\Chen\\Desktop\\HRT.csv')
-
-# topic_string="HRT"
-# col=df['Stance']
-# labels=df.Stance.unique()
-# topics=df.Claim.unique()
-# fin_matrix = np.zeros((2,len(labels)))
-
-# stances = {}
-
-# for i in range(len(labels)):
-#     stances.update({labels[i]: i})
-# embedding_matrix=[]
-
-# x_train=[], y_train=[], x_test=[], y_tes=[], vector_targe=[]
 def run_model(df_train, df_test, labels, num_of_labels,claim):
     version='tan'
     topic_string=claim
