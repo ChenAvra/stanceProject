@@ -300,8 +300,6 @@ def plot_multiclass_roc(labels,y_test, y_pred, path, n_classes, figsize=(17, 6))
 
         y = np.array([[1,0] if val ==0 else [0,1]for val in transfomed_label])
 
-#        y = (transfomed_label[:, None] != np.arange(2)).astype(int)
-
 
     fpr = dict()
     tpr = dict()
