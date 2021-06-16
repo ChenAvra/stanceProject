@@ -1,11 +1,11 @@
-# SYSTANCE - Stance Detection Project 
+# SYSTANCE - A Stance Detection Framework 
 ### By: Iris Dreizenshtok, Chen Avraham, Adi Avinun and Gal Tadir
 
-We built a framework for comparing stance detection algorithms with 6 different datasets.
+A framework for comparing stance detection algorithms with 10 different datasets.
 
-You can select up to three algorithms for comparison and one dataset each time.
+On each run, you can select algorithms for comparison and one dataset each time.
 
-The system will display the statistics of the algorithms and the dataset with the measures for each algorithm.
+The system will display results of each algorithm and compare the results aswell.
 
 To run the backend please follow the instructions step by step (order is important): 
 
