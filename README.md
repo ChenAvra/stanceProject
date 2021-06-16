@@ -5,7 +5,7 @@ A framework for comparing stance detection algorithms with 10 different datasets
 
 On each run, you can select algorithms for comparison and one dataset each time.
 
-The system will display results of each algorithm and compare the results aswell.
+The system will display the results of each algorithm and compare the results aswell.
 
 To run the backend please follow the instructions step by step (order is important): 
 
